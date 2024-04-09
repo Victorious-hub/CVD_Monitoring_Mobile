@@ -1,5 +1,7 @@
 package com.example.cvd_monitoring.data.remote
 
+import com.example.cvd_monitoring.data.remote.request.AuthRequest
+import com.example.cvd_monitoring.data.remote.response.AuthResponse
 import com.example.cvd_monitoring.domain.model.users.Auth
 import com.example.cvd_monitoring.domain.model.users.CreateUserRequest
 import com.example.cvd_monitoring.domain.model.users.Doctor
@@ -22,7 +24,8 @@ interface CvdApi {
     @GET("users/v1/patients")
     suspend fun getPatients(): List<Patient>
     @POST("auth/v1/authenticate")
-    suspend fun authenticateUser(@Body auth: Auth): Auth
+    suspend fun authenticateUser(@Body loginRequest: AuthRequest
+    ): AuthResponse
     @PUT("users/v1/patients/update/{slug}/data")
     suspend fun updatePatientData(@Body patient: PatientData, @Path("slug") slug: String): PatientData
     @PUT("users/v1/patients/update/{slug}/contact")

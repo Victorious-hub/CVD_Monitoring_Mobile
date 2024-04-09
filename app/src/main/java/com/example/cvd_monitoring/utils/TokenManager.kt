@@ -14,4 +14,8 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context){
         editor.putString(USER_TOKEN, token)
         editor.apply()
     }
+
+    fun getToken() : String? {
+        return prefs.getString(USER_TOKEN, null)
+    }
 }
