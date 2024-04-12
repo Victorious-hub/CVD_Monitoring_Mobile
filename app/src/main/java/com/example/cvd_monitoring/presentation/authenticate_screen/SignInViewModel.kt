@@ -1,15 +1,11 @@
 package com.example.cvd_monitoring.presentation.authenticate_screen
 
-import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
-import com.example.cvd_monitoring.domain.model.users.Auth
 import com.example.cvd_monitoring.domain.use_case.authenticate.UserAuthenticationUseCase
 import com.example.cvd_monitoring.presentation.AuthState
 import com.example.cvd_monitoring.presentation.Screen
@@ -24,8 +20,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userAuthenticationUseCase: UserAuthenticationUseCase
+    private val userAuthenticationUseCase: UserAuthenticationUseCase,
 ) : ViewModel(){
+
+
 
     private var _loginState  = mutableStateOf(AuthState())
     val loginState: State<AuthState> = _loginState
@@ -47,8 +45,6 @@ class SignInViewModel @Inject constructor(
         _passwordState.value = passwordState.value.copy(text = value)
     }
 
-    @Inject
-    lateinit var tokenManager: TokenManager
 
     fun authenticateUser() {
         viewModelScope.launch {
@@ -71,9 +67,7 @@ class SignInViewModel @Inject constructor(
 
             when (loginResult.result) {
                 is Resource.Success -> {
-                    _eventFlow.emit(
-                        UiEvents.NavigateEvent(Screen.PatientList.route)
-                    )
+                    _eventFlow.emit(UiEvents.NavigateEvent(Screen.SignUp.route))
                 }
                 is Resource.Error -> {
                     _eventFlow.emit(

@@ -1,23 +1,23 @@
 package com.example.cvd_monitoring.presentation
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavType
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.cvd_monitoring.common.ConnectivityObserver
 import com.example.cvd_monitoring.common.NetworkConnectivityObserver
+import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.presentation.authenticate_screen.SignInScreen
-import com.example.cvd_monitoring.presentation.doctor_contact_screen.DoctorContactScreen
-import com.example.cvd_monitoring.presentation.patient_card_screen.PatientCardScreen
-import com.example.cvd_monitoring.presentation.patient_contact_screen.PatientContactScreen
 import com.example.cvd_monitoring.presentation.patient_list.PatientListScreen
-import com.example.cvd_monitoring.presentation.patient_navigation.MainScreen
 import com.example.cvd_monitoring.presentation.unavailable_connection.UnavailableConnectionScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
@@ -32,6 +32,9 @@ class MainActivity : ComponentActivity() {
         connectivityObserver.observe().onEach {
             println("Status is $it")
         }
+
+
+
         setContent {
             val status by connectivityObserver.observe().collectAsState(
                 initial = ConnectivityObserver.Status.Unavailable

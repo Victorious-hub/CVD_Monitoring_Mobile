@@ -22,6 +22,7 @@ fun PatientListScreen(
 ) {
     val patientList = remember { viewModel.patientListResponse }
     val patients = patientList.value
+    Log.d("PatientListViewModel", "Patients: $patients")
     LazyColumn {
         items(patients) { patient ->
             PatientListItem(

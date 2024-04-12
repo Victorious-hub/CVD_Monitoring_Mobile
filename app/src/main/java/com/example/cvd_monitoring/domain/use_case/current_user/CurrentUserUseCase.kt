@@ -1,5 +1,6 @@
 package com.example.cvd_monitoring.domain.use_case.current_user
 
+import androidx.datastore.preferences.core.Preferences
 import com.example.cvd_monitoring.domain.model.users.Patient
 import com.example.cvd_monitoring.domain.repository.PatientRepository
 import javax.inject.Inject

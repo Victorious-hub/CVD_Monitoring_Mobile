@@ -8,18 +8,18 @@ import com.example.cvd_monitoring.presentation.authenticate_screen.SignInScreen
 import com.example.cvd_monitoring.presentation.patient_list.PatientListScreen
 import com.example.cvd_monitoring.presentation.register_screen.SignUpScreen
 
-@Composable
-fun BottomNavGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = BottomBarScreen.Home.route
-    ) {
-        composable(route = BottomBarScreen.Home.route ) {
-            PatientListScreen(navController)
-        }
-
-        composable(route = BottomBarScreen.Settings.route) {
-            SignUpScreen(navController)
-        }
-    }
-}
+//@Composable
+//fun BottomNavGraph(navController: NavHostController) {
+//    NavHost(
+//        navController = navController,
+//        startDestination = BottomBarScreen.Home.route
+//    ) {
+//        composable(route = BottomBarScreen.Home.route ) {
+//            PatientListScreen(navController)
+//        }
+//
+//        composable(route = BottomBarScreen.Settings.route) {
+//            SignUpScreen(navController)
+//        }
+//    }
+//}

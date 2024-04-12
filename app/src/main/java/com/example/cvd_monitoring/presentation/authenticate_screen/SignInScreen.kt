@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
+import com.example.cvd_monitoring.presentation.Screen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -154,6 +155,7 @@ fun SignInScreen(
         Button(
             onClick = {
                 viewModel.authenticateUser()
+                navController.navigate(Screen.PatientList.route)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

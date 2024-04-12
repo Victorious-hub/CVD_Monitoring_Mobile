@@ -3,11 +3,12 @@ package com.example.cvd_monitoring.domain.use_case.authenticate
 import com.example.cvd_monitoring.data.remote.request.AuthRequest
 import com.example.cvd_monitoring.domain.model.users.Auth
 import com.example.cvd_monitoring.domain.model.users.AuthResult
+import com.example.cvd_monitoring.domain.repository.AuthRepository
 import com.example.cvd_monitoring.domain.repository.PatientRepository
 import javax.inject.Inject
 
 class UserAuthenticationUseCase @Inject constructor(
-    private val patientRepository: PatientRepository
+    private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(email: String, password: String): AuthResult {
         val emailError = if (email.isBlank()) "Username cannot be blank" else null
@@ -31,7 +32,7 @@ class UserAuthenticationUseCase @Inject constructor(
         )
 
         return AuthResult(
-            result = patientRepository.authenticateUser(loginRequest)
+            result = authRepository.authenticateUser(loginRequest)
         )
     }
 }

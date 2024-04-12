@@ -8,5 +8,5 @@ data class Patient(
     val slug: String,
     val mobile: String,
     val user: User,
-    val weight: Double
+    val weight: Double,
 )

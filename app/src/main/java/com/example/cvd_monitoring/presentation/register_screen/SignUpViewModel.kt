@@ -55,7 +55,8 @@ class SignUpViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val createdUser = createPatientUseCase(firstName, lastName, email, password)
+                val role = "P"
+                val createdUser = createPatientUseCase(firstName, lastName, email, password, role)
                 Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
