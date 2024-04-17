@@ -1,18 +1,18 @@
 package com.example.cvd_monitoring.data.repository
 
-import com.example.cvd_monitoring.data.remote.PatientApi
+import com.example.cvd_monitoring.data.remote.api.PatientApi
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
+import com.example.cvd_monitoring.domain.model.notifications.Notification
+import com.example.cvd_monitoring.domain.model.patients.PatientCard
 import com.example.cvd_monitoring.domain.model.users.Patient
-import com.example.cvd_monitoring.domain.model.users.PatientCard
 import com.example.cvd_monitoring.domain.model.users.PatientContact
 import com.example.cvd_monitoring.domain.model.users.PatientData
 import com.example.cvd_monitoring.domain.repository.PatientRepository
-import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class PatientRepositoryImpl @Inject constructor(
     private val api: PatientApi,
-    private val preferences: AuthPreferences
+    preferences: AuthPreferences,
 ) : PatientRepository {
 
     override suspend fun getPatients(): List<Patient> {
@@ -21,6 +21,10 @@ class PatientRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentUser(slug: String): Patient {
         return api.getCurrentUser(slug)
+    }
+
+    override suspend fun getPatientNotifications(slug: String): Notification {
+        return api.getPatientNotifications(slug)
     }
 
     override suspend fun getPatientCard(slug: String): PatientCard {

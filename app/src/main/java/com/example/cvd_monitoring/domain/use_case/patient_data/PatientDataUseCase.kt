@@ -1,8 +1,7 @@
 package com.example.cvd_monitoring.domain.use_case.patient_data
 
-import com.example.cvd_monitoring.domain.model.users.CreateUserRequest
+
 import com.example.cvd_monitoring.domain.model.users.PatientData
-import com.example.cvd_monitoring.domain.model.users.User
 import com.example.cvd_monitoring.domain.repository.PatientRepository
 import javax.inject.Inject
 

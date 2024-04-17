@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.SplashScreenCVD" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/heart</item>
+        <item name="postSplashScreenTheme">@style/Theme.CVD_Monitoring</item>
+    </style>
 
     <style name="Theme.CVD_Monitoring" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

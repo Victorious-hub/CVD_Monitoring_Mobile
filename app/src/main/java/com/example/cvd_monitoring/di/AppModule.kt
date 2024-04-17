@@ -2,16 +2,12 @@ package com.example.cvd_monitoring.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.cvd_monitoring.data.remote.AuthApi
+import com.example.cvd_monitoring.data.remote.api.AuthApi
 import com.example.cvd_monitoring.data.remote.AuthInterceptor
-import com.example.cvd_monitoring.data.remote.DoctorApi
-import com.example.cvd_monitoring.data.remote.PatientApi
+import com.example.cvd_monitoring.data.remote.api.DoctorApi
+import com.example.cvd_monitoring.data.remote.api.PatientApi
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.data.repository.AuthRepositoryImpl
 import com.example.cvd_monitoring.data.repository.DoctorRepositoryImpl
@@ -19,10 +15,7 @@ import com.example.cvd_monitoring.data.repository.PatientRepositoryImpl
 import com.example.cvd_monitoring.domain.repository.AuthRepository
 import com.example.cvd_monitoring.domain.repository.DoctorRepository
 import com.example.cvd_monitoring.domain.repository.PatientRepository
-import com.example.cvd_monitoring.domain.use_case.authenticate.UserAuthenticationUseCase
-import com.example.cvd_monitoring.domain.use_case.sign_sup.CreatePatientUseCase
 import com.example.cvd_monitoring.utils.Constants
-import com.example.cvd_monitoring.utils.Constants.AUTH_PREFERENCES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

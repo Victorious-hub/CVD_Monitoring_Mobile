@@ -7,5 +7,4 @@ data class AuthResult(
     val passwordError: String? = null,
     val emailError : String? = null,
     val result: Resource<Unit>? = null,
-    val token: String? = null
 )

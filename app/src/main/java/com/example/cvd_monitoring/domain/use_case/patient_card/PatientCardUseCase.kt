@@ -1,7 +1,6 @@
 package com.example.cvd_monitoring.domain.use_case.patient_card
 
-import com.example.cvd_monitoring.domain.model.users.Patient
-import com.example.cvd_monitoring.domain.model.users.PatientCard
+import com.example.cvd_monitoring.domain.model.patients.PatientCard
 import com.example.cvd_monitoring.domain.repository.PatientRepository
 import javax.inject.Inject
 

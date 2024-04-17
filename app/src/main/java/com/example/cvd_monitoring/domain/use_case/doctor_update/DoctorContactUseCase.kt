@@ -1,10 +1,9 @@
 package com.example.cvd_monitoring.domain.use_case.doctor_update
 
 import com.example.cvd_monitoring.domain.model.users.DoctorContact
-import com.example.cvd_monitoring.domain.model.users.PatientContact
 import com.example.cvd_monitoring.domain.model.users.UserContact
 import com.example.cvd_monitoring.domain.repository.DoctorRepository
-import com.example.cvd_monitoring.domain.repository.PatientRepository
+import com.example.cvd_monitoring.utils.Resource
 import javax.inject.Inject
 
 class DoctorContactUseCase @Inject constructor(

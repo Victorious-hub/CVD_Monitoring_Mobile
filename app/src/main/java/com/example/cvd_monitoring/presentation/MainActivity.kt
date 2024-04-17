@@ -1,26 +1,38 @@
 package com.example.cvd_monitoring.presentation
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.ConnectivityObserver
 import com.example.cvd_monitoring.common.NetworkConnectivityObserver
-import com.example.cvd_monitoring.data.remote.local.AuthPreferences
-import com.example.cvd_monitoring.presentation.authenticate_screen.SignInScreen
-import com.example.cvd_monitoring.presentation.patient_list.PatientListScreen
+import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.presentation.unavailable_connection.UnavailableConnectionScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -29,59 +41,58 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
-        connectivityObserver.observe().onEach {
-            println("Status is $it")
-        }
-
-
-
         setContent {
             val status by connectivityObserver.observe().collectAsState(
                 initial = ConnectivityObserver.Status.Unavailable
             )
-            val navController = rememberNavController()
-
             if (status == ConnectivityObserver.Status.Unavailable) {
                 UnavailableConnectionScreen()
             } else {
-                NavHost(
-                    navController = navController,
-                    startDestination = Screen.PatientList.route
-                ) {
-                    composable(Screen.PatientList.route) {
-                        PatientListScreen(navController = navController)
-                    }
-//                    composable(Screen.PatientList.route) {
-//                        PatientListScreen(navController=navController)
-//                    }
-                    //
-                    //                composable(Screen.SignIn.route) {
-                    //                    SignInScreen(navController=navController)
-                    //                }
-                    //                composable(
-                    //                    route = Screen.PatientList.route
-                    //                ) {
-                    //                    PatientListScreen(navController)
-                    //                }
-                    //                composable(
-                    //                    route = "${Screen.PatientCard.route}/{slug}",
-                    //                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                    //                ) {
-                    //                    PatientCardScreen(navController = navController)
-                    //                }
-
-                    //                composable(
-                    //                    route = "${Screen.UpdateContactPatient.route}/{slug}/contact",
-                    //                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                    //                ) {
-                    //                    PatientContactScreen(navController = navController)
-                    //                }
-                    // }
-                }
+                NavGraph()
             }
         }
     }
 }
 
+//@Preview(showSystemUi = true)
+//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+//@Composable
+//fun PatientProfileScreen(
+//) {
+//
+//    Spacer(modifier = Modifier.height(50.dp))
+//    Card(
+//        modifier = Modifier
+//            .padding(25.dp, 50.dp)
+//            .fillMaxWidth()
+//            .height(80.dp),
+//        shape = MaterialTheme.shapes.medium
+//    ) {
+//        Row(
+//            Modifier
+//                .padding(4.dp)
+//                .fillMaxSize()
+//        ) {
+//            Column(
+//                verticalArrangement = Arrangement.Center,
+//                modifier = Modifier
+//                    .padding(4.dp)
+//                    .fillMaxHeight()
+//                    .weight(0.8f)
+//            ) {
+//                Text(
+//                    "First Name : first name"
+//
+//                )
+//                Text(
+//                    "Last Name : last name"
+//                )
+//                Text(
+//                    "Email: email"
+//                )
+//            }
+//        }
+//    }
+//}
 
 
