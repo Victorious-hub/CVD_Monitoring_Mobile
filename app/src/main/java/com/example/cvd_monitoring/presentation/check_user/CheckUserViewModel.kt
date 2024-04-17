@@ -25,16 +25,14 @@ class CheckUserViewModel @Inject constructor(
     }
     private fun checkUserAuth() {
         viewModelScope.launch {
-            val email = authPreferences.getEmail().firstOrNull()
-            val doctorEmail = email?.substringAfter("@")?.substringBefore(".")
+            val email = authPreferences.getUserEmail().firstOrNull()
+            val role = authPreferences.getUserRole().firstOrNull()
             val slug = email?.substringBefore("@")
-           // _eventFlow.emit(UiEvents.NavigateEvent(Screen.Home.route))
-            if (doctorEmail == "cvd") {
-                _eventFlow.emit(UiEvents.NavigateEvent("${Screen.CurrentDoctor.route}/$slug/get"))
-            } else if (slug != null) {
-                _eventFlow.emit(UiEvents.NavigateEvent("${Screen.CurrentUser.route}/$slug/get"))
-            } else {
-                _eventFlow.emit(UiEvents.NavigateEvent(Screen.Home.route))
+
+            when (role) {
+                "D" -> _eventFlow.emit(UiEvents.NavigateEvent("${Screen.CurrentDoctor.route}/$slug/get"))
+                "P" -> _eventFlow.emit(UiEvents.NavigateEvent("${Screen.CurrentUser.route}/$slug/get"))
+                else -> _eventFlow.emit(UiEvents.NavigateEvent(Screen.Home.route))
             }
         }
     }

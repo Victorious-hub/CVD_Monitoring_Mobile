@@ -9,32 +9,48 @@ import kotlinx.coroutines.flow.map
 
 class AuthPreferences(private val context: Context) {
     companion object {
-        private val TOKEN_KEY = stringPreferencesKey("jwt_token")
+        private val ACCESS_TOKEN = stringPreferencesKey("access_token")
+        private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
         private val USER_EMAIL = stringPreferencesKey("email")
+        private val USER_ROLE = stringPreferencesKey("role")
     }
 
     fun getAuthToken(): Flow<String?> {
         return context.dataStore.data.map { preferences ->
-            preferences[TOKEN_KEY]
+            preferences[ACCESS_TOKEN]
         }
     }
 
-    fun getEmail(): Flow<String?> {
+    fun getRefreshToken(): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[REFRESH_TOKEN]
+        }
+    }
+
+    fun getUserRole(): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[USER_ROLE]
+        }
+    }
+
+    fun getUserEmail(): Flow<String?> {
         return context.dataStore.data.map { preferences ->
             preferences[USER_EMAIL]
         }
     }
 
-    suspend fun saveAuthToken(token: String, email: String) {
+    suspend fun saveAuthToken(accessToken: String, email: String, role: String, refreshToken: String) {
         context.dataStore.edit { preferences ->
             preferences[USER_EMAIL] = email
-            preferences[TOKEN_KEY] = token
+            preferences[USER_ROLE] = role
+            preferences[ACCESS_TOKEN] = accessToken
+            preferences[REFRESH_TOKEN] = refreshToken
         }
     }
 
     suspend fun deleteToken() {
         context.dataStore.edit { preferences ->
-            preferences.remove(TOKEN_KEY)
+            preferences.clear()
         }
     }
 }

@@ -6,5 +6,7 @@ data class AuthResponse(
     @SerializedName("access")
     val access : String,
     @SerializedName("refresh")
-    val refresh : String
+    val refresh : String,
+    @SerializedName("role")
+    val role : String
 )

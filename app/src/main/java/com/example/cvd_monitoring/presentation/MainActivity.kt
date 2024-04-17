@@ -40,7 +40,12 @@ class MainActivity : ComponentActivity() {
     lateinit var connectivityObserver: ConnectivityObserver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
+        connectivityObserver.observe().onEach {
+            println("Status is $it")
+        }
+
         setContent {
             val status by connectivityObserver.observe().collectAsState(
                 initial = ConnectivityObserver.Status.Unavailable
@@ -54,45 +59,45 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-//@Preview(showSystemUi = true)
-//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-//@Composable
-//fun PatientProfileScreen(
-//) {
-//
-//    Spacer(modifier = Modifier.height(50.dp))
-//    Card(
-//        modifier = Modifier
-//            .padding(25.dp, 50.dp)
-//            .fillMaxWidth()
-//            .height(80.dp),
-//        shape = MaterialTheme.shapes.medium
-//    ) {
-//        Row(
-//            Modifier
-//                .padding(4.dp)
-//                .fillMaxSize()
-//        ) {
-//            Column(
-//                verticalArrangement = Arrangement.Center,
-//                modifier = Modifier
-//                    .padding(4.dp)
-//                    .fillMaxHeight()
-//                    .weight(0.8f)
-//            ) {
-//                Text(
-//                    "First Name : first name"
-//
-//                )
-//                Text(
-//                    "Last Name : last name"
-//                )
-//                Text(
-//                    "Email: email"
-//                )
-//            }
-//        }
-//    }
-//}
+@Preview(showSystemUi = true)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun PatientProfileScreen(
+) {
+
+    Spacer(modifier = Modifier.height(50.dp))
+    Card(
+        modifier = Modifier
+            .padding(25.dp, 50.dp)
+            .fillMaxWidth()
+            .height(80.dp),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(
+            Modifier
+                .padding(4.dp)
+                .fillMaxSize()
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxHeight()
+                    .weight(0.8f)
+            ) {
+                Text(
+                    "First Name : first name"
+
+                )
+                Text(
+                    "Last Name : last name"
+                )
+                Text(
+                    "Email: email"
+                )
+            }
+        }
+    }
+}
 
 

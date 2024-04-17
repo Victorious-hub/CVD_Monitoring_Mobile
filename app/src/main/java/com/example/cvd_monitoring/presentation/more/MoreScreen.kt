@@ -1,5 +1,6 @@
 package com.example.cvd_monitoring.presentation.more
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,26 +9,53 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cvd_monitoring.common.UiEvents
+import kotlinx.coroutines.flow.collectLatest
 
 //@Preview(showSystemUi = true)
 @Composable
 fun MoreScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: LogoutViewModel = hiltViewModel()
 ){
+    val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    Log.d("SignUpViewModel", event.route)
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Login Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
     Column (
         modifier = Modifier
             .fillMaxWidth(),
@@ -90,7 +118,7 @@ fun MoreScreen(
 
         }
         Button(
-            onClick = { },
+            onClick = { viewModel.logoutUser() },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp),
