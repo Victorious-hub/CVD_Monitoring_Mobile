@@ -11,10 +11,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class PatientBottomNavItem(val label: String, val icons: ImageVector, val route: String) {
 
     data object Overview : PatientBottomNavItem("Info", Icons.Default.Info, "overview")
-    data object PatientProfile : PatientBottomNavItem("Profile", Icons.Default.Person, "currentUser/{slug}/get")
+    data object PatientProfile : PatientBottomNavItem("Profile", Icons.Default.Person, "currentPatient/{slug}/get")
     data object Card : PatientBottomNavItem("Card", Icons.Default.Favorite, "patientCard/{slug}")
     data object Notification : PatientBottomNavItem("Notification", Icons.Default.Notifications, "notification/{slug}/patient")
     data object More : PatientBottomNavItem("More", Icons.Default.MoreVert, "more")
+
 }
 
 fun PatientBottomNavItem.getRouteWithSlug(slug: String): String {

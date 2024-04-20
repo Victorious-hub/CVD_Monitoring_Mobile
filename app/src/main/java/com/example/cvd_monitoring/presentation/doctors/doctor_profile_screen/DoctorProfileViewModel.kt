@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cvd_monitoring.domain.use_case.current_doctor.CurrentDoctorUseCase
+import com.example.cvd_monitoring.domain.use_case.doctor.current_doctor.CurrentDoctorUseCase
 import com.example.cvd_monitoring.utils.CurrentDoctorState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

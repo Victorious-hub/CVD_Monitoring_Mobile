@@ -7,12 +7,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.cvd_monitoring.presentation.auth.signin_screen.SignInScreen
-import com.example.cvd_monitoring.presentation.home.HomeScreen
-import com.example.cvd_monitoring.presentation.auth.signup_screen.SignUpScreen
+import com.example.cvd_monitoring.presentation.auth.authentication_screen.AuthenticationScreen
+import com.example.cvd_monitoring.presentation.navigation.home.HomeScreen
+import com.example.cvd_monitoring.presentation.auth.register_screen.RegistrationScreen
 import com.example.cvd_monitoring.presentation.check_user.CheckUserScreen
 import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.DoctorProfileScreen
-import com.example.cvd_monitoring.presentation.navigation.patient_navigation.CurrentUserScreen
+import com.example.cvd_monitoring.presentation.navigation.doctor_navigation.DoctorNavigation
+import com.example.cvd_monitoring.presentation.navigation.patient_navigation.PatientNavigation
+import com.example.cvd_monitoring.presentation.patients.patient_data_screen.PatientUpdateScreen
 
 
 @SuppressLint("SuspiciousIndentation")
@@ -27,26 +29,27 @@ fun NavGraph() {
             HomeScreen(navController)
         }
         composable(route = Screen.SignIn.route){
-            SignInScreen(navController)
+            AuthenticationScreen(navController)
         }
         composable(route = Screen.SignUp.route){
-            SignUpScreen(navController)
+            RegistrationScreen(navController)
         }
 
         composable(
-            route = "${Screen.CurrentUser.route}/{slug}/get",
+            route = "${Screen.CurrentPatient.route}/{slug}/get",
             arguments = listOf(navArgument("slug") { type = NavType.StringType })
         ) { backstackEntry ->
-            CurrentUserScreen(
+            PatientNavigation(
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
             )
         }
+
 
         composable(
             route = "${Screen.CurrentDoctor.route}/{slug}/get",
             arguments = listOf(navArgument("slug") { type = NavType.StringType })
         ) { backstackEntry ->
-            DoctorProfileScreen(
+            DoctorNavigation(
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
             )
         }

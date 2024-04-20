@@ -32,6 +32,7 @@ fun DoctorProfileScreen(
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentDoctor(slug)
     }
+
     val state = viewModel.state.value
     Card(
         modifier = Modifier

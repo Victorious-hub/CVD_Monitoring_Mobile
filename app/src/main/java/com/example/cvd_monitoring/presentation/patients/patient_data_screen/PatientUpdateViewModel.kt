@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.domain.model.users.PatientData
-import com.example.cvd_monitoring.domain.use_case.current_user.CurrentUserUseCase
-import com.example.cvd_monitoring.domain.use_case.patient_data.PatientDataUseCase
+import com.example.cvd_monitoring.domain.use_case.patient.current_patient.CurrentUserUseCase
+import com.example.cvd_monitoring.domain.use_case.patient.patient_data.PatientDataUseCase
 import com.example.cvd_monitoring.utils.CurrentUserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

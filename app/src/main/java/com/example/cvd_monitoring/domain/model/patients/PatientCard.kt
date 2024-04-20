@@ -1,11 +1,11 @@
 package com.example.cvd_monitoring.domain.model.patients
 
-import com.example.cvd_monitoring.domain.model.users.Patient
+import com.example.cvd_monitoring.data.dto.PatientDto
+
 data class PatientCard(
-    val patient: Patient,
-    val blood_type : String,
-    val allergies: List<String>,
-    val abnormal_conditions: String,
+    val patient: PatientDto,
+    val bloodType: String,
+    val abnormalConditions: String,
     val smoke: Double,
     val alcohol: Double,
     val active: Double,

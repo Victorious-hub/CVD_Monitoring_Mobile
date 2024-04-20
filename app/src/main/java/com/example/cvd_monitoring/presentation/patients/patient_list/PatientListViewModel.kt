@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.model.users.Patient
-import com.example.cvd_monitoring.domain.use_case.patient_list.GetPatientListUseCase
+import com.example.cvd_monitoring.domain.use_case.patient.patient_list.GetPatientListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +27,7 @@ class PatientListViewModel @Inject constructor(
     val errorMessage: String = _errorMessage.value
 
     private val _isLoading = mutableStateOf(false)
-    val isLoading: Boolean = _isLoading.value
+
     init {
         getPatientList()
     }

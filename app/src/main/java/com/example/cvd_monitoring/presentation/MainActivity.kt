@@ -40,11 +40,9 @@ class MainActivity : ComponentActivity() {
     lateinit var connectivityObserver: ConnectivityObserver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
-        connectivityObserver.observe().onEach {
-            println("Status is $it")
-        }
+
 
         setContent {
             val status by connectivityObserver.observe().collectAsState(

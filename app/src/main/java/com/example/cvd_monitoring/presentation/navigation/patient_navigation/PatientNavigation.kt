@@ -14,11 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cvd_monitoring.presentation.navigation.NavigationController
+import com.example.cvd_monitoring.presentation.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CurrentUserScreen(
+fun PatientNavigation(
     slug: String
 ) {
     val navController = rememberNavController()
@@ -28,6 +28,7 @@ fun CurrentUserScreen(
         PatientBottomNavItem.Card,
         PatientBottomNavItem.Notification,
         PatientBottomNavItem.More,
+
     )
 
     Scaffold(
@@ -75,6 +76,6 @@ fun CurrentUserScreen(
 
 
         }) {
-        NavigationController(navController = navController)
+        PatientNavigationController(navController = navController)
     }
 }
