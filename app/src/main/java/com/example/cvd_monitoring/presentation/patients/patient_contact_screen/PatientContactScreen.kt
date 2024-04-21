@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cvd_monitoring.presentation.doctors.doctor_contact_screen.DoctorContactViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +36,7 @@ import androidx.navigation.NavController
 fun PatientContactScreen(
     navController: NavController,
     slug: String,
-    viewModel: PatientContactViewModel = hiltViewModel(),
+    viewModel: DoctorContactViewModel = hiltViewModel(),
 ) {
 
     LaunchedEffect(key1 = slug) {
@@ -45,7 +46,6 @@ fun PatientContactScreen(
     val firstNameState = viewModel.firstNameState.value
     val lastNameState = viewModel.lastNameState.value
     val emailState  = viewModel.emailState.value
-    val mobileState  = viewModel.mobileState.value
 
     val isFocused by remember { mutableStateOf(false) }
     Column(
@@ -119,28 +119,10 @@ fun PatientContactScreen(
                 cursorColor = Color.Red,
             ),
         )
-        TextField(
-            value = mobileState.text,
-            onValueChange = { viewModel.setMobileValue(it) },
-            label = {
-                Text(
-                    text = "Mobile",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
 
         Button(
             onClick = {
-                viewModel.updatePatientContact(slug)
+                viewModel.updateDoctorContact(slug)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

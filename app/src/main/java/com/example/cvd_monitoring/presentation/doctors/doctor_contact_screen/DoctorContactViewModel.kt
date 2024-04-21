@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
-import com.example.cvd_monitoring.domain.use_case.patient.current_patient.CurrentUserUseCase
+import com.example.cvd_monitoring.domain.use_case.doctor.current_doctor.CurrentDoctorUseCase
 import com.example.cvd_monitoring.domain.use_case.doctor.doctor_update.DoctorContactUseCase
-import com.example.cvd_monitoring.utils.CurrentUserState
+import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.CurrentDoctorState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DoctorContactViewModel @Inject constructor(
     private val doctorContactUseCase: DoctorContactUseCase,
-    private val currentUserUseCase: CurrentUserUseCase
+    private val currentDoctorUseCase: CurrentDoctorUseCase
 ) : ViewModel() {
     private val _firstNameState = mutableStateOf(TextFieldState())
     val firstNameState: State<TextFieldState> = _firstNameState
@@ -39,25 +39,18 @@ class DoctorContactViewModel @Inject constructor(
         _emailState.value = emailState.value.copy(text = value)
     }
 
-    private val _mobileState = mutableStateOf(TextFieldState())
-    val mobileState: State<TextFieldState> = _mobileState
 
-    fun setMobileValue(value: String) {
-        _mobileState.value = mobileState.value.copy(text = value)
-    }
-
-    private val _state = mutableStateOf(CurrentUserState())
-    val state: State<CurrentUserState> = _state
+    private val _state = mutableStateOf(CurrentDoctorState())
+    val state: State<CurrentDoctorState> = _state
 
     fun getCurrentUser(slug: String) {
         viewModelScope.launch {
             try {
-                val currentUser = currentUserUseCase(slug)
-                _state.value = CurrentUserState(currentUser)
-                state.value.patient?.user?.let { setEmailValue(it.email) }
-                state.value.patient?.user?.let { setFirstNameValue(it.first_name) }
-                state.value.patient?.user?.let { setLastNameValue(it.last_name) }
-                state.value.patient?.let { setMobileValue(it.mobile) }
+                val currentUser = currentDoctorUseCase(slug)
+                _state.value = CurrentDoctorState(currentUser)
+                state.value.doctor?.user?.let { setEmailValue(it.email) }
+                state.value.doctor?.user?.let { setFirstNameValue(it.first_name) }
+                state.value.doctor?.user?.let { setLastNameValue(it.last_name) }
             } catch (e: Exception) {
                 val errorMessage = e.message.toString()
                 Log.e("PatientListViewModel", errorMessage, e)

@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.utils
+package com.example.cvd_monitoring.presentation.patients.patient_profile_screen
 
 import com.example.cvd_monitoring.domain.model.users.Patient
 

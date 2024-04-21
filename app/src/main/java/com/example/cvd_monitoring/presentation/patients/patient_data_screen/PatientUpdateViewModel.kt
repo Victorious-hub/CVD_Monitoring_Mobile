@@ -9,7 +9,7 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.domain.model.users.PatientData
 import com.example.cvd_monitoring.domain.use_case.patient.current_patient.CurrentUserUseCase
 import com.example.cvd_monitoring.domain.use_case.patient.patient_data.PatientDataUseCase
-import com.example.cvd_monitoring.utils.CurrentUserState
+import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.CurrentUserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

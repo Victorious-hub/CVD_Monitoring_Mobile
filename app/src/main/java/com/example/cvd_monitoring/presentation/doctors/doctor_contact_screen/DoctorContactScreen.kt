@@ -33,11 +33,10 @@ import com.example.cvd_monitoring.presentation.patients.patient_contact_screen.P
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoctorContactScreen(
-    viewModel: PatientContactViewModel = hiltViewModel(),
     navController: NavController,
+    viewModel: DoctorContactViewModel = hiltViewModel(),
+    slug: String,
 ) {
-    val slug = navController.currentBackStackEntry?.arguments?.getString("slug") ?: ""
-
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentUser(slug)
     }
@@ -121,7 +120,7 @@ fun DoctorContactScreen(
 
         Button(
             onClick = {
-                viewModel.updatePatientContact(slug)
+                viewModel.updateDoctorContact(slug)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

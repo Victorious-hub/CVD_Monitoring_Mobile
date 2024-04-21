@@ -1,7 +1,6 @@
 package com.example.cvd_monitoring.presentation.patients.patient_card
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cvd_monitoring.presentation.Screen
-import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.PatientProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -112,7 +110,7 @@ fun PatientCardScreen(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 250.dp),
+            .padding(top = 200.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFa5051f),
             contentColor = Color.Black
@@ -141,7 +139,7 @@ fun PatientCardScreen(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 350.dp),
+            .padding(top = 250.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFa5051f),
             contentColor = Color.Black
@@ -170,7 +168,7 @@ fun PatientCardScreen(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 400.dp),
+            .padding(top = 300.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFa5051f),
             contentColor = Color.Black
@@ -187,7 +185,7 @@ fun PatientCardScreen(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Cholesterol analysis",
+                text = "Prescription History",
                 modifier = Modifier.weight(1f)
             )
         }

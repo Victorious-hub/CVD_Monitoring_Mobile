@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.notification.components
+package com.example.cvd_monitoring.presentation.doctors.doctor_patients.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.cvd_monitoring.data.dto.PatientDto
+import com.example.cvd_monitoring.domain.model.doctors.DoctorPatients
 import com.example.cvd_monitoring.domain.model.notifications.Notification
+import com.example.cvd_monitoring.domain.model.users.Patient
+
 
 @Composable
-fun NotificationListItem(
-    notification: Notification,
+fun DoctorPatientsListItem(
+    patient: PatientDto,
+    onItemClick: (PatientDto) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -45,19 +50,16 @@ fun NotificationListItem(
                     .weight(0.8f)
             ) {
                 Text(
-                    text = notification.message,
+                    text = patient.userFirstName,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = notification.dateSent,
-                    modifier = Modifier
-                        .background(Color.LightGray)
-                        .padding(4.dp)
+                    text = patient.userLastName,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = notification.isRead.toString(),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    text = patient.userEmail,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

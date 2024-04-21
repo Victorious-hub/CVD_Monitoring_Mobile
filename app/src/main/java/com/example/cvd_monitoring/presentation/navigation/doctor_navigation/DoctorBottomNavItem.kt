@@ -14,7 +14,7 @@ sealed class DoctorBottomNavItem(val label: String, val icons: ImageVector, val 
 
     data object Overview : DoctorBottomNavItem("Info", Icons.Default.Info, "overview")
     data object DoctorProfile : DoctorBottomNavItem("Doctor", Icons.Default.Person, "currentDoctor/{slug}/get")
-    data object Patients : DoctorBottomNavItem("Patients", Icons.Default.Face, "patientCard/{slug}")
+    data object Patients : DoctorBottomNavItem("Patients", Icons.Default.Face, "DoctorPatientList/{slug}/get")
     data object Appointments : DoctorBottomNavItem("Appointment", Icons.Default.Share, "notification/{slug}/patient")
     data object More : DoctorBottomNavItem("More", Icons.Default.MoreVert, "more")
 }
