@@ -1,6 +1,7 @@
 package com.example.cvd_monitoring.presentation.navigation.more
 
 import android.util.Log
+import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavDeepLinkRequest
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.presentation.Screen
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +38,7 @@ fun MoreScreen(
     viewModel: LogoutViewModel = hiltViewModel()
 ){
     val scaffoldState = rememberScaffoldState()
+
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -121,7 +124,8 @@ fun MoreScreen(
         Button(
             onClick = {
                 viewModel.logoutUser()
-                },
+                navController.navigate(Screen.SignIn.route)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp),
@@ -141,7 +145,7 @@ fun MoreScreen(
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = "Update Data",
+                    text = "Change account",
                     modifier = Modifier.weight(1f)
                 )
             }

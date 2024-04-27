@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PatientContactViewModel @Inject constructor(
-    private val doctorContactUseCase: DoctorContactUseCase,
+    private val patientContactUseCase: PatientContactUseCase,
     private val currentUserUseCase: CurrentUserUseCase,
 ) : ViewModel(){
     private val _firstNameState = mutableStateOf(TextFieldState())
@@ -67,14 +67,15 @@ class PatientContactViewModel @Inject constructor(
         }
     }
 
-    fun updateDoctorContact(slug: String) {
+    fun updatePatientContact(slug: String) {
         val firstName = firstNameState.value.text
         val lastName = lastNameState.value.text
         val email = emailState.value.text
+        val mobile = mobileState.value.text
 
         viewModelScope.launch {
             try {
-                val createdUser = doctorContactUseCase(firstName, lastName, email, slug)
+                val createdUser = patientContactUseCase(mobile, firstName, lastName, email, slug)
                 Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 val errorMessage = e.message.toString()

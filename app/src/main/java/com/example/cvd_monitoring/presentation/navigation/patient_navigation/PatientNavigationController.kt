@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.auth.authentication_screen.AuthenticationScreen
 import com.example.cvd_monitoring.presentation.navigation.home.HomeScreen
 
 import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.PatientProfileScreen
@@ -25,55 +26,13 @@ import com.example.cvd_monitoring.presentation.treatment.patient_prescription.Pa
 @Composable
 fun PatientNavigationController(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = PatientBottomNavItem.Overview.route) {
-        composable(
-            route = PatientBottomNavItem.Overview.route,
-        ) {
-            OverviewScreen(navController)
-        }
-
-
-        composable(
-            route = PatientBottomNavItem.PatientProfile.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType })
-        ) { backstackEntry ->
-            PatientProfileScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: ""
-            )
-        }
-
-        composable(
-            route = PatientBottomNavItem.Card.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType })
-        ) { backstackEntry ->
-            PatientCardScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
-            )
-        }
-
-        composable(
-            route = PatientBottomNavItem.Notification.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType })
-        ) { backstackEntry ->
-            NotificationScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
-            )
-        }
-
-        composable(
-            route = PatientBottomNavItem.More.route,
-        ) {
-            MoreScreen(navController)
-        }
-
+    NavHost(navController = navController, startDestination = PatientBottomNavItem.PatientProfile.route) {
         dataNavGraph(navController = navController)
         contactNavGraph(navController = navController)
         bloodNavGraph(navController = navController)
         cholesterolNavGraph(navController = navController)
         prescriptionNavGraph(navController = navController)
+        //mainNavGraph(navController = navController)
     }
 }
 
@@ -162,6 +121,22 @@ fun NavGraphBuilder.contactNavGraph(navController: NavHostController) {
         }
     }
 }
+
+
+//fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
+//    navigation(
+//        route = Screen.SignIn.route,
+//        startDestination = Screen.SignIn.route
+//    ) {
+//        composable(
+//            route = Screen.SignIn.route,
+//        ) {
+//            AuthenticationScreen(
+//                navController,
+//            )
+//        }
+//    }
+//}
 
 
 

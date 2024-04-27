@@ -114,4 +114,7 @@ dependencies {
     // SplashScreen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    testImplementation(libs.junit)
+    androidTestImplementation("androidx.test:runner:1.5.2")
+
 }
