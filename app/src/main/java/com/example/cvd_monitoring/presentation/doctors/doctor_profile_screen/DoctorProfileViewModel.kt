@@ -6,7 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.domain.use_case.doctor.current_doctor.CurrentDoctorUseCase
+import com.example.cvd_monitoring.presentation.patients.patient_card.PatientCardState
+import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,15 +22,22 @@ class DoctorProfileViewModel @Inject constructor(
     val state: State<CurrentDoctorState> = _state
 
     fun getCurrentDoctor(slug: String) {
-        viewModelScope.launch {
-            try {
-                val currentDoctor = currentDoctorUseCase(slug)
-                _state.value = CurrentDoctorState(currentDoctor)
-                Log.e("PatientListViewModel", currentDoctor.toString())
-            } catch (e: Exception) {
-                val errorMessage = e.message.toString()
-                Log.e("PatientListViewModel", errorMessage, e)
+        currentDoctorUseCase(slug).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = CurrentDoctorState(doctor = result.data)
+                }
+
+                is Resource.Error -> {
+                    _state.value = CurrentDoctorState(
+                        error = result.message ?: "An unexpected error occured"
+                    )
+                }
+
+                is Resource.Loading -> {
+                    _state.value = CurrentDoctorState(isLoading = true)
+                }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 }

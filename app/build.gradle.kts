@@ -117,4 +117,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation("androidx.test:runner:1.5.2")
 
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("io.coil-kt:coil-compose:1.4.0")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+
 }

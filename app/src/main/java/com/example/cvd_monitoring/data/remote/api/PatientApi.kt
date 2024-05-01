@@ -2,6 +2,7 @@ package com.example.cvd_monitoring.data.remote.api
 
 import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
+import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
@@ -37,4 +38,6 @@ interface PatientApi {
     suspend fun getPatientCard(@Path("slug") slug: String): PatientCardDto
     @GET("treatment/v1/prescriptions/{slug}/get")
     suspend fun getPatientPrescriptions(@Path("slug") slug: String): List<PrescriptionDto>
+    @GET("users/v1/doctors/{slug}")
+    suspend fun getDoctorList(@Path("slug") slug: String): List<DoctorListDto>
 }

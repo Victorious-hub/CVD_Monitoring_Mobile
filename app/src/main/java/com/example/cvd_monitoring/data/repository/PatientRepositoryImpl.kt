@@ -2,6 +2,7 @@ package com.example.cvd_monitoring.data.repository
 
 import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
+import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
@@ -44,6 +45,10 @@ class PatientRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentUser(slug: String): Patient {
         return api.getCurrentUser(slug)
+    }
+
+    override suspend fun getDoctorList(slug: String): List<DoctorListDto> {
+        return api.getDoctorList(slug)
     }
 
     override suspend fun getPatientCard(slug: String): PatientCardDto {

@@ -34,12 +34,6 @@ class PatientContactViewModel @Inject constructor(
         _lastNameState.value = lastNameState.value.copy(text = value)
     }
 
-    private val _emailState = mutableStateOf(TextFieldState())
-    val emailState: State<TextFieldState> = _emailState
-
-    fun setEmailValue(value: String) {
-        _emailState.value = emailState.value.copy(text = value)
-    }
 
     private val _mobileState = mutableStateOf(TextFieldState())
     val mobileState: State<TextFieldState> = _mobileState
@@ -56,7 +50,6 @@ class PatientContactViewModel @Inject constructor(
             try {
                 val currentUser = currentUserUseCase(slug)
                 _state.value = CurrentUserState(currentUser)
-                state.value.patient?.user?.let { setEmailValue(it.email) }
                 state.value.patient?.user?.let { setFirstNameValue(it.first_name) }
                 state.value.patient?.user?.let { setLastNameValue(it.last_name) }
                 state.value.patient?.let { setMobileValue(it.mobile) }
@@ -70,12 +63,11 @@ class PatientContactViewModel @Inject constructor(
     fun updatePatientContact(slug: String) {
         val firstName = firstNameState.value.text
         val lastName = lastNameState.value.text
-        val email = emailState.value.text
         val mobile = mobileState.value.text
 
         viewModelScope.launch {
             try {
-                val createdUser = patientContactUseCase(mobile, firstName, lastName, email, slug)
+                val createdUser = patientContactUseCase(mobile, firstName, lastName, slug)
                 Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 val errorMessage = e.message.toString()

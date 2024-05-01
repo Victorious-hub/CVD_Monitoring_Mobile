@@ -12,18 +12,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cvd_monitoring.presentation.NavGraph
-import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.navigation.graphs.PatientNavGraph
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PatientNavigation(
+
+    rootNavController: NavHostController,
+    navController : NavHostController = rememberNavController(),
     slug: String
 ) {
-    val navController = rememberNavController()
     val items = listOf(
+        PatientBottomNavItem.Overview,
         PatientBottomNavItem.PatientProfile,
         PatientBottomNavItem.Card,
         PatientBottomNavItem.Notification,
@@ -56,6 +59,7 @@ fun PatientNavigation(
                         onClick = {
                             if (currentRoute != it.route) {
                                 val newRoute = when (it) {
+                                    PatientBottomNavItem.Overview,
                                     PatientBottomNavItem.PatientProfile -> it.getRouteWithSlug(slug)
                                     PatientBottomNavItem.Card -> it.getRouteWithSlug(slug)
                                     PatientBottomNavItem.Notification -> it.getRouteWithSlug(slug)
@@ -72,6 +76,8 @@ fun PatientNavigation(
 
 
         }) {
-        PatientNavigationController(navController)
+        PatientNavigationController(
+            navController
+        )
     }
 }

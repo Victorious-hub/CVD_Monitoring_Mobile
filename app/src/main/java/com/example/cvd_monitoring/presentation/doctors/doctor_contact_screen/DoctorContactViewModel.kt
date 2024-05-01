@@ -32,40 +32,30 @@ class DoctorContactViewModel @Inject constructor(
         _lastNameState.value = lastNameState.value.copy(text = value)
     }
 
-    private val _emailState = mutableStateOf(TextFieldState())
-    val emailState: State<TextFieldState> = _emailState
-
-    fun setEmailValue(value: String) {
-        _emailState.value = emailState.value.copy(text = value)
-    }
-
-
     private val _state = mutableStateOf(CurrentDoctorState())
     val state: State<CurrentDoctorState> = _state
 
     fun getCurrentUser(slug: String) {
-        viewModelScope.launch {
-            try {
-                val currentUser = currentDoctorUseCase(slug)
-                _state.value = CurrentDoctorState(currentUser)
-                state.value.doctor?.user?.let { setEmailValue(it.email) }
-                state.value.doctor?.user?.let { setFirstNameValue(it.first_name) }
-                state.value.doctor?.user?.let { setLastNameValue(it.last_name) }
-            } catch (e: Exception) {
-                val errorMessage = e.message.toString()
-                Log.e("PatientListViewModel", errorMessage, e)
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                val currentUser = currentDoctorUseCase(slug)
+//                _state.value = CurrentDoctorState(currentUser)
+//                state.value.doctor?.user?.let { setFirstNameValue(it.first_name) }
+//                state.value.doctor?.user?.let { setLastNameValue(it.last_name) }
+//            } catch (e: Exception) {
+//                val errorMessage = e.message.toString()
+//                Log.e("PatientListViewModel", errorMessage, e)
+//            }
+//        }
     }
 
     fun updateDoctorContact(slug: String) {
         val firstName = firstNameState.value.text
         val lastName = lastNameState.value.text
-        val email = emailState.value.text
 
         viewModelScope.launch {
             try {
-                val createdUser = doctorContactUseCase(firstName, lastName, email, slug)
+                val createdUser = doctorContactUseCase(firstName, lastName, slug)
                 Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 val errorMessage = e.message.toString()

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -70,7 +71,8 @@ fun PatientProfileScreen(
         Image(
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(top = 25.dp),
+                .padding(top = 25.dp)
+                .size(width = 100.dp, height = 100.dp),
             painter = image,
             contentDescription = null
         )
@@ -92,6 +94,7 @@ fun PatientProfileScreen(
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Monospace,
+                color = Color.Black // Set text color to black
             )
         )
 
@@ -113,7 +116,7 @@ fun PatientProfileScreen(
         ) {
             Text(
                 text = "First Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
             )
             Spacer(modifier = Modifier
                 .weight(0.5f))
@@ -123,7 +126,7 @@ fun PatientProfileScreen(
                 text = it.first_name,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp)
+                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
             )
         }
         Divider(
@@ -137,7 +140,7 @@ fun PatientProfileScreen(
         ){
             Text(
                 text = "Last Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
             )
             Spacer(modifier = Modifier.weight(2f))
         }
@@ -146,7 +149,7 @@ fun PatientProfileScreen(
                 text = it.last_name,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp)
+                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
             )
         }
         Divider(
@@ -159,7 +162,7 @@ fun PatientProfileScreen(
         ){
             Text(
                 text = "Email",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
             )
             Spacer(modifier = Modifier.weight(2f))
         }
@@ -168,7 +171,7 @@ fun PatientProfileScreen(
                 text = it.email,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp)
+                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
             )
         }
         Divider(

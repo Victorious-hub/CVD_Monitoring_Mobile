@@ -1,5 +1,7 @@
 package com.example.cvd_monitoring.presentation.patients.patient_contact_screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,9 +30,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.cvd_monitoring.presentation.doctors.doctor_contact_screen.DoctorContactViewModel
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
+
+
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatientContactScreen(
@@ -45,7 +55,6 @@ fun PatientContactScreen(
 
     val firstNameState = viewModel.firstNameState.value
     val lastNameState = viewModel.lastNameState.value
-    val emailState  = viewModel.emailState.value
     val mobileState  = viewModel.mobileState.value
 
     val isFocused by remember { mutableStateOf(false) }
@@ -103,24 +112,6 @@ fun PatientContactScreen(
             ),
         )
         TextField(
-            value = emailState.text,
-            onValueChange = { viewModel.setEmailValue(it) },
-            label = {
-                Text(
-                    text = "Email",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-        TextField(
             value = mobileState.text,
             onValueChange = { viewModel.setMobileValue(it) },
             label = {
@@ -155,3 +146,4 @@ fun PatientContactScreen(
     }
 
 }
+

@@ -9,14 +9,14 @@ data class NotificationDto (
     val message: String,
     @SerializedName("is_read")
     val isRead: Boolean,
-    @SerializedName("date_sent")
-    val dateSent: String
+    @SerializedName("created_at")
+    val createdAt: String
 )
 
 fun NotificationDto.toNotification(): Notification {
     return Notification(
         message = message,
         isRead = isRead,
-        dateSent = dateSent,
+        createdAt = createdAt,
     )
 }

@@ -43,7 +43,6 @@ fun DoctorContactScreen(
 
     val firstNameState = viewModel.firstNameState.value
     val lastNameState = viewModel.lastNameState.value
-    val emailState = viewModel.emailState.value
 
     val isFocused by remember { mutableStateOf(false) }
     Column(
@@ -87,24 +86,6 @@ fun DoctorContactScreen(
             label = {
                 Text(
                     text = "Last Name",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-        TextField(
-            value = emailState.text,
-            onValueChange = { viewModel.setEmailValue(it) },
-            label = {
-                Text(
-                    text = "Email",
                     color = Color.Gray
                 )
             },

@@ -10,8 +10,8 @@ import javax.inject.Inject
 class PatientContactUseCase @Inject constructor(
     private val patientRepository: PatientRepository
 ){
-    suspend operator fun invoke(mobile: String, firstName: String, lastName: String, email: String, slug: String): PatientContact {
-        val user = UserContact(firstName, lastName, email)
+    suspend operator fun invoke(mobile: String, firstName: String, lastName: String, slug: String): PatientContact {
+        val user = UserContact(firstName, lastName)
         return patientRepository.updatePatientContact(PatientContact(mobile, user), slug)
     }
 }

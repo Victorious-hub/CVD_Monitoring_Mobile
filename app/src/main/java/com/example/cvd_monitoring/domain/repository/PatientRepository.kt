@@ -2,6 +2,7 @@ package com.example.cvd_monitoring.domain.repository
 
 import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
+import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
@@ -32,5 +33,6 @@ interface PatientRepository {
     suspend fun getNotificationList(slug: String): List<NotificationDto>
 
     suspend fun getCurrentUser(slug: String): Patient
+    suspend fun getDoctorList(slug: String): List<DoctorListDto>
 
 }

@@ -9,8 +9,8 @@ import javax.inject.Inject
 class DoctorContactUseCase @Inject constructor(
     private val doctorRepository: DoctorRepository
 ) {
-    suspend operator fun invoke(firstName: String, lastName: String, email: String, slug: String): DoctorContact {
-        val user = UserContact(firstName, lastName, email)
+    suspend operator fun invoke(firstName: String, lastName: String, slug: String): DoctorContact {
+        val user = UserContact(firstName, lastName)
         return doctorRepository.updateDoctorContact(DoctorContact(user), slug)
     }
 }

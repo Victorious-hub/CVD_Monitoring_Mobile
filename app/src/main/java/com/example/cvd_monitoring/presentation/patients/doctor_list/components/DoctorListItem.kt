@@ -1,12 +1,13 @@
-package com.example.cvd_monitoring.presentation.notification.components
+package com.example.cvd_monitoring.presentation.patients.doctor_list.components
 
+import android.R
+import android.widget.ImageView
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,22 +25,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cvd_monitoring.R
-import com.example.cvd_monitoring.domain.model.notifications.Notification
+import coil.compose.rememberImagePainter
+
+import com.example.cvd_monitoring.domain.model.patients.DoctorList
+import com.example.cvd_monitoring.domain.model.users.Doctor
+import com.example.cvd_monitoring.domain.model.users.Patient
+import com.squareup.picasso.Picasso
+
 
 @Composable
-fun NotificationListItem(
-    notification: Notification,
+fun DoctorListItem(
+    doctor: DoctorList,
+    onItemClick: (DoctorList) -> Unit
 ) {
-    val image = painterResource(R.drawable.account)
+    val painter =
+        rememberImagePainter(data = "http://127.0.0.1:8000${doctor.profileImage}")
 
     Box(
-        modifier = Modifier.fillMaxSize().padding(top = 60.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 60.dp)
     ) {
         Card(
             modifier = Modifier
                 .padding(8.dp, 4.dp)
                 .fillMaxWidth()
+                .clickable { onItemClick(doctor) }
                 .height(100.dp),
             shape = MaterialTheme.shapes.medium
         ) {
@@ -52,7 +63,7 @@ fun NotificationListItem(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(0.1f),
-                    painter = image,
+                    painter = painter,
                     contentDescription = "Account Image"
                 )
                 Column(
@@ -62,11 +73,12 @@ fun NotificationListItem(
                         .padding(start = 8.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = notification.createdAt,
+                            text = doctor.user.firstName,
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -74,18 +86,41 @@ fun NotificationListItem(
                             )
                         )
                     }
-                    Text(
-                        text =  notification.message,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.Black
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 3.dp)
+                    ) {
+                        Text(
+                            text =  doctor.user.lastName,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
                         )
-                    )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 3.dp)
+                    ) {
+                        Text(
+                            text =  doctor.user.email,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+                        )
+                    }
                 }
             }
         }
     }
 }
+
