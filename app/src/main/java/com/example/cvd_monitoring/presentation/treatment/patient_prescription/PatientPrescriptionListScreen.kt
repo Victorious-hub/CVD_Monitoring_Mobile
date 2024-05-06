@@ -11,8 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.BloodAnalysisViewModel
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.components.BloodAnalysisListItem
+import com.example.cvd_monitoring.presentation.treatment.blood_analysis.BloodAnalysisViewModel
+import com.example.cvd_monitoring.presentation.treatment.blood_analysis.components.BloodAnalysisListItem
 import com.example.cvd_monitoring.presentation.treatment.patient_prescription.components.PrescriptionListItem
 
 

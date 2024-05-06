@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cvd_monitoring.navigation.graphs.PatientNavGraph
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

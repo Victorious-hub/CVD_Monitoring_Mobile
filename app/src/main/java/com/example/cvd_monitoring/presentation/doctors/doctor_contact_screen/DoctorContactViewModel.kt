@@ -9,7 +9,10 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.domain.use_case.doctor.current_doctor.CurrentDoctorUseCase
 import com.example.cvd_monitoring.domain.use_case.doctor.doctor_update.DoctorContactUseCase
 import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.CurrentDoctorState
+import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,18 +39,27 @@ class DoctorContactViewModel @Inject constructor(
     val state: State<CurrentDoctorState> = _state
 
     fun getCurrentUser(slug: String) {
-//        viewModelScope.launch {
-//            try {
-//                val currentUser = currentDoctorUseCase(slug)
-//                _state.value = CurrentDoctorState(currentUser)
-//                state.value.doctor?.user?.let { setFirstNameValue(it.first_name) }
-//                state.value.doctor?.user?.let { setLastNameValue(it.last_name) }
-//            } catch (e: Exception) {
-//                val errorMessage = e.message.toString()
-//                Log.e("PatientListViewModel", errorMessage, e)
-//            }
-//        }
+        currentDoctorUseCase(slug).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = CurrentDoctorState(doctor = result.data)
+                    state.value.doctor?.user?.let { setFirstNameValue(it.firstName) }
+                    state.value.doctor?.user?.let { setLastNameValue(it.lastName) }
+                }
+
+                is Resource.Error -> {
+                    _state.value = CurrentDoctorState(
+                        error = result.message ?: "An unexpected error occured"
+                    )
+                }
+
+                is Resource.Loading -> {
+                    _state.value = CurrentDoctorState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
+
 
     fun updateDoctorContact(slug: String) {
         val firstName = firstNameState.value.text

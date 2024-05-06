@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.bottom_navigation.graphs.AuthScreen
 
 @SuppressLint("Range")
 @Composable
@@ -69,7 +70,7 @@ fun HomeScreen(
         }
         Column {
             Button(
-                onClick = { navController.navigate(Screen.SignUp.route) },
+                onClick = { navController.navigate(AuthScreen.SignUp.route) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 400.dp), // Add bottom padding to move the button down
@@ -83,7 +84,7 @@ fun HomeScreen(
             }
 
             Button(
-                onClick = { navController.navigate(Screen.SignIn.route) },
+                onClick = { navController.navigate(AuthScreen.Login.route) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp), // Add bottom padding to move the button down

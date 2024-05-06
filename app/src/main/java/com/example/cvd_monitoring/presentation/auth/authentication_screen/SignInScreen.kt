@@ -1,18 +1,28 @@
 package com.example.cvd_monitoring.presentation.auth.authentication_screen
 
 import android.util.Log
+import android.util.Patterns
+import android.widget.Toast
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -46,13 +57,16 @@ import androidx.navigation.NavController
 import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.common.UiEvents
 import kotlinx.coroutines.flow.collectLatest
-
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.cvd_monitoring.data.remote.local.AuthPreferences
+import com.example.cvd_monitoring.presentation.bottom_navigation.graphs.Graph
+import com.example.cvd_monitoring.presentation.navigation.more.LogoutViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthenticationScreen(
     navController: NavController,
-    viewModel: AuthenticationViewModel = hiltViewModel()
+    viewModel: AuthenticationViewModel = hiltViewModel(),
 ) {
     val image = painterResource(R.drawable.heart)
     val emailState = viewModel.emailState.value
@@ -66,6 +80,7 @@ fun AuthenticationScreen(
         painterResource(id = R.drawable.invisible)
     val isFocused by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -183,7 +198,19 @@ fun AuthenticationScreen(
 
         Button(
             onClick = {
-                viewModel.authenticateUser()
+                if (emailState.text.isEmpty() || !com.example.cvd_monitoring.presentation.auth.register_screen.isValidEmail(emailState.text))
+                {
+                    Toast.makeText(context, "Please, enter a valid email", Toast.LENGTH_SHORT).show()
+                } else if (passwordState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Password can't be empty", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    viewModel.authenticateUser()
+                    navController.popBackStack()
+                    navController.navigate(Graph.PATIENT_HOME){emailState.text.substringBefore("@")}
+                }
+
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -198,3 +225,9 @@ fun AuthenticationScreen(
     }
 
 }
+
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = Patterns.EMAIL_ADDRESS.toRegex()
+    return emailRegex.matches(email)
+}
+

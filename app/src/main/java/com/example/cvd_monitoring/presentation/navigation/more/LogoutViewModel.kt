@@ -28,13 +28,14 @@ class LogoutViewModel @Inject constructor(
     private var errorMessage: String by mutableStateOf("")
     fun logoutUser() {
         viewModelScope.launch {
-            try {
-                val res = logoutUseCase()
-                _eventFlow.emit(UiEvents.NavigateEvent(Screen.Home.route))
-            } catch (e: Exception) {
-                errorMessage = e.message.toString()
-                Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)
-            }
+//            try {
+//                logoutUseCase()
+//                _eventFlow.emit(UiEvents.NavigateEvent(Screen.Home.route))
+//            } catch (e: Exception) {
+//                errorMessage = e.message.toString()
+//                Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)
+//            }
+            logoutUseCase()
         }
     }
 }

@@ -38,6 +38,6 @@ interface PatientApi {
     suspend fun getPatientCard(@Path("slug") slug: String): PatientCardDto
     @GET("treatment/v1/prescriptions/{slug}/get")
     suspend fun getPatientPrescriptions(@Path("slug") slug: String): List<PrescriptionDto>
-    @GET("users/v1/doctors/{slug}")
+    @GET("users/v1/patients/doctors/{slug}")
     suspend fun getDoctorList(@Path("slug") slug: String): List<DoctorListDto>
 }

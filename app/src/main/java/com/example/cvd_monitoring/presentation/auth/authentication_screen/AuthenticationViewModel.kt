@@ -2,6 +2,7 @@ package com.example.cvd_monitoring.presentation.auth.authentication_screen
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
@@ -10,11 +11,16 @@ import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.auth.authentication.UserAuthenticationUseCase
 import com.example.cvd_monitoring.utils.AuthState
 import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.auth.register_screen.PasswordValidationState
+import com.example.cvd_monitoring.presentation.auth.register_screen.ValidatePassword
 import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,9 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
     private val userAuthenticationUseCase: UserAuthenticationUseCase,
-    private val authPreferences: AuthPreferences
+    private val authPreferences: AuthPreferences,
 ) : ViewModel(){
-
     private var _loginState  = mutableStateOf(AuthState())
     val loginState: State<AuthState> = _loginState
 
@@ -45,7 +50,6 @@ class AuthenticationViewModel @Inject constructor(
         _passwordState.value = passwordState.value.copy(text = value)
     }
 
-
     fun authenticateUser() {
         viewModelScope.launch {
             _loginState.value = loginState.value.copy(isLoading = false)
@@ -54,7 +58,6 @@ class AuthenticationViewModel @Inject constructor(
                 email = emailState.value.text,
                 password = passwordState.value.text
             )
-
 
             if (loginResult.emailError != null){
                 _emailState.value=emailState.value.copy(error = loginResult.emailError)
@@ -88,3 +91,4 @@ class AuthenticationViewModel @Inject constructor(
     }
 
 }
+

@@ -1,10 +1,12 @@
 package com.example.cvd_monitoring.presentation
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +25,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
+import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.IconButton
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.TopAppBar
@@ -56,7 +63,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -81,13 +91,14 @@ import com.example.cvd_monitoring.R
 
 import com.example.cvd_monitoring.common.ConnectivityObserver
 import com.example.cvd_monitoring.common.NetworkConnectivityObserver
-import com.example.cvd_monitoring.common.UiEvents
-import com.example.cvd_monitoring.domain.model.analysis.BloodAnalysis
-import com.example.cvd_monitoring.navigation.graphs.RootNavGraph
+
+import com.example.cvd_monitoring.presentation.bottom_navigation.graphs.RootNavigationGraph
+
 import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.DoctorProfileViewModel
 import com.example.cvd_monitoring.presentation.navigation.home.HomeScreen
 import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.PatientProfileViewModel
 import com.example.cvd_monitoring.presentation.unavailable_connection.UnavailableConnectionScreen
+import com.google.gson.annotations.Expose
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -96,6 +107,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     lateinit var connectivityObserver: ConnectivityObserver
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -109,130 +121,29 @@ class MainActivity : ComponentActivity() {
             if (status == ConnectivityObserver.Status.Unavailable) {
                 UnavailableConnectionScreen()
             } else {
-                NavGraph()
+                RootNavigationGraph(navController = rememberNavController())
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun PatientProfileScreen(
-) {
 
-    val image = painterResource(R.drawable.account)
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.25f)
-            .background(
-                color = Color(0xFFa5051f),
-            )
-    ) {
-        Image(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(top = 25.dp)
-                .size(width = 100.dp, height = 100.dp),
-            painter = image,
-            contentDescription = null
-        )
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Doctor Info",
-            modifier = Modifier.padding(bottom = 320.dp),
-            style = TextStyle(
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Italic,
-                fontFamily = FontFamily.Monospace,
-                color = Color.Black // Set text color to black
-            )
-        )
-
-    }
-
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start
-
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth().padding(top = 20.dp, bottom = 5.dp)
-        ) {
-            Text(
-                text = "First Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
-            )
-            Spacer(modifier = Modifier
-                .weight(0.5f))
-        }
-        Text(
-            text = "wqrqwr",
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
-        )
-        Divider(
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .fillMaxWidth().padding(top = 20.dp, bottom = 5.dp)
-        ){
-            Text(
-                text = "Last Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
-            )
-            Spacer(modifier = Modifier.weight(2f))
-        }
-        Text(
-            text = "wqrqwr",
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
-        )
-        Divider(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .fillMaxWidth().padding(top = 20.dp, bottom = 5.dp)
-        ){
-            Text(
-                text = "Email",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
-            )
-            Spacer(modifier = Modifier.weight(2f))
-        }
-        Text(
-            text = "wqrqwr",
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
-        )
-        Divider(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
-    }
-
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//fun PreviewScreen() {
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp),
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        Text(text = "This is the first page")
+//        Button(
+//            onClick = { /* Navigate to another page */ },
+//            modifier = Modifier.padding(top = 8.dp)
+//        ) {
+//            Text(text = "Go to BottomNavigation")
+//        }
+//    }
+//}

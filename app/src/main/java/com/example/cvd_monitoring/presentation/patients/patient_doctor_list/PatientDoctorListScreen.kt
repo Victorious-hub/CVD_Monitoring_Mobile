@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.patients.blood_analysis
+package com.example.cvd_monitoring.presentation.patients.patient_doctor_list
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -7,33 +7,39 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.cvd_monitoring.presentation.notification.NotificationViewModel
-import com.example.cvd_monitoring.presentation.notification.components.NotificationListItem
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.components.BloodAnalysisListItem
-import com.example.cvd_monitoring.presentation.treatment.patient_prescription.components.PrescriptionListItem
+import com.example.cvd_monitoring.presentation.Screen
+
+import com.example.cvd_monitoring.presentation.patients.patient_doctor_list.components.PatientDoctorListItem
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun BloodAnalysisScreen(
+fun PatientDoctorListScreen(
     navController: NavHostController,
-    viewModel: BloodAnalysisViewModel = hiltViewModel(),
+    viewModel: PatientDoctorListViewModel = hiltViewModel(),
     slug: String
 ) {
     LaunchedEffect(key1 = slug) {
-        viewModel.getBloodAnalysisList(slug)
+        viewModel.getDoctorList(slug)
     }
     val state = viewModel.state.value
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(state.bloodAnalysis) { bloodAnalysis ->
-                BloodAnalysisListItem(
-                    bloodAnalysis = bloodAnalysis,
+            items(state.doctorList) { doctor ->
+                PatientDoctorListItem(
+                    doctor = doctor,
+                    onItemClick = {
+                        navController.navigate(
+                            Screen.CurrentDoctor.route + "/${doctor.user.email.substringBefore("@")}")
+
+                    }
                 )
+
             }
         }
     }
 }
+

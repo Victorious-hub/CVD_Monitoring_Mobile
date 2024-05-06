@@ -30,7 +30,7 @@ import com.example.cvd_monitoring.presentation.Screen
 import com.example.cvd_monitoring.presentation.doctors.doctor_patients.components.DoctorPatientsListItem
 import com.example.cvd_monitoring.presentation.notification.NotificationViewModel
 import com.example.cvd_monitoring.presentation.notification.components.NotificationListItem
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.components.BloodAnalysisListItem
+import com.example.cvd_monitoring.presentation.treatment.blood_analysis.components.BloodAnalysisListItem
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -43,9 +43,6 @@ fun DoctorPatientsScreen(
         viewModel.getDoctorPatientList(slug)
     }
     val state = viewModel.state.value
-
-
-
 
 
     LazyColumn(

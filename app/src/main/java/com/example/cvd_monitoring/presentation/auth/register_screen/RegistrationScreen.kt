@@ -1,20 +1,28 @@
 package com.example.cvd_monitoring.presentation.auth.register_screen
 
 import android.util.Log
+import android.util.Patterns
+import android.widget.Toast
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -44,6 +53,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.common.UiEvents
@@ -66,6 +76,8 @@ fun RegistrationScreen(
     val icon = if (passwordVisibility) painterResource(id = R.drawable.visible1)
     else painterResource(id = R.drawable.invisible)
     val scaffoldState = rememberScaffoldState()
+    val passwordError by viewModel.passwordError.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -188,6 +200,7 @@ fun RegistrationScreen(
         TextField(
             value = passwordState.text,
             onValueChange = { viewModel.setPasswordValue(it) },
+            isError = !passwordError.successful,
             label = {
                 Text(
                     text = "Password",
@@ -215,9 +228,32 @@ fun RegistrationScreen(
                 cursorColor = Color.Red,
             ),
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            ConditionRow(condition = "Minimum 8 characters", check = passwordError.hasMinimum)
+            ConditionRow(condition = "Has capitalized letter", check = passwordError.hasCapitalizedLetter)
+        }
+
+
         Button(
             onClick = {
-                viewModel.createPatient()
+                if (firstNameState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Please, enter your first name", Toast.LENGTH_SHORT).show()
+                } else if (lastNameState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Please, enter your last name", Toast.LENGTH_SHORT).show()
+                }
+                else if (emailState.text.isEmpty() || !isValidEmail(emailState.text))
+                {
+                    Toast.makeText(context, "Please, enter a valid email", Toast.LENGTH_SHORT).show()
+
+                }else if (!passwordError.successful)
+                {
+                    Toast.makeText(context, "Please, enter a valid password", Toast.LENGTH_SHORT).show()
+                } else{
+                    viewModel.createPatient()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -229,4 +265,39 @@ fun RegistrationScreen(
             Text("Sign Up")
         }
     }
+}
+
+@Composable
+fun ConditionRow(
+    condition: String,
+    check: Boolean
+) {
+    val color by animateColorAsState(
+        targetValue = if (check) Color.Green else Color.Red,
+        label = "text color"
+    )
+
+    val icon = if (check) {
+        Icons.Rounded.Check
+    } else {
+        Icons.Rounded.Close
+    }
+
+    Row {
+        Icon(
+            imageVector = icon,
+            tint = color,
+            contentDescription = "status icon"
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = condition,
+            color = color
+        )
+    }
+}
+
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = Patterns.EMAIL_ADDRESS.toRegex()
+    return emailRegex.matches(email)
 }

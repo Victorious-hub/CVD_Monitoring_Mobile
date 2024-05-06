@@ -52,9 +52,9 @@ import com.example.cvd_monitoring.presentation.Screen
 fun PatientProfileScreen(
     navController: NavController,
     viewModel: PatientProfileViewModel = hiltViewModel(),
-
     slug: String,
 ) {
+
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentUser(slug)
     }

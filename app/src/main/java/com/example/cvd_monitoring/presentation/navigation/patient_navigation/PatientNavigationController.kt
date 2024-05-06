@@ -18,8 +18,8 @@ import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.P
 import com.example.cvd_monitoring.presentation.navigation.more.MoreScreen
 import com.example.cvd_monitoring.presentation.notification.NotificationScreen
 import com.example.cvd_monitoring.presentation.overview.OverviewScreen
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.BloodAnalysisScreen
-import com.example.cvd_monitoring.presentation.patients.cholesterol_analysis.CholesterolAnalysisScreen
+import com.example.cvd_monitoring.presentation.treatment.blood_analysis.BloodAnalysisScreen
+import com.example.cvd_monitoring.presentation.treatment.cholesterol_analysis.CholesterolAnalysisScreen
 import com.example.cvd_monitoring.presentation.patients.patient_card.PatientCardScreen
 import com.example.cvd_monitoring.presentation.patients.patient_contact_screen.PatientContactScreen
 import com.example.cvd_monitoring.presentation.patients.patient_data_screen.PatientUpdateScreen

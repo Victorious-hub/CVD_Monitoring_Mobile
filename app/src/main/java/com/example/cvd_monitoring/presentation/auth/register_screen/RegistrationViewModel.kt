@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
@@ -13,7 +14,10 @@ import com.example.cvd_monitoring.domain.use_case.auth.registration.CreatePatien
 import com.example.cvd_monitoring.presentation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +25,9 @@ import javax.inject.Inject
 class RegistrationViewModel @Inject constructor(
     private val createPatientUseCase: CreatePatientUseCase
 ) : ViewModel(){
+    private val validatePassword: ValidatePassword = ValidatePassword()
+
+
     private val _firstNameState = mutableStateOf(TextFieldState())
     val firstNameState: State<TextFieldState> = _firstNameState
 
@@ -52,6 +59,15 @@ class RegistrationViewModel @Inject constructor(
     var errorMessage: String by mutableStateOf("")
     private val  _eventFlow = MutableSharedFlow<UiEvents>()
     val eventFlow = _eventFlow.asSharedFlow()
+
+    val passwordError =
+        snapshotFlow { passwordState.value.text }
+            .mapLatest { validatePassword.execute(it) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = PasswordValidationState()
+            )
 
     fun createPatient() {
         val firstName = firstNameState.value.text

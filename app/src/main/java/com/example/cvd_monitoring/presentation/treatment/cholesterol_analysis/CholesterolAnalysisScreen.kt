@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.patients.cholesterol_analysis
+package com.example.cvd_monitoring.presentation.treatment.cholesterol_analysis
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -11,9 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.BloodAnalysisViewModel
-import com.example.cvd_monitoring.presentation.patients.blood_analysis.components.BloodAnalysisListItem
-import com.example.cvd_monitoring.presentation.patients.cholesterol_analysis.components.CholesterolAnalysisListItem
+import com.example.cvd_monitoring.presentation.treatment.blood_analysis.BloodAnalysisViewModel
+import com.example.cvd_monitoring.presentation.treatment.blood_analysis.components.BloodAnalysisListItem
+import com.example.cvd_monitoring.presentation.treatment.cholesterol_analysis.components.CholesterolAnalysisListItem
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable

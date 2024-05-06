@@ -1,7 +1,5 @@
-package com.example.cvd_monitoring.presentation.patients.doctor_list.components
+package com.example.cvd_monitoring.presentation.patients.patient_doctor_list.components
 
-import android.R
-import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,13 +25,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 
 import com.example.cvd_monitoring.domain.model.patients.DoctorList
-import com.example.cvd_monitoring.domain.model.users.Doctor
-import com.example.cvd_monitoring.domain.model.users.Patient
-import com.squareup.picasso.Picasso
 
 
 @Composable
-fun DoctorListItem(
+fun PatientDoctorListItem(
     doctor: DoctorList,
     onItemClick: (DoctorList) -> Unit
 ) {

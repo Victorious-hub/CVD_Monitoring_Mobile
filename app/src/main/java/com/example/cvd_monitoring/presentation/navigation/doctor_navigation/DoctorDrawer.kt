@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.navigation.patient_navigation
+package com.example.cvd_monitoring.presentation.navigation.doctor_navigation
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -41,6 +41,8 @@ import androidx.navigation.navArgument
 
 import com.example.cvd_monitoring.presentation.Screen
 import com.example.cvd_monitoring.presentation.auth.authentication_screen.AuthenticationScreen
+import com.example.cvd_monitoring.presentation.doctors.doctor_contact_screen.DoctorContactScreen
+import com.example.cvd_monitoring.presentation.doctors.doctor_patients.DoctorPatientsScreen
 import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.DoctorProfileScreen
 import com.example.cvd_monitoring.presentation.navigation.more.LogoutViewModel
 import com.example.cvd_monitoring.presentation.notification.NotificationScreen
@@ -58,7 +60,7 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PatientDrawer(
+fun DoctorDrawer(
     slug: String,
     viewModel: LogoutViewModel = hiltViewModel()
 ) {
@@ -86,67 +88,25 @@ fun PatientDrawer(
                         coroutineScope.launch {
                             drawerState.close()
                         }
-                        navigationController.navigate("${Screen.CurrentPatient.route}/$slug/get") {
+                        navigationController.navigate("${Screen.CurrentDoctor.route}/$slug/get") {
                             popUpTo(0)
                         }
                     }
                 )
                 Divider()
                 NavigationDrawerItem(
-                    label = { Text(text = "Card") },
+                    label = { Text(text = "Patients") },
                     selected = false,
-                    icon = { Icon(imageVector = Icons.Default.Favorite, contentDescription = "Card", tint = Color.Black) },
+                    icon = { Icon(imageVector = Icons.Default.Favorite, contentDescription = "Patients", tint = Color.Black) },
                     onClick = {
                         coroutineScope.launch {
                             drawerState.close()
                         }
-                        navigationController.navigate("${Screen.PatientCard.route}/$slug") {
+                        navigationController.navigate("DoctorPatientList/$slug/get") {
                             popUpTo(0)
                         }
                     }
                 )
-                Divider()
-                NavigationDrawerItem(
-                    label = { Text(text = "Notifications") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.Default.Notifications, contentDescription = "Notifications", tint = Color.Black) },
-                    onClick = {
-                        coroutineScope.launch {
-                            drawerState.close()
-                        }
-                        navigationController.navigate("${Screen.Notification.route}/$slug/patient") {
-                            popUpTo(0)
-                        }
-                    }
-                )
-                Divider()
-                NavigationDrawerItem(
-                    label = { Text(text = "Logout") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = Color.Black) },
-                    onClick = {
-                        coroutineScope.launch {
-                            viewModel.logoutUser()
-                            drawerState.close()
-                        }
-                        //navigationController.navigate(AuthRouteScreen.SignIn.route)
-                    }
-                )
-                Divider()
-                NavigationDrawerItem(
-                    label = { Text(text = "DoctorList") },
-                    selected = false,
-                    icon = { Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "DoctorList", tint = Color.Black) },
-                    onClick = {
-                        coroutineScope.launch {
-                            drawerState.close()
-                        }
-                        navigationController.navigate("${Screen.DoctorList.route}/$slug") {
-                            popUpTo(0)
-                        }
-                    }
-                )
-                Divider()
 
             }
         }
@@ -179,32 +139,10 @@ fun PatientDrawer(
                 }
 
 
-//                composable(route = AuthRouteScreen.SignIn.route) {
-//                    AuthenticationScreen(navigationController)
-//                }
+
 
                 composable(
-                    route = "${Screen.CurrentPatient.route}/{slug}/get",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    PatientProfileScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.DoctorList.route}/{slug}",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    PatientDoctorListScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.CurrentDoctor.route}/{slug}",
+                    route = "${Screen.CurrentDoctor.route}/{slug}/get",
                     arguments = listOf(navArgument("slug") { type = NavType.StringType })
                 ) { backstackEntry ->
                     DoctorProfileScreen(
@@ -214,70 +152,20 @@ fun PatientDrawer(
                 }
 
                 composable(
-                    route = "${Screen.Notification.route}/{slug}/patient",
+                    route = DoctorBottomNavItem.Patients.route,
                     arguments = listOf(navArgument("slug") { type = NavType.StringType })
                 ) { backstackEntry ->
-                    NotificationScreen(
+                    DoctorPatientsScreen(
                         navigationController,
                         slug = backstackEntry.arguments?.getString("slug") ?: "",
                     )
                 }
 
                 composable(
-                    route = "${Screen.PatientCard.route}/{slug}",
+                    route = "${Screen.UpdateDoctor.route}/{slug}/contact",
                     arguments = listOf(navArgument("slug") { type = NavType.StringType })
                 ) { backstackEntry ->
-                    PatientCardScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.PatientPrescriptionList.route}/{slug}/get",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    PatientPrescriptionListScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.PatientCholesterolList.route}/{slug}/get",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    CholesterolAnalysisScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.PatientBloodList.route}/{slug}/get",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    BloodAnalysisScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.UpdateDataPatient.route}/{slug}/data",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    PatientUpdateScreen(
-                        navigationController,
-                        slug = backstackEntry.arguments?.getString("slug") ?: "",
-                    )
-                }
-
-                composable(
-                    route = "${Screen.UpdateContactPatient.route}/{slug}/contact",
-                    arguments = listOf(navArgument("slug") { type = NavType.StringType })
-                ) { backstackEntry ->
-                    PatientContactScreen(
+                    DoctorContactScreen(
                         navigationController,
                         slug = backstackEntry.arguments?.getString("slug") ?: "",
                     )

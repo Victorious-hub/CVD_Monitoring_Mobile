@@ -122,5 +122,6 @@ dependencies {
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
 }

@@ -1,6 +1,5 @@
-package com.example.cvd_monitoring.presentation.treatment.patient_prescription.components
+package com.example.cvd_monitoring.presentation.treatment.blood_analysis.components
 
-import com.example.cvd_monitoring.domain.model.treatment.Prescription
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,8 +27,8 @@ import com.example.cvd_monitoring.domain.model.analysis.BloodAnalysis
 import com.example.cvd_monitoring.domain.model.notifications.Notification
 
 @Composable
-fun PrescriptionListItem(
-    prescription: Prescription,
+fun BloodAnalysisListItem(
+    bloodAnalysis: BloodAnalysis,
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -40,7 +39,7 @@ fun PrescriptionListItem(
             modifier = Modifier
                 .padding(8.dp, 4.dp)
                 .fillMaxWidth()
-                .height(230.dp),
+                .height(180.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Row(
@@ -60,7 +59,7 @@ fun PrescriptionListItem(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Medication",
+                            text = "Glucose",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -69,7 +68,7 @@ fun PrescriptionListItem(
                         )
                     }
                     Text(
-                        text = prescription.medication.name ?: "No info",
+                        text = bloodAnalysis.glucose.toString() ?: "No info",
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
@@ -88,7 +87,7 @@ fun PrescriptionListItem(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Dosage per day",
+                            text = "Ap hi",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -97,7 +96,7 @@ fun PrescriptionListItem(
                         )
                     }
                     Text(
-                        text = prescription.dosage ?: "No info",
+                        text = bloodAnalysis.apHi.toString() ?: "No info",
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
@@ -116,7 +115,7 @@ fun PrescriptionListItem(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Start date",
+                            text = "Ap lo",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -125,7 +124,7 @@ fun PrescriptionListItem(
                         )
                     }
                     Text(
-                        text = prescription.startDate ?: "No info",
+                        text = bloodAnalysis.apLo.toString() ?: "No info",
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
@@ -138,39 +137,10 @@ fun PrescriptionListItem(
                         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
-
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .fillMaxWidth().padding(bottom = 3.dp)
-                    ) {
-                        Text(
-                            text = "End date",
-                            style = TextStyle(
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                    Text(
-                        text = prescription.endDate ?: "No info",
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    )
-                    Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-                        color = Color.Gray
-                    )
-
                 }
             }
         }
 
     }
+
 }

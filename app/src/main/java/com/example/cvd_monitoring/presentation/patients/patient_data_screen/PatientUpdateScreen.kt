@@ -5,16 +5,29 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
+import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.Icon
+
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,6 +46,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,23 +60,34 @@ import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.toSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.ui.platform.LocalDensity
+
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun PatientUpdateScreen(
     navController: NavController,
     slug: String,
     viewModel: PatientUpdateViewModel = hiltViewModel(),
 ) {
+
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentUser(slug)
     }
+
+
     val inputDateFormat = SimpleDateFormat("MMM dd yyyy", Locale.US)
     val outputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val ageState = viewModel.ageState.value
     val heightState = viewModel.heightState.value
     val weightState  = viewModel.weightState.value
     val genderState  = viewModel.genderState.value
+
     val birthdayState  = viewModel.birthdayState.value
 
     val context = LocalContext.current
@@ -76,6 +101,16 @@ fun PatientUpdateScreen(
                 .format(pickedDate)
         }
     }
+
+    val list = listOf("Male", "Female")
+    var selectedText by remember {
+        mutableStateOf("Select Gender")
+    }
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+
 
     val dateDialogState = rememberMaterialDialogState()
     val isFocused by remember { mutableStateOf(false) }
@@ -118,7 +153,7 @@ fun PatientUpdateScreen(
         )
         TextField(
             value = heightState.text,
-            onValueChange = { viewModel.setHeightValue(it)  },
+            onValueChange = { viewModel.setHeightValue(it) },
             label = {
                 Text(
                     text = "Height",
@@ -153,27 +188,57 @@ fun PatientUpdateScreen(
                 cursorColor = Color.Red,
             ),
         )
-        TextField(
-            value = genderState.text,
-            onValueChange = { viewModel.setGenderValue(it) },
-            label = {
-                Text(
-                    text = "Gender",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
+//        TextField(
+//            value = genderState.text,
+//            onValueChange = { viewModel.setGenderValue(it) },
+//            label = {
+//                Text(
+//                    text = "Gender",
+//                    color = Color.Gray
+//                )
+//            },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(bottom = 8.dp),
+//            colors = TextFieldDefaults.textFieldColors(
+//                focusedIndicatorColor = Color.Red,
+//                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
+//                cursorColor = Color.Red,
+//            ),
+//        )
+
+        ExposedDropdownMenuBox(
+            expanded = isExpanded,
+            onExpandedChange = {isExpanded = !isExpanded}
+        ) {
+            TextField(
+                value = selectedText,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)},
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
+                list.forEachIndexed { index, text ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedText = list[index]
+                            isExpanded = false
+                        }
+                    ) {
+                        Text(text = text)
+                    }
+                }
+            }
+
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         TextField(
             value = birthdayState.text,
-            onValueChange = {  viewModel.setBirthdayValue(it) },
+            onValueChange = { viewModel.setBirthdayValue(it) },
             label = {
                 Text(
                     text = "Birthday",
@@ -227,8 +292,6 @@ fun PatientUpdateScreen(
             }
         }
 
-
-
         Button(
             onClick = {
                 viewModel.updatePatientData(slug)
@@ -242,6 +305,6 @@ fun PatientUpdateScreen(
         ) {
             Text("Update")
         }
-    }
 
+    }
 }

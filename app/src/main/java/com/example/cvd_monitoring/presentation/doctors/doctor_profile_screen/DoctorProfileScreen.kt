@@ -180,38 +180,38 @@ fun DoctorProfileScreen(
         )
     }
 
-//    Button(
-//        onClick = {
-//            navController.navigate("${Screen.UpdateDoctor.route}/$slug/contact")
-//        },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(top = 530.dp),
-//        colors = ButtonDefaults.buttonColors(
-//            containerColor = Color.White,
-//            contentColor = Color.Black
-//        ),
-//        shape = RoundedCornerShape(20.dp)
-//    ) {
-//        Row(
-//            horizontalArrangement = Arrangement.Start
-//        ) {
-//            Icon(
-//                imageVector = Icons.Default.Face,
-//                contentDescription = "Home Button Icon",
-//                tint = Color.Black
-//            )
-//            Spacer(modifier = Modifier.width(16.dp))
-//            Text(
-//                text = "Update Contact",
-//                modifier = Modifier.weight(1f)
-//            )
-//            Icon(
-//                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-//                contentDescription = "Arrow Right Icon",
-//                tint = Color.Black,
-//                modifier = Modifier.align(Alignment.CenterVertically)
-//            )
-//        }
-//    }
+    Button(
+        onClick = {
+            navController.navigate("${Screen.UpdateDoctor.route}/$slug/contact")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 530.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = Icons.Default.Face,
+                contentDescription = "Home Button Icon",
+                tint = Color.Black
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "Update Contact",
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "Arrow Right Icon",
+                tint = Color.Black,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+        }
+    }
 }

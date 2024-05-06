@@ -6,6 +6,12 @@ sealed class Screen(val route: String) {
     data object CurrentDoctor : Screen("currentDoctor")
     data object Notification : Screen("notification")
     data object More : Screen("more")
+
+
+    data object Main : Screen("main")
+
+    data object Preview : Screen("preview")
+
     data object OverView : Screen("overview")
     data object SignUp : Screen("signUp")
     data object  SignIn : Screen("SignIn")

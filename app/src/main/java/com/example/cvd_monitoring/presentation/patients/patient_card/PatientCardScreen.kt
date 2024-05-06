@@ -243,7 +243,7 @@ fun PatientCardScreen(
 
     Button(
         onClick = {
-           // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+           navController.navigate("${Screen.PatientBloodList.route}/$slug/get")
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -277,44 +277,10 @@ fun PatientCardScreen(
 
     }
 
-    Button(
-        onClick = {
-            // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 370.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
-        ),
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Icon(
-                imageVector = Icons.Default.AddCircle,
-                contentDescription = "Home Button Icon",
-                tint = Color.Black
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Cholesterol Analysis",
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Arrow Right Icon",
-                tint = Color.Black,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-        }
-    }
 
     Button(
         onClick = {
-            // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+            navController.navigate("${Screen.PatientCholesterolList.route}/$slug/get")
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -350,7 +316,7 @@ fun PatientCardScreen(
 
     Button(
         onClick = {
-            // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+            navController.navigate("${Screen.PatientPrescriptionList.route}/$slug/get")
         },
         modifier = Modifier
             .fillMaxWidth()
