@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.bottom_navigation.graphs
+package com.example.cvd_monitoring.presentation.navigation.graphs
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -8,7 +8,7 @@ import com.example.cvd_monitoring.presentation.Screen
 import com.example.cvd_monitoring.presentation.auth.authentication_screen.AuthenticationScreen
 import com.example.cvd_monitoring.presentation.auth.register_screen.RegistrationScreen
 import com.example.cvd_monitoring.presentation.check_user.CheckUserScreen
-import com.example.cvd_monitoring.presentation.navigation.home.HomeScreen
+import com.example.cvd_monitoring.presentation.auth.HomeScreen
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(
@@ -39,5 +39,4 @@ sealed class AuthScreen(val route: String) {
     data object Login : AuthScreen(route = "LOGIN")
     data object SignUp : AuthScreen(route = "SIGN_UP")
     data object Home : AuthScreen(route = "HOME")
-    data object Logout : AuthScreen(route = "LOGOUT")
 }

@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.bottom_navigation
+package com.example.cvd_monitoring.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -12,20 +12,26 @@ sealed class DoctorBottomBar(
     val icon: ImageVector
 ) {
     data object Home : DoctorBottomBar(
-        route = "currentDoctor/{slug}/get",
-        title = "HOME",
+        route = "HOME",
+        title = "Home",
         icon = Icons.Default.Home
     )
 
     data object Profile : DoctorBottomBar(
-        route = "PROFILE",
-        title = "PROFILE",
+        route = "currentDoctor/{slug}/get",
+        title = "Profile",
+        icon = Icons.Default.Person
+    )
+
+    data object Patients : DoctorBottomBar(
+        route = "doctorPatientList/{slug}/get",
+        title = "Patients",
         icon = Icons.Default.Person
     )
 
     data object Settings : DoctorBottomBar(
         route = "SETTINGS",
-        title = "SETTINGS",
+        title = "Settings",
         icon = Icons.Default.Settings
     )
 }

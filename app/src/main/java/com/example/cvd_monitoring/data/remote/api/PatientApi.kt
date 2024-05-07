@@ -5,6 +5,7 @@ import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
+import com.example.cvd_monitoring.data.dto.PatientDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
 import com.example.cvd_monitoring.domain.model.analysis.BloodAnalysis
 import com.example.cvd_monitoring.domain.model.analysis.CholesterolAnalysis
@@ -25,7 +26,7 @@ interface PatientApi {
     @PUT("users/v1/patients/update/{slug}/contact")
     suspend fun updatePatientContact(@Body patient: PatientContact, @Path("slug") slug: String): PatientContact
     @GET("users/v1/patients/{slug}/get")
-    suspend fun getCurrentUser(@Path("slug") slug: String): Patient
+    suspend fun getCurrentPatient(@Path("slug") slug: String): PatientDto
     @GET("users/v1/patients")
     suspend fun getPatients(): List<Patient>
     @GET("notifications/v1/{slug}/patient")

@@ -1,7 +1,6 @@
-package com.example.cvd_monitoring.presentation.navigation.more
+package com.example.cvd_monitoring.presentation.navigation
 
 import android.util.Log
-import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,9 +25,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavDeepLinkRequest
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.auth.logout_screen.LogoutViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 //@Preview(showSystemUi = true)

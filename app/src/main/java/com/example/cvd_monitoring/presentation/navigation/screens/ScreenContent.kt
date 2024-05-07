@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.bottom_navigation.screens
+package com.example.cvd_monitoring.presentation.navigation.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

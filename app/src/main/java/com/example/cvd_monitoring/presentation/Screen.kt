@@ -5,13 +5,6 @@ sealed class Screen(val route: String) {
     data object CheckUser : Screen("checkUser")
     data object CurrentDoctor : Screen("currentDoctor")
     data object Notification : Screen("notification")
-    data object More : Screen("more")
-
-
-    data object Main : Screen("main")
-
-    data object Preview : Screen("preview")
-
     data object OverView : Screen("overview")
     data object SignUp : Screen("signUp")
     data object  SignIn : Screen("SignIn")
@@ -22,7 +15,6 @@ sealed class Screen(val route: String) {
     data object  UpdateDataPatient : Screen("updateData")
     data object  UpdateContactPatient : Screen("updateContactPatient")
     data object  UpdateDoctor : Screen("updateDoctor")
-    data object  PatientList : Screen("patientList")
     data object  CurrentPatient: Screen("currentPatient")
     data object  PatientCard: Screen("patientCard")
 }

@@ -29,7 +29,7 @@ fun PatientListScreen(
                 patient,
                 onItemClick = {
                     navController.navigate(
-                        Screen.PatientCard.route + "/${patient.slug}")
+                        Screen.PatientCard.route + "/${patient.user.email.substringBefore("@")}")
 
                 }
             )

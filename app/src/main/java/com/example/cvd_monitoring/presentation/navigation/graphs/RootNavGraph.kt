@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.bottom_navigation.graphs
+package com.example.cvd_monitoring.presentation.navigation.graphs
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -23,6 +23,11 @@ fun RootNavigationGraph(navController: NavHostController) {
         ) { backstackEntry ->
             PatientBottomBarScreen(
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                logout = {
+                    navController.navigate(AuthScreen.Home.route) {
+                        popUpTo(0){}
+                    }
+                }
             )
         }
 
@@ -32,6 +37,11 @@ fun RootNavigationGraph(navController: NavHostController) {
         ) { backstackEntry ->
             DoctorBottomBarScreen(
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                logout = {
+                    navController.navigate(AuthScreen.Home.route) {
+                        popUpTo(0){}
+                    }
+                }
             )
         }
     }

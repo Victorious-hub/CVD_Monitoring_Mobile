@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.patients.patient_profile_screen
+package com.example.cvd_monitoring.presentation.doctors.patient_detail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,14 +18,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,21 +42,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.presentation.Screen
-
+import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.PatientProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PatientProfileScreen(
+fun PatientDetailScreen(
     navController: NavController,
     viewModel: PatientProfileViewModel = hiltViewModel(),
     slug: String,
 ) {
-
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentPatient(slug)
     }
     val state = viewModel.state.value
-    val image = painterResource(R.drawable.account)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,16 +62,7 @@ fun PatientProfileScreen(
             .background(
                 color = Color(0xFFa5051f),
             )
-    ) {
-        Image(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(top = 25.dp)
-                .size(width = 100.dp, height = 100.dp),
-            painter = image,
-            contentDescription = null
-        )
-    }
+    )
 
     Column(
         modifier = Modifier
@@ -94,10 +80,9 @@ fun PatientProfileScreen(
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Monospace,
-                color = Color.Black // Set text color to black
+                color = Color.Black
             )
         )
-
     }
 
 
@@ -116,7 +101,7 @@ fun PatientProfileScreen(
         ) {
             Text(
                 text = "First Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black)
             )
             Spacer(modifier = Modifier
                 .weight(0.5f))
@@ -126,7 +111,7 @@ fun PatientProfileScreen(
                 text = it.firstName,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                style = TextStyle(fontSize = 16.sp, color = Color.Black)
             )
         }
         Divider(
@@ -140,7 +125,7 @@ fun PatientProfileScreen(
         ){
             Text(
                 text = "Last Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black)
             )
             Spacer(modifier = Modifier.weight(2f))
         }
@@ -149,7 +134,7 @@ fun PatientProfileScreen(
                 text = it.lastName,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                style = TextStyle(fontSize = 16.sp, color = Color.Black)
             )
         }
         Divider(
@@ -162,7 +147,7 @@ fun PatientProfileScreen(
         ){
             Text(
                 text = "Email",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black)
             )
             Spacer(modifier = Modifier.weight(2f))
         }
@@ -171,7 +156,7 @@ fun PatientProfileScreen(
                 text = it.email,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                style = TextStyle(fontSize = 16.sp, color = Color.Black)
             )
         }
         Divider(
@@ -182,7 +167,7 @@ fun PatientProfileScreen(
 
     Button(
         onClick = {
-            navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+            // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -197,13 +182,13 @@ fun PatientProfileScreen(
             horizontalArrangement = Arrangement.Start
         ) {
             Icon(
-                imageVector = Icons.Default.Face,
+                imageVector = Icons.Default.AccountBox,
                 contentDescription = "Home Button Icon",
                 tint = Color.Black
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Update Data",
+                text = "Create Patient Card",
                 modifier = Modifier.weight(1f)
             )
             Icon(
@@ -214,38 +199,5 @@ fun PatientProfileScreen(
             )
         }
     }
-    Button(
-        onClick = {
-            navController.navigate("${Screen.UpdateContactPatient.route}/$slug/contact")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 590.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
-        ),
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Home Button Icon",
-                tint = Color.Black
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Update Contact",
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Arrow Right Icon",
-                tint = Color.Black,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-        }
-    }
+
 }

@@ -11,39 +11,40 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cvd_monitoring.presentation.bottom_navigation.PatientBottomBar
-import com.example.cvd_monitoring.presentation.bottom_navigation.getRouteWithSlug
-import com.example.cvd_monitoring.presentation.bottom_navigation.graphs.patient_graph.PatientHomeNavGraph
-
+import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
+import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
+import com.example.cvd_monitoring.presentation.navigation.graphs.doctor_graph.DoctorHomeNavGraph
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun PatientBottomBarScreen(
+fun DoctorBottomBarScreen(
     navController: NavHostController = rememberNavController(),
-    slug: String
+    slug: String,
+    logout: () -> Unit
 ) {
     Scaffold(
-        bottomBar = { PatientBottomBar(navController = navController, slug) }
+        bottomBar = { DoctorBottomBar(navController = navController, slug) }
     ) {
-        PatientHomeNavGraph(navController = navController)
+        DoctorHomeNavGraph(navController = navController, logout=logout)
     }
 }
 
 @Composable
-fun PatientBottomBar(navController: NavHostController, slug: String) {
+fun DoctorBottomBar(navController: NavHostController, slug: String) {
     val screens = listOf(
-        PatientBottomBar.Home,
-        PatientBottomBar.Profile,
-        PatientBottomBar.Settings,
+        DoctorBottomBar.Home,
+        DoctorBottomBar.Profile,
+        DoctorBottomBar.Patients,
+        DoctorBottomBar.Settings,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
-        BottomNavigation {
+        BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
             screens.forEach { screen ->
-                AddItemPatient(
+                AddItemDoctor(
                     screen = screen,
                     currentDestination = currentDestination,
                     navController = navController,
@@ -55,12 +56,13 @@ fun PatientBottomBar(navController: NavHostController, slug: String) {
 }
 
 @Composable
-fun RowScope.AddItemPatient(
-    screen: PatientBottomBar,
+fun RowScope.AddItemDoctor(
+    screen: DoctorBottomBar,
     currentDestination: NavDestination?,
     navController: NavHostController,
     slug: String
 ) {
+
     BottomNavigationItem(
         label = {
             Text(text = screen.title)
@@ -77,7 +79,8 @@ fun RowScope.AddItemPatient(
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         onClick = {
             val route = when (screen) {
-                is PatientBottomBar.Home -> screen.getRouteWithSlug(slug)
+                is DoctorBottomBar.Profile -> screen.getRouteWithSlug(slug)
+                is DoctorBottomBar.Patients -> screen.getRouteWithSlug(slug)
                 else -> screen.route
             }
             navController.navigate(route) {

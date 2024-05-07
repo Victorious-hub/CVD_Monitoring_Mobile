@@ -34,7 +34,7 @@ fun NotificationListItem(
     val image = painterResource(R.drawable.account)
 
     Box(
-        modifier = Modifier.fillMaxSize().padding(top = 60.dp)
+        modifier = Modifier.fillMaxSize().padding(top = 20.dp)
     ) {
         Card(
             modifier = Modifier

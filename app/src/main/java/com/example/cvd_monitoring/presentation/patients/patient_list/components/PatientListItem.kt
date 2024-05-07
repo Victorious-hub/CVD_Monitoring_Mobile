@@ -27,7 +27,7 @@ fun PatientListItem(
     patient: Patient,
     onItemClick: (Patient) -> Unit
 ) {
-    Log.d("PatientListViewModel", "Patient list fetched: ${patient.slug}")
+
     Card(
         modifier = Modifier
             .padding(8.dp, 4.dp)
@@ -49,11 +49,11 @@ fun PatientListItem(
                     .weight(0.8f)
             ) {
                 Text(
-                    text = patient.user.first_name,
+                    text = patient.user.firstName,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = patient.user.last_name,
+                    text = patient.user.lastName,
                     modifier = Modifier
                         .background(Color.LightGray)
                         .padding(4.dp)
@@ -78,11 +78,7 @@ fun PatientListItem(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = patient.slug,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+
             }
         }
     }

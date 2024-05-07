@@ -99,9 +99,9 @@ fun PatientCardScreen(
                             )
                         )
                     }
-                    state.patientCard?.patient?.let {
+                    state.patientCard?.patient?.user?.let {
                         Text(
-                            text = it.userFirstName ?: "No info",
+                            text = it.firstName ?: "No info",
                             fontWeight = FontWeight.Bold,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
@@ -129,9 +129,9 @@ fun PatientCardScreen(
                             )
                         )
                     }
-                    state.patientCard?.patient?.let {
+                    state.patientCard?.patient?.user?.let {
                         Text(
-                            text = it.userLastName ?: "No info",
+                            text = it.lastName ?: "No info",
                             fontWeight = FontWeight.Bold,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,

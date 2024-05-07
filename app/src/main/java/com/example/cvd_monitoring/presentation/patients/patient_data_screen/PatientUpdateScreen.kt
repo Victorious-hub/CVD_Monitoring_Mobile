@@ -77,7 +77,7 @@ fun PatientUpdateScreen(
 ) {
 
     LaunchedEffect(key1 = slug) {
-        viewModel.getCurrentUser(slug)
+        viewModel.getCurrentPatient(slug)
     }
 
 

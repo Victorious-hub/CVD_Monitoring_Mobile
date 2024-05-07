@@ -1,4 +1,4 @@
-package com.example.cvd_monitoring.presentation.navigation.home
+package com.example.cvd_monitoring.presentation.auth
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.presentation.Screen
-import com.example.cvd_monitoring.presentation.bottom_navigation.graphs.AuthScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.AuthScreen
 
 @SuppressLint("Range")
 @Composable
