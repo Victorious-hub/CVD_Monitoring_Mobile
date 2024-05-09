@@ -16,6 +16,8 @@ data class PatientDto(
     val height: Int,
     @SerializedName("weight")
     val weight: Double,
+    @SerializedName("has_card")
+    val hasCard: Boolean,
     @SerializedName("user")
     val user: UserPatientDto,
     val mobile: String? = null,
@@ -29,6 +31,7 @@ fun PatientDto.toPatient(): Patient {
         height = height,
         weight = weight,
         mobile = mobile,
+        hasCard = hasCard,
         user = user.toUserPatient(),
     )
 }

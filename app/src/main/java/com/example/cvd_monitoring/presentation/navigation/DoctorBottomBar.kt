@@ -29,6 +29,12 @@ sealed class DoctorBottomBar(
         icon = Icons.Default.Person
     )
 
+    data object Appointment : DoctorBottomBar(
+        route = "doctorPatientList/{slug}/get",
+        title = "Patients",
+        icon = Icons.Default.Person
+    )
+
     data object Settings : DoctorBottomBar(
         route = "SETTINGS",
         title = "Settings",

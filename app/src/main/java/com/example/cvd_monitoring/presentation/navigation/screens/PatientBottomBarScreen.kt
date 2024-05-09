@@ -36,6 +36,7 @@ fun PatientBottomBar(navController: NavHostController, slug: String) {
         PatientBottomBar.Home,
         PatientBottomBar.Profile,
         PatientBottomBar.Notifications,
+        PatientBottomBar.Card,
         PatientBottomBar.Settings,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -81,6 +82,7 @@ fun RowScope.AddItemPatient(
             val route = when (screen) {
                 is PatientBottomBar.Profile -> screen.getRouteWithSlug(slug)
                 is PatientBottomBar.Notifications -> screen.getRouteWithSlug(slug)
+                is PatientBottomBar.Card -> screen.getRouteWithSlug(slug)
                 else -> screen.route
             }
             navController.navigate(route) {

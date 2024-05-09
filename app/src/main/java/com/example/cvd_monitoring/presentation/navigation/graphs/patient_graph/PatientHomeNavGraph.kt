@@ -1,5 +1,7 @@
 package com.example.cvd_monitoring.presentation.navigation.graphs.patient_graph
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,10 +15,17 @@ import com.example.cvd_monitoring.presentation.check_user.CheckUserScreen
 import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
 import com.example.cvd_monitoring.presentation.navigation.graphs.Graph
 import com.example.cvd_monitoring.presentation.auth.logout_screen.LogoutScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.AnalysisScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.DataUpdateScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.analysisNavGraph
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
+import com.example.cvd_monitoring.presentation.navigation.graphs.updateDataNavGraph
 import com.example.cvd_monitoring.presentation.navigation.screens.ScreenContent
 import com.example.cvd_monitoring.presentation.notification.NotificationScreen
+import com.example.cvd_monitoring.presentation.patients.patient_card.PatientCardScreen
 import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.PatientProfileScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PatientHomeNavGraph(
     navController: NavHostController,
@@ -45,6 +54,36 @@ fun PatientHomeNavGraph(
             PatientProfileScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onUpdateData = {
+                    DataUpdateScreen.PatientData.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
+                },
+                onUpdateContact = {
+                    DataUpdateScreen.PatientContact.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
+                },
+            )
+        }
+
+        composable(
+            route = PatientBottomBar.Card.route,
+            arguments = listOf(navArgument("slug") { type = NavType.StringType })
+        ) { backstackEntry ->
+            PatientCardScreen(
+                navController,
+                slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBlood = {
+                    AnalysisScreen.Blood.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                    ?.let { it1 -> navController.navigate(it1) }
+                },
+                onClickCholesterol = {
+                    AnalysisScreen.Cholesterol.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
+                },
+                onClickPrescription = {
+                    AnalysisScreen.Prescription.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
+                }
             )
         }
 
@@ -62,32 +101,7 @@ fun PatientHomeNavGraph(
             LogoutScreen(navHostController = navController, logout = logout)
         }
 
-        detailsNavGraph(navController = navController)
+        analysisNavGraph(navController = navController)
+        updateDataNavGraph(navController = navController)
     }
-}
-
-fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
-    navigation(
-        route = Graph.ROOT,
-        startDestination = Screen.CheckUser.route
-    ) {
-        composable(route = Screen.CheckUser.route) {
-            CheckUserScreen(navController)
-        }
-
-
-        composable(route = DetailsScreen.Overview.route) {
-            ScreenContent(name = DetailsScreen.Overview.route) {
-                navController.popBackStack(
-                    route = DetailsScreen.Information.route,
-                    inclusive = false
-                )
-            }
-        }
-    }
-}
-
-sealed class DetailsScreen(val route: String) {
-    data object Information : DetailsScreen(route = "INFORMATION")
-    data object Overview : DetailsScreen(route = "OVERVIEW")
 }

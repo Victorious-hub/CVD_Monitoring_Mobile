@@ -54,6 +54,7 @@ fun PatientDetailScreen(
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentPatient(slug)
     }
+    val image = painterResource(R.drawable.account)
     val state = viewModel.state.value
     Box(
         modifier = Modifier
@@ -62,7 +63,16 @@ fun PatientDetailScreen(
             .background(
                 color = Color(0xFFa5051f),
             )
-    )
+    ){
+        Image(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(top = 25.dp)
+                .size(width = 100.dp, height = 100.dp),
+            painter = image,
+            contentDescription = null
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -73,7 +83,7 @@ fun PatientDetailScreen(
     ) {
 
         Text(
-            text = "Account Info",
+            text = "Patient Info",
             modifier = Modifier.padding(bottom = 320.dp),
             style = TextStyle(
                 fontSize = 30.sp,
@@ -165,39 +175,80 @@ fun PatientDetailScreen(
         )
     }
 
-    Button(
-        onClick = {
-            // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 530.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
-        ),
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start
+    if (viewModel.state.value.patient?.hasCard == false)
+    {
+        Button(
+            onClick = {
+                // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 530.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            shape = RoundedCornerShape(20.dp)
         ) {
-            Icon(
-                imageVector = Icons.Default.AccountBox,
-                contentDescription = "Home Button Icon",
-                tint = Color.Black
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Create Patient Card",
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Arrow Right Icon",
-                tint = Color.Black,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
+            Row(
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccountBox,
+                    contentDescription = "Home Button Icon",
+                    tint = Color.Black
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Create Patient Card",
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Arrow Right Icon",
+                    tint = Color.Black,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
         }
     }
+    else{
+        Button(
+            onClick = {
+                // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 530.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            shape = RoundedCornerShape(20.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccountBox,
+                    contentDescription = "Home Button Icon",
+                    tint = Color.Black
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Card Details",
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Arrow Right Icon",
+                    tint = Color.Black,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
+    }
+
+
 
 }

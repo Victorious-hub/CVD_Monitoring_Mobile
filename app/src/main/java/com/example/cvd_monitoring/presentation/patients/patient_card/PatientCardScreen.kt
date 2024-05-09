@@ -47,7 +47,10 @@ import com.example.cvd_monitoring.presentation.Screen
 fun PatientCardScreen(
     navController: NavController,
     viewModel: PatientCardViewModel = hiltViewModel(),
-    slug: String
+    slug: String,
+    onClickBlood : (String) -> Unit,
+    onClickCholesterol : (String) -> Unit,
+    onClickPrescription : (String) -> Unit,
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getPatientCard(slug)
@@ -106,13 +109,13 @@ fun PatientCardScreen(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 13.sp,
                                 color = Color.Black
                             )
                         )
                     }
                     Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
 
@@ -136,13 +139,13 @@ fun PatientCardScreen(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 13.sp,
                                 color = Color.Black
                             )
                         )
                     }
                     Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
 
@@ -166,13 +169,13 @@ fun PatientCardScreen(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 13.sp,
                                 color = Color.Black
                             )
                         )
                     }
                     Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
 
@@ -196,13 +199,13 @@ fun PatientCardScreen(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 13.sp,
                                 color = Color.Black
                             )
                         )
                     }
                     Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
 
@@ -226,13 +229,43 @@ fun PatientCardScreen(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 13.sp,
                                 color = Color.Black
                             )
                         )
                     }
                     Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth().padding(bottom = 3.dp)
+                    ) {
+                        Text(
+                            text = "Weight",
+                            style = TextStyle(
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                        )
+                    }
+                    state.patientCard?.patient?.let {
+                        Text(
+                            text = it.weight.toString() ?: "No info",
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            style = TextStyle(
+                                fontSize = 13.sp,
+                                color = Color.Black
+                            )
+                        )
+                    }
+                    Divider(
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
                 }
@@ -243,7 +276,7 @@ fun PatientCardScreen(
 
     Button(
         onClick = {
-           navController.navigate("${Screen.PatientBloodList.route}/$slug/get")
+            onClickBlood(slug)
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -273,6 +306,7 @@ fun PatientCardScreen(
                 tint = Color.Black,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
+
         }
 
     }
@@ -280,7 +314,7 @@ fun PatientCardScreen(
 
     Button(
         onClick = {
-            navController.navigate("${Screen.PatientCholesterolList.route}/$slug/get")
+            onClickCholesterol(slug)
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -316,7 +350,7 @@ fun PatientCardScreen(
 
     Button(
         onClick = {
-            navController.navigate("${Screen.PatientPrescriptionList.route}/$slug/get")
+            onClickPrescription(slug)
         },
         modifier = Modifier
             .fillMaxWidth()

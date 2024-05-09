@@ -1,6 +1,7 @@
 package com.example.cvd_monitoring.presentation.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -28,6 +29,12 @@ sealed class PatientBottomBar(
         route = "notification/{slug}/patient",
         title = "Notifications",
         icon = Icons.Default.Notifications
+    )
+
+    data object Card : PatientBottomBar(
+        route = "patientCard/{slug}",
+        title = "Card",
+        icon = Icons.Default.Favorite
     )
 
     data object Settings : PatientBottomBar(

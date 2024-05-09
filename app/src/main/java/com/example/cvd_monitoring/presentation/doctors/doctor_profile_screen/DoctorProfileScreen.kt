@@ -53,6 +53,7 @@ fun DoctorProfileScreen(
     navController: NavHostController,
     viewModel: DoctorProfileViewModel = hiltViewModel(),
     slug: String,
+    onUpdateContact : (String) -> Unit
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentDoctor(slug)
@@ -182,7 +183,8 @@ fun DoctorProfileScreen(
 
     Button(
         onClick = {
-            navController.navigate("${Screen.UpdateDoctor.route}/$slug/contact")
+            onUpdateContact(slug)
+            //navController.navigate("${Screen.UpdateDoctor.route}/$slug/contact")
         },
         modifier = Modifier
             .fillMaxWidth()

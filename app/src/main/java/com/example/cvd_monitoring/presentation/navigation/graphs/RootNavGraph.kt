@@ -52,5 +52,7 @@ object Graph {
     const val AUTHENTICATION = "auth_graph"
     const val PATIENT_HOME = "CurrentPatient/{slug}/get"
     const val DOCTOR_HOME = "CurrentDoctor/{slug}/get"
-    const val DETAILS = "root_graph"
+    const val ANALYSIS = "analysis_graph"
+    const val UPDATE_DATA = "data_graph"
+    const val PATIENT_ACTIONS = "patient_actions_graph"
 }

@@ -1,6 +1,8 @@
 package com.example.cvd_monitoring.presentation.navigation.graphs.doctor_graph
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -16,7 +18,14 @@ import com.example.cvd_monitoring.presentation.navigation.graphs.Graph
 import com.example.cvd_monitoring.presentation.navigation.screens.ScreenContent
 import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.DoctorProfileScreen
 import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
+import com.example.cvd_monitoring.presentation.navigation.graphs.AnalysisScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.DataUpdateScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.PatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
+import com.example.cvd_monitoring.presentation.navigation.graphs.patientActionsNavGraph
+import com.example.cvd_monitoring.presentation.navigation.graphs.updateDataNavGraph
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DoctorHomeNavGraph(
     navController: NavHostController,
@@ -44,15 +53,14 @@ fun DoctorHomeNavGraph(
             DoctorProfileScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onUpdateContact = {
+                    DataUpdateScreen.DoctorData.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
+                },
             )
         }
 
-        composable(route = DoctorBottomBar.Settings.route) {
-            ScreenContent(
-                name = DoctorBottomBar.Settings.route,
-                onClick = {navController.navigate(Graph.DETAILS) }
-            )
-        }
+        updateDataNavGraph(navController = navController)
 
         composable(
             route = DoctorBottomBar.Patients.route,
@@ -61,7 +69,12 @@ fun DoctorHomeNavGraph(
             DoctorPatientsScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
-                onClick = {navController.navigate(Graph.DETAILS) }
+                onUpdateContact = { email ->
+                    val route = PatientActions.PatientProfile.getRouteWithSlug(email)
+                    if (route != null) {
+                        navController.navigate(route)
+                    }
+                }
             )
         }
 
@@ -72,12 +85,15 @@ fun DoctorHomeNavGraph(
         detailsNavGraph(
             navController = navController
         )
+        patientActionsNavGraph(
+            navController = navController
+        )
     }
 }
 
 fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
     navigation(
-        route = Graph.DETAILS,
+        route = Graph.ROOT,
         startDestination = DetailsScreen.Overview.route
     ) {
 //        composable(route = AuthScreen.Login.route) {

@@ -7,5 +7,6 @@ data class Patient(
     val height: Int,
     val mobile: String? = null,
     val user: UserPatient,
+    val hasCard: Boolean,
     val weight: Double,
 )
