@@ -50,6 +50,7 @@ fun PatientDetailScreen(
     navController: NavController,
     viewModel: PatientProfileViewModel = hiltViewModel(),
     slug: String,
+    onClickCardDetail : (String) -> Unit
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentPatient(slug)
@@ -179,7 +180,7 @@ fun PatientDetailScreen(
     {
         Button(
             onClick = {
-                // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -215,7 +216,9 @@ fun PatientDetailScreen(
     else{
         Button(
             onClick = {
-                // navController.navigate("${Screen.UpdateDataPatient.route}/$slug/data")
+                val email = viewModel.state.value.patient?.user?.email ?: return@Button
+                val emailBeforeAt = email.substringBefore("@")
+                onClickCardDetail(emailBeforeAt)
             },
             modifier = Modifier
                 .fillMaxWidth()

@@ -1,6 +1,7 @@
 package com.example.cvd_monitoring.domain.repository
 
 import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
+import com.example.cvd_monitoring.data.dto.CardBloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
@@ -8,6 +9,7 @@ import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PatientDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
 import com.example.cvd_monitoring.domain.model.analysis.BloodAnalysis
+import com.example.cvd_monitoring.domain.model.analysis.CardBloodAnalysis
 import com.example.cvd_monitoring.domain.model.analysis.CholesterolAnalysis
 import com.example.cvd_monitoring.domain.model.notifications.Notification
 import com.example.cvd_monitoring.domain.model.users.Patient
