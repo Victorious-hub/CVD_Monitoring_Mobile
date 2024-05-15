@@ -1,5 +1,6 @@
 package com.example.cvd_monitoring.data.repository
 
+import com.example.cvd_monitoring.data.dto.AppointmentDto
 import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
@@ -7,6 +8,7 @@ import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PatientDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
+import com.example.cvd_monitoring.data.dto.ScheduleDto
 import com.example.cvd_monitoring.data.remote.api.PatientApi
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.model.analysis.BloodAnalysis
@@ -17,11 +19,13 @@ import com.example.cvd_monitoring.domain.model.patients.PatientCard
 import com.example.cvd_monitoring.domain.model.users.PatientContact
 import com.example.cvd_monitoring.domain.model.users.PatientData
 import com.example.cvd_monitoring.domain.repository.PatientRepository
+import com.example.cvd_monitoring.utils.Resource
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class PatientRepositoryImpl @Inject constructor(
     private val api: PatientApi,
-    preferences: AuthPreferences,
+    private val preferences: AuthPreferences
 ) : PatientRepository {
 
     override suspend fun getPatients(): List<Patient> {
@@ -53,6 +57,7 @@ class PatientRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPatientCard(slug: String): PatientCardDto {
+        preferences.savePatientSlug(slug)
         return api.getPatientCard(slug)
     }
 
@@ -64,4 +69,15 @@ class PatientRepositoryImpl @Inject constructor(
         return api.updatePatientData(patient, slug)
     }
 
+    override suspend fun scheduleList(): List<ScheduleDto> {
+        return api.scheduleList()
+    }
+
+    override suspend fun createAppointment(slug: String, appointment: AppointmentDto): AppointmentDto {
+        return api.createAppointment(slug, appointment)
+    }
+
+    override suspend fun scheduleDetail(slug: String): ScheduleDto {
+        return api.scheduleDetail(slug)
+    }
 }

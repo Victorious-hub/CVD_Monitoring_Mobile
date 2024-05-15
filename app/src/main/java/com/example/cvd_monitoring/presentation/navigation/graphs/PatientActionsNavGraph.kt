@@ -1,8 +1,5 @@
 package com.example.cvd_monitoring.presentation.navigation.graphs
 
-import com.example.cvd_monitoring.presentation.doctors.patient_detail.PatientDetailScreen
-
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavGraphBuilder
@@ -11,68 +8,21 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.cvd_monitoring.domain.model.patients.PatientCard
-import com.example.cvd_monitoring.presentation.doctors.appointment.AppointmentScreen
-import com.example.cvd_monitoring.presentation.doctors.doctor_blood_create.BloodAnalysisCreateScreen
-import com.example.cvd_monitoring.presentation.doctors.doctor_cholesterol_create.CholesterolAnalysisCreateScreen
-import com.example.cvd_monitoring.presentation.doctors.patient_card.PatientCardDetailScreen
-import com.example.cvd_monitoring.presentation.patients.patient_card.PatientCardScreen
+import com.example.cvd_monitoring.presentation.doctors.schedule.ScheduleScreen
+import com.example.cvd_monitoring.presentation.patients.patient_appointment.PatientAppointmentScreen
+import com.example.cvd_monitoring.presentation.patients.patient_doctor_list.PatientDoctorListScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.PATIENT_ACTIONS,
-        startDestination = PatientActions.PatientProfile.route
+        startDestination = DoctorPatientActions.PatientProfile.route
     ) {
         composable(
-            route = PatientActions.PatientProfile.route,
+            route = PatientActions.DoctorList.route,
             arguments = listOf(navArgument("slug") { type = NavType.StringType })
         ) { backstackEntry ->
-            PatientDetailScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
-                onClickCardDetail = { email ->
-                    val route = PatientActions.PatientCard.getRouteWithSlug(email)
-                    if (route != null) {
-                        navController.navigate(route)
-                    }
-                },
-            )
-        }
-
-        composable(
-            route = PatientActions.PatientCard.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType })
-        ) { backstackEntry ->
-            PatientCardDetailScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
-                onClickCreateBloodAnalysis = { email ->
-                    val route = PatientActions.PatientBlood.getRouteWithSlug(email)
-                    if (route != null) {
-                        navController.navigate(route)
-                    }
-                },
-                onClickCreateCholesterolAnalysis = { email ->
-                    val route = PatientActions.PatientCholesterol.getRouteWithSlug(email)
-                    if (route != null) {
-                        navController.navigate(route)
-                    }
-                },
-                onClickCreateAppointment = { email ->
-                    val route = PatientActions.PatientAppointment.getRouteWithSlug(email)
-                    if (route != null) {
-                        navController.navigate(route)
-                    }
-                },
-            )
-        }
-
-        composable(
-            route = PatientActions.PatientBlood.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType})
-        ) { backstackEntry ->
-            BloodAnalysisCreateScreen(
+            PatientDoctorListScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
             )
@@ -80,37 +30,19 @@ fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
 
         composable(
             route = PatientActions.PatientAppointment.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType})
-        ) { backstackEntry ->
-            AppointmentScreen(
+        ) {
+            ScheduleScreen(
                 navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
             )
         }
 
         composable(
-            route = PatientActions.PatientCholesterol.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType})
-        ) { backstackEntry ->
-            CholesterolAnalysisCreateScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
-            )
-        }
-
-        composable(
-            route = PatientActions.PatientProfile.route,
+            route = PatientActions.PatientAppointmentCreate.route,
             arguments = listOf(navArgument("slug") { type = NavType.StringType })
-        ) { backstackEntry ->
-            PatientDetailScreen(
+        ) {backstackEntry ->
+            PatientAppointmentScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
-                onClickCardDetail = { email ->
-                    val route = PatientActions.PatientCard.getRouteWithSlug(email)
-                    if (route != null) {
-                        navController.navigate(route)
-                    }
-                },
             )
         }
 
@@ -118,11 +50,9 @@ fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
 }
 
 sealed class PatientActions(val route: String) {
-    data object PatientProfile: DataUpdateScreen(route = "updateData/{slug}/data")
-    data object PatientCard : DataUpdateScreen(route = "patientCard/{slug}")
-    data object PatientBlood : DataUpdateScreen(route = "createBloodAnalysis/{slug}")
-    data object PatientCholesterol : DataUpdateScreen(route = "createCholesterolAnalysis/{slug}")
-    data object PatientAppointment : DataUpdateScreen(route = "patientAppointment/{slug}/create")
+    data object DoctorList: PatientActions(route = "doctorList/{slug}")
+    data object PatientAppointment : PatientActions(route = "scheduleList")
+    data object PatientAppointmentCreate : PatientActions(route = "patientAppointment/{slug}")
 }
 
 fun PatientActions.getRouteWithSlug(slug: String?): String? {

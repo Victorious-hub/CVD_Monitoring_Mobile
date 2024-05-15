@@ -65,11 +65,11 @@ class PatientUpdateViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = CurrentPatientState(patient = result.data)
-                    state.value.patient?.let { setAgeValue(it.age.toString()) }
-                    state.value.patient?.let { setHeightValue(it.height.toString()) }
-                    state.value.patient?.let { setWeightValue(it.weight.toString()) }
-                    state.value.patient?.let { setGenderValue(it.gender) }
-                    state.value.patient?.let { it.birthday?.let { it1 -> setBirthdayValue(it1) } }
+//                    state.value.patient?.let { setAgeValue(it.age.toString()) }
+//                    state.value.patient?.let { setHeightValue(it.height.toString()) }
+//                    state.value.patient?.let { setWeightValue(it.weight.toString()) }
+//                    state.value.patient?.let { setGenderValue(it.gender) }
+//                    state.value.patient?.let { it.birthday?.let { it1 -> setBirthdayValue(it1) } }
                 }
                 is Resource.Error -> {
                     _state.value = CurrentPatientState(

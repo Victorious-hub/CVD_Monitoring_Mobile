@@ -341,11 +341,7 @@ fun AppointmentScreen(
             )
         }
     }
-
-
-
-
-
+    
 }
 
 @Composable

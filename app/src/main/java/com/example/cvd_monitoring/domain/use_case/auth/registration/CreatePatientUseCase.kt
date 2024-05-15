@@ -10,8 +10,8 @@ class CreatePatientUseCase @Inject constructor (
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(firstName: String, lastName: String, email: String, password: String): UserDto {
-        val user = User(firstName, lastName, email, password)
-        val createUserRequest = CreateUserRequest(user)
-        return authRepository.createPatient(createUserRequest)
+        val patient = UserDto(firstName, lastName, email, password)
+        return authRepository.createPatient(CreateUserRequest(patient))
     }
+
 }

@@ -20,7 +20,9 @@ import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.Doc
 import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
 import com.example.cvd_monitoring.presentation.navigation.graphs.AnalysisScreen
 import com.example.cvd_monitoring.presentation.navigation.graphs.DataUpdateScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.DoctorPatientActions
 import com.example.cvd_monitoring.presentation.navigation.graphs.PatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.doctorPatientActionsNavGraph
 import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import com.example.cvd_monitoring.presentation.navigation.graphs.patientActionsNavGraph
 import com.example.cvd_monitoring.presentation.navigation.graphs.updateDataNavGraph
@@ -70,7 +72,7 @@ fun DoctorHomeNavGraph(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
                 onUpdateContact = { email ->
-                    val route = PatientActions.PatientProfile.getRouteWithSlug(email)
+                    val route = DoctorPatientActions.PatientProfile.getRouteWithSlug(email)
                     if (route != null) {
                         navController.navigate(route)
                     }
@@ -85,7 +87,7 @@ fun DoctorHomeNavGraph(
         detailsNavGraph(
             navController = navController
         )
-        patientActionsNavGraph(
+        doctorPatientActionsNavGraph(
             navController = navController
         )
     }

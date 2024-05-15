@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
-import com.example.cvd_monitoring.domain.use_case.analysis.create_blood.CardBloodAnalysisUseCase
 import com.example.cvd_monitoring.domain.use_case.treatment.appointment.AppointmentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

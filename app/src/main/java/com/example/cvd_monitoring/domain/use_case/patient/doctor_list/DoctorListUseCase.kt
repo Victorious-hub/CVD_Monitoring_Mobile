@@ -1,8 +1,6 @@
 package com.example.cvd_monitoring.domain.use_case.patient.doctor_list
 
 import com.example.cvd_monitoring.data.dto.toDoctorList
-import com.example.cvd_monitoring.data.dto.toNotification
-import com.example.cvd_monitoring.domain.model.notifications.Notification
 import com.example.cvd_monitoring.domain.model.patients.DoctorList
 import com.example.cvd_monitoring.domain.repository.PatientRepository
 import com.example.cvd_monitoring.utils.Resource

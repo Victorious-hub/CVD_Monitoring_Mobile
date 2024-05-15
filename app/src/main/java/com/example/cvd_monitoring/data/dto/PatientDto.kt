@@ -6,16 +6,7 @@ import com.example.cvd_monitoring.domain.model.users.UserPatient
 import com.google.gson.annotations.SerializedName
 
 data class PatientDto(
-    @SerializedName("age")
-    val age: Int,
-    @SerializedName("birthday")
-    val birthday: String? = null,
-    @SerializedName("gender")
-    val gender: String,
-    @SerializedName("height")
-    val height: Int,
-    @SerializedName("weight")
-    val weight: Double,
+    val address: String,
     @SerializedName("has_card")
     val hasCard: Boolean,
     @SerializedName("user")
@@ -25,11 +16,7 @@ data class PatientDto(
 
 fun PatientDto.toPatient(): Patient {
     return Patient(
-        age = age,
-        birthday = birthday,
-        gender = gender,
-        height = height,
-        weight = weight,
+        address = address,
         mobile = mobile,
         hasCard = hasCard,
         user = user.toUserPatient(),

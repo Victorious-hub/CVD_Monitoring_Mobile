@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.domain.use_case.auth.registration.CreatePatientUseCase
-import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.navigation.graphs.AuthScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -78,7 +78,7 @@ class RegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val createdUser = createPatientUseCase(firstName, lastName, email, password)
-                _eventFlow.emit(UiEvents.NavigateEvent(Screen.SignIn.route))
+                _eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
                 Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 errorMessage = e.message.toString()

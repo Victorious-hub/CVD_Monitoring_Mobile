@@ -1,33 +1,19 @@
 package com.example.cvd_monitoring.presentation.doctors.doctor_blood_create
 
-import com.example.cvd_monitoring.presentation.auth.register_screen.PasswordValidationState
-import com.example.cvd_monitoring.presentation.auth.register_screen.ValidatePassword
-
 
 import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
-import com.example.cvd_monitoring.domain.model.patients.PatientCard
 import com.example.cvd_monitoring.domain.use_case.analysis.create_blood.CardBloodAnalysisUseCase
-import com.example.cvd_monitoring.domain.use_case.auth.registration.CreatePatientUseCase
-import com.example.cvd_monitoring.presentation.Screen
-import com.example.cvd_monitoring.presentation.navigation.graphs.AuthScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

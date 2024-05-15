@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,47 +34,46 @@ fun PatientDoctorListItem(
     doctor: DoctorList,
     onItemClick: (DoctorList) -> Unit
 ) {
-    val painter =
+    val image =
         rememberImagePainter(data = "http://127.0.0.1:8000${doctor.profileImage}")
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 60.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
+        Spacer(modifier = Modifier.height(50.dp))
+
         Card(
             modifier = Modifier
                 .padding(8.dp, 4.dp)
                 .fillMaxWidth()
-                .clickable { onItemClick(doctor) }
-                .height(100.dp),
+                .height(150.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Row(
                 Modifier
-                    .padding(10.dp)
+                    .padding(4.dp)
                     .fillMaxSize()
             ) {
                 Image(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .weight(0.1f),
-                    painter = painter,
+                        .weight(0.3f),
+                    painter = image,
                     contentDescription = "Account Image"
                 )
                 Column(
                     verticalArrangement = Arrangement.Top,
                     modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxHeight()
                         .weight(0.6f)
-                        .padding(start = 8.dp)
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 3.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = doctor.user.firstName,
+                            text = "First Name",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -80,41 +81,81 @@ fun PatientDoctorListItem(
                             )
                         )
                     }
+                    Text(
+                        text = doctor.user.firstName ?: "No info",
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                            color = Color.Black
+                        )
+                    )
+                    Divider(
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
+
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 3.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text =  doctor.user.lastName,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
+                            text = "Last Name",
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
                                 color = Color.Black
                             )
                         )
                     }
+                    Text(
+                        text = doctor.user.lastName ?: "No info",
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                            color = Color.Black
+                        )
+                    )
+                    Divider(
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
+
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 3.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text =  doctor.user.email,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
+                            text = "Email",
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
                                 color = Color.Black
                             )
                         )
                     }
+                    Text(
+                        text = doctor.user.email ?: "No info",
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                            color = Color.Black
+                        )
+                    )
+                    Divider(
+                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
                 }
             }
         }
+
     }
+
 }
 

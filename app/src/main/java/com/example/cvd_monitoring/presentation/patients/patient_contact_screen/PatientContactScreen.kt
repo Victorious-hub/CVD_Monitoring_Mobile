@@ -56,6 +56,7 @@ fun PatientContactScreen(
     val firstNameState = viewModel.firstNameState.value
     val lastNameState = viewModel.lastNameState.value
     val mobileState  = viewModel.mobileState.value
+    val addressState  = viewModel.adressState.value
 
     val isFocused by remember { mutableStateOf(false) }
     Column(
@@ -117,6 +118,24 @@ fun PatientContactScreen(
             label = {
                 Text(
                     text = "Mobile",
+                    color = Color.Gray
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Red,
+                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
+                cursorColor = Color.Red,
+            ),
+        )
+        TextField(
+            value = addressState.text,
+            onValueChange = { viewModel.setAdressValue(it) },
+            label = {
+                Text(
+                    text = "Address",
                     color = Color.Gray
                 )
             },

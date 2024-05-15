@@ -1,6 +1,8 @@
 package com.example.cvd_monitoring.presentation.patients.patient_data_screen
 
 
+import android.annotation.SuppressLint
+import android.icu.util.Calendar
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -64,9 +66,17 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.toSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.ui.platform.LocalDensity
+import com.example.cvd_monitoring.presentation.ui.theme.Purple40
+import com.example.cvd_monitoring.presentation.ui.theme.Purple80
+import com.example.cvd_monitoring.presentation.ui.theme.PurpleGrey80
 
+@SuppressLint("SimpleDateFormat")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -87,8 +97,22 @@ fun PatientUpdateScreen(
     val heightState = viewModel.heightState.value
     val weightState  = viewModel.weightState.value
     val genderState  = viewModel.genderState.value
-
     val birthdayState  = viewModel.birthdayState.value
+    val dateFormatter = android.icu.text.SimpleDateFormat("yyyy-MM-dd")
+
+    val date = remember {
+        Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2025)
+            set(Calendar.MONTH, 7)
+            set(Calendar.DAY_OF_MONTH, 23)
+        }.timeInMillis
+    }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = date,
+        yearRange = 1990..2025
+    )
+    var showDatePicker by remember { mutableStateOf(false) }
+
 
     val context = LocalContext.current
     var pickedDate by remember {
@@ -239,6 +263,7 @@ fun PatientUpdateScreen(
         TextField(
             value = birthdayState.text,
             onValueChange = { viewModel.setBirthdayValue(it) },
+            readOnly = true,
             label = {
                 Text(
                     text = "Birthday",
@@ -254,42 +279,18 @@ fun PatientUpdateScreen(
                 cursorColor = Color.Red,
             ),
         )
-
         Button(
             onClick = {
-                dateDialogState.show()
+                showDatePicker = true
             },
-            modifier = Modifier.align(Alignment.Start),
+            modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black,
+                containerColor = Color(0xFFa5051f),
                 contentColor = Color.White
             ),
+            shape = RoundedCornerShape(20.dp)
         ) {
-            Text(text = "Pick date")
-        }
-
-        MaterialDialog(
-            dialogState = dateDialogState,
-            buttons = {
-                positiveButton(text = "Ok") {
-                    Toast.makeText(
-                        context,
-                        "Date updated",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                negativeButton(text = "Cancel")
-            }
-        ) {
-            datepicker(
-                initialDate = LocalDate.now(),
-                title = "Pick a date",
-                allowedDateValidator = {
-                    it.dayOfMonth % 2 == 1
-                }
-            ) {
-                pickedDate = it
-            }
+            Text(text = "Date Picker")
         }
 
         Button(
@@ -303,8 +304,63 @@ fun PatientUpdateScreen(
             ),
             shape = RoundedCornerShape(20.dp)
         ) {
-            Text("Update")
+            Text("Update Data")
         }
-
     }
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val selectedDate = Calendar.getInstance().apply {
+                            timeInMillis = datePickerState.selectedDateMillis!!
+                        }
+                        if (selectedDate.after(Calendar.getInstance())) {
+                            Toast.makeText(
+                                context,
+                                "Selected date ${dateFormatter.format(selectedDate.time)} saved",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            showDatePicker = false
+                            viewModel.birthdayState.value.text =
+                                dateFormatter.format(selectedDate.time)
+                            viewModel.setBirthdayValue(viewModel.birthdayState.value.text)
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Selected date should be after today, please select again",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                ) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDatePicker = false
+                    }
+                ) { Text("Cancel") }
+            },
+            colors = androidx.compose.material3.DatePickerDefaults.colors(
+                containerColor = PurpleGrey80,
+            )
+        )
+        {
+            DatePicker(
+                state = datePickerState,
+                colors = androidx.compose.material3.DatePickerDefaults.colors(
+                    todayContentColor = Purple40,
+                    todayDateBorderColor = Purple80,
+                    selectedDayContentColor = Purple80,
+                    dayContentColor = Color.Gray,
+                    selectedDayContainerColor = Purple40,
+                )
+            )
+        }
+    }
+
+
 }

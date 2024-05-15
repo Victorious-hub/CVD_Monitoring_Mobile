@@ -9,16 +9,17 @@ import com.squareup.moshi.JsonClass
 data class PatientCardDto(
     @SerializedName("abnormal_conditions")
     val abnormalConditions: String,
-    @SerializedName("active")
     val active: Double,
-    @SerializedName( "alcohol")
     val alcohol: Double,
     @SerializedName("blood_type")
     val bloodType: String,
-    @SerializedName("patient")
     val patient: PatientDto,
-    @SerializedName("smoke")
-    val smoke: Double
+    val smoke: Double,
+    val weight: Double,
+    val height: Int,
+    val gender: String,
+    val birthday: String,
+    val age: Int,
 )
 
 fun PatientCardDto.toPatientCard(): PatientCard {
@@ -29,5 +30,10 @@ fun PatientCardDto.toPatientCard(): PatientCard {
         bloodType = bloodType,
         patient = patient,
         smoke = smoke,
+        weight = weight,
+        height = height,
+        gender = gender,
+        birthday = birthday,
+        age = age,
     )
 }

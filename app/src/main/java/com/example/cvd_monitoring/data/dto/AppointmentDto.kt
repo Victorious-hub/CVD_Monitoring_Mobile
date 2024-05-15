@@ -3,10 +3,10 @@ package com.example.cvd_monitoring.data.dto
 import com.google.gson.annotations.SerializedName
 
 data class AppointmentDto(
-    @SerializedName("patient_slug")
-    val patient_slug: String,
+    @SerializedName("doctor_slug")
+    val doctorSlug: String,
     @SerializedName("appointment_date")
-    val appointment_date: String,
+    val appointmentDate: String,
     @SerializedName("appointment_time")
-    val appointment_time: String,
+    val appointmentTime: String,
 )

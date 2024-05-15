@@ -67,7 +67,6 @@ fun BloodAnalysisCreateScreen(
     slug: String,
 ) {
 
-    Log.d("qwrqwrqwrqwrq", slug)
     val image = painterResource(R.drawable.heart)
     val apHiState = viewModel.apHiState.value
     val apLoState = viewModel.apLoState.value

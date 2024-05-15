@@ -64,21 +64,10 @@ fun PatientListItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = patient.age.toString(),
+                    text = patient.address.toString(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = patient.weight.toString(),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = patient.height.toString(),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
             }
         }
     }

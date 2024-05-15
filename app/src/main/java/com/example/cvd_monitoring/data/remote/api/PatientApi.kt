@@ -1,5 +1,6 @@
 package com.example.cvd_monitoring.data.remote.api
 
+import com.example.cvd_monitoring.data.dto.AppointmentDto
 import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
@@ -7,6 +8,7 @@ import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PatientDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
+import com.example.cvd_monitoring.data.dto.ScheduleDto
 import com.example.cvd_monitoring.domain.model.analysis.BloodAnalysis
 import com.example.cvd_monitoring.domain.model.analysis.CholesterolAnalysis
 import com.example.cvd_monitoring.domain.model.notifications.Notification
@@ -17,6 +19,7 @@ import com.example.cvd_monitoring.domain.model.users.PatientContact
 import com.example.cvd_monitoring.domain.model.users.PatientData
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
@@ -41,4 +44,10 @@ interface PatientApi {
     suspend fun getPatientPrescriptions(@Path("slug") slug: String): List<PrescriptionDto>
     @GET("users/v1/patients/doctors/{slug}")
     suspend fun getDoctorList(@Path("slug") slug: String): List<DoctorListDto>
+    @GET("users/v1/schedule")
+    suspend fun scheduleList(): List<ScheduleDto>
+    @GET("users/v1/schedule/detail/{slug}")
+    suspend fun scheduleDetail(@Path("slug") slug: String): ScheduleDto
+    @POST("users/v1/schedule/create/{slug}")
+    suspend fun createAppointment(@Path("slug") slug: String, @Body appointment: AppointmentDto): AppointmentDto
 }
