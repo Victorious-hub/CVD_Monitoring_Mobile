@@ -98,7 +98,7 @@ fun ScheduleListItemScreen(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Medication Description",
+                            text = "First Name",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -126,7 +126,7 @@ fun ScheduleListItemScreen(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Dosage",
+                            text = "Last Name",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -154,7 +154,7 @@ fun ScheduleListItemScreen(
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
-                                text = "Available Time", // Replace with your desired label
+                                text = "Available Time",
                                 style = TextStyle(
                                     color = Color.Black,
                                     fontSize = 16.sp,

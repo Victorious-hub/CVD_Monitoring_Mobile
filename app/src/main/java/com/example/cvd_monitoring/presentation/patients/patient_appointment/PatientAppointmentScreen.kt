@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.style.TextOverflow
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
+import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.runtime.*
 
 import java.time.LocalDate
@@ -46,7 +51,7 @@ import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun PatientAppointmentScreen(
     navController: NavController,
@@ -62,6 +67,23 @@ fun PatientAppointmentScreen(
     val appointmentTime = viewModel.appointmentTimeState.value
     val isFocused by remember { mutableStateOf(false) }
 
+    val dateList = mutableListOf<String>()
+    var selectedTextDate by remember {
+        mutableStateOf("Select Date")
+    }
+    var isExpandedDateType by remember {
+        mutableStateOf(false)
+    }
+    viewModel.state.value.schedule?.availableTime?.let { dateList.addAll(it.keys) }
+
+    val timeList = mutableListOf<String>()
+    var selectedTextTime by remember {
+        mutableStateOf("Select Time")
+    }
+    var isExpandedTimeType by remember {
+        mutableStateOf(false)
+    }
+
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -72,7 +94,7 @@ fun PatientAppointmentScreen(
             modifier = Modifier
                 .padding(8.dp, 4.dp)
                 .fillMaxWidth()
-                .height(275.dp),
+                .height(280.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Row(
@@ -92,7 +114,7 @@ fun PatientAppointmentScreen(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Email",
+                            text = "First Name",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -120,7 +142,7 @@ fun PatientAppointmentScreen(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Medication Description",
+                            text = "Last Name",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -148,7 +170,7 @@ fun PatientAppointmentScreen(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Dosage",
+                            text = "Email",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
@@ -214,7 +236,6 @@ fun PatientAppointmentScreen(
         }
     }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -223,43 +244,72 @@ fun PatientAppointmentScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        TextField(
-            value = appointmentDate.text,
-            onValueChange = { viewModel.setAppointmentDateValue(it) },
-            label = {
-                Text(
-                    text = "Appointment Date",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
+        ExposedDropdownMenuBox(
+            expanded = isExpandedDateType,
+            onExpandedChange = {isExpandedDateType = !isExpandedDateType}
+        ) {
+            TextField(
+                value = selectedTextDate,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedDateType)},
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        TextField(
-            value = appointmentTime.text,
-            onValueChange = { viewModel.setAppointmentTimeValue(it) },
-            label = {
-                Text(
-                    text = "Appointment Time",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
+            ExposedDropdownMenu(expanded = isExpandedDateType, onDismissRequest = { isExpandedDateType = false }) {
+                dateList.forEachIndexed { index, text ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedTextDate = dateList[index]
+                            viewModel.appointmentDateState.value.text = selectedTextDate
+                            isExpandedDateType = false
+                            selectedTextTime = "Select Time"
+                        }
+                    ) {
+                        Text(text = text)
+                    }
+                }
+            }
+
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        val chosenKey = viewModel.appointmentDateState.value.text
+        if (viewModel.state.value.schedule?.availableTime?.containsKey(chosenKey) == true) {
+            val lst = viewModel.state.value.schedule?.availableTime!![chosenKey]!!
+            timeList.clear()
+            timeList.addAll(lst)
+        }
+
+        ExposedDropdownMenuBox(
+            expanded = isExpandedTimeType,
+            onExpandedChange = {isExpandedTimeType = !isExpandedTimeType}
+        ) {
+            TextField(
+                value = selectedTextTime,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedTimeType)},
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(expanded = isExpandedTimeType, onDismissRequest = { isExpandedTimeType = false }) {
+                timeList.forEachIndexed { index, text ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedTextTime = timeList[index]
+                            viewModel.appointmentTimeState.value.text = selectedTextTime
+                            isExpandedTimeType = false
+                        }
+                    ) {
+                        Text(text = text)
+                    }
+                }
+            }
+
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
 
         Button(
