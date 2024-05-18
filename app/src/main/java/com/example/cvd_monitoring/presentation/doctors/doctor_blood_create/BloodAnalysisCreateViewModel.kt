@@ -10,6 +10,9 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.analysis.create_blood.CardBloodAnalysisUseCase
+import com.example.cvd_monitoring.presentation.navigation.graphs.AuthScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.DoctorPatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -20,8 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class BloodAnalysisCreateViewModel @Inject constructor(
     private val cardBloodAnalysisUseCase: CardBloodAnalysisUseCase,
-    private val authPreferences: AuthPreferences
+    private val authPreferences: AuthPreferences,
 ) : ViewModel(){
+
 
     private val _apHiState = mutableStateOf(TextFieldState())
     val apHiState: State<TextFieldState> = _apHiState
@@ -57,11 +61,10 @@ class BloodAnalysisCreateViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val createdUser =
-                    authPreferences.getUserEmail().firstOrNull()?.substringBefore("@")
-                        ?.let { cardBloodAnalysisUseCase(it, slug, apHi.toInt(), apLo.toInt(), glucose.toInt()) }
-                //_eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
-                Log.d("SignUpViewModel", "Sign up successful")
+                authPreferences.getUserEmail().firstOrNull()?.substringBefore("@")
+                    ?.let { cardBloodAnalysisUseCase(it, slug, apHi.toInt(), apLo.toInt(), glucose.toInt()) }
+                DoctorPatientActions.PatientProfile.getRouteWithSlug(slug)
+                    ?.let { UiEvents.NavigateEvent(it) }?.let { _eventFlow.emit(it) }
             } catch (e: Exception) {
                 var errorMessage = e.message.toString()
                 Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)

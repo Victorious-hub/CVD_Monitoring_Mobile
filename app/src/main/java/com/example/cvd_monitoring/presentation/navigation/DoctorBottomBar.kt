@@ -1,6 +1,7 @@
 package com.example.cvd_monitoring.presentation.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -26,7 +27,7 @@ sealed class DoctorBottomBar(
     data object Patients : DoctorBottomBar(
         route = "doctorPatientList/{slug}/get",
         title = "Patients",
-        icon = Icons.Default.Person
+        icon = Icons.Default.Face
     )
 
     data object Appointment : DoctorBottomBar(

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -52,6 +53,7 @@ fun PatientDetailScreen(
     slug: String,
     onClickCardDetail : (String) -> Unit,
     onClickCreateCard : (String) -> Unit,
+    onClickBackToMain : () -> Unit
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentPatient(slug)
@@ -252,6 +254,41 @@ fun PatientDetailScreen(
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
             }
+        }
+    }
+
+    Button(
+        onClick = {
+            onClickBackToMain()
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 580.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                contentDescription = "Home Button Icon",
+                tint = Color.Black
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "Back to main",
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "Arrow Right Icon",
+                tint = Color.Black,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
         }
     }
 

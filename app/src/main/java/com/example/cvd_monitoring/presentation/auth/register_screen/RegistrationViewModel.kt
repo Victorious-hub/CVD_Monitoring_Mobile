@@ -79,7 +79,6 @@ class RegistrationViewModel @Inject constructor(
             try {
                 val createdUser = createPatientUseCase(firstName, lastName, email, password)
                 _eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
-                Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
                 Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)

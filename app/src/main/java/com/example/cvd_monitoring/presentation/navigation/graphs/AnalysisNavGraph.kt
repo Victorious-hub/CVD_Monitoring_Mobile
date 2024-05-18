@@ -7,6 +7,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
+import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
+import com.example.cvd_monitoring.presentation.patients.patient_conclusion.PatientConclusionScreen
 
 import com.example.cvd_monitoring.presentation.treatment.blood_analysis.BloodAnalysisScreen
 import com.example.cvd_monitoring.presentation.treatment.cholesterol_analysis.CholesterolAnalysisScreen
@@ -24,6 +27,9 @@ fun NavGraphBuilder.analysisNavGraph(navController: NavHostController) {
             BloodAnalysisScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
             )
         }
 
@@ -34,6 +40,9 @@ fun NavGraphBuilder.analysisNavGraph(navController: NavHostController) {
             CholesterolAnalysisScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
             )
         }
 
@@ -44,6 +53,22 @@ fun NavGraphBuilder.analysisNavGraph(navController: NavHostController) {
             PatientPrescriptionListScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
+            )
+        }
+
+        composable(
+            route = AnalysisScreen.Conclusion.route,
+            arguments = listOf(navArgument("slug") { type = NavType.StringType })
+        ) { backstackEntry ->
+            PatientConclusionScreen(
+                navController,
+                slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
             )
         }
 
@@ -54,6 +79,7 @@ sealed class AnalysisScreen(val route: String) {
     data object Blood : AnalysisScreen(route = "patientBlood/{slug}/get")
     data object Cholesterol : AnalysisScreen(route = "patientCholesterol/{slug}/get")
     data object Prescription : AnalysisScreen(route = "patientPrescription/{slug}/get")
+    data object Conclusion : AnalysisScreen(route = "patientConclusion/{slug}/get")
 }
 
 fun AnalysisScreen.getRouteWithSlug(slug: String?): String? {

@@ -6,11 +6,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
+import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.domain.use_case.doctor.current_doctor.CurrentDoctorUseCase
 import com.example.cvd_monitoring.domain.use_case.doctor.doctor_update.DoctorContactUseCase
 import com.example.cvd_monitoring.presentation.doctors.doctor_profile_screen.CurrentDoctorState
+import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
+import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
+import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -38,6 +44,9 @@ class DoctorContactViewModel @Inject constructor(
     private val _state = mutableStateOf(CurrentDoctorState())
     val state: State<CurrentDoctorState> = _state
 
+    private val  _eventFlow = MutableSharedFlow<UiEvents>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     fun getCurrentUser(slug: String) {
         currentDoctorUseCase(slug).onEach { result ->
             when (result) {
@@ -56,6 +65,7 @@ class DoctorContactViewModel @Inject constructor(
                 is Resource.Loading -> {
                     _state.value = CurrentDoctorState(isLoading = true)
                 }
+
             }
         }.launchIn(viewModelScope)
     }
@@ -68,6 +78,7 @@ class DoctorContactViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val createdUser = doctorContactUseCase(firstName, lastName, slug)
+                _eventFlow.emit(UiEvents.NavigateEvent(DoctorBottomBar.Profile.getRouteWithSlug(slug)))
                 Log.d("SignUpViewModel", "Sign up successful: $createdUser")
             } catch (e: Exception) {
                 val errorMessage = e.message.toString()

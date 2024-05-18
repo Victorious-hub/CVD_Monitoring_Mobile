@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -98,146 +100,31 @@ class MainActivity : ComponentActivity() {
 fun DoctorPatientsScreen(
 
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxHeight()
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
-
-        Card(
-            modifier = Modifier
-                .padding(8.dp, 4.dp)
-                .fillMaxWidth()
-                .height(230.dp),
-            shape = MaterialTheme.shapes.medium
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .fillMaxWidth().padding(bottom = 3.dp)
         ) {
-            Row(
-                Modifier
-                    .padding(4.dp)
+            Text(
+                text = "Your don't have any blood analysis yet",
+                fontWeight = FontWeight.Bold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.Black
+                ),
+                modifier = Modifier
                     .fillMaxSize()
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Top,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxHeight()
-                        .weight(0.6f)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .fillMaxWidth().padding(bottom = 3.dp)
-                    ) {
-                        Text(
-                            text = "Medication Name",
-                            style = TextStyle(
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                    Text(
-                        text = "cholesterolAnalysis.cholesterol.toString()" ?: "No info",
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    )
-                    Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-                        color = Color.Gray
-                    )
+                    .wrapContentHeight()
+                    .padding(16.dp),
+                textAlign = TextAlign.Center,
+            )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .fillMaxWidth().padding(bottom = 3.dp)
-                    ) {
-                        Text(
-                            text = "Medication Description",
-                            style = TextStyle(
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                    Text(
-                        text = "cholesterolAnalysis.hdlCholesterol.toString()" ?: "No info",
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    )
-                    Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-                        color = Color.Gray
-                    )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .fillMaxWidth().padding(bottom = 3.dp)
-                    ) {
-                        Text(
-                            text = "Dosage",
-                            style = TextStyle(
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                    Text(
-                        text = "cholesterolAnalysis.ldlCholesterol.toString()" ?: "No info",
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    )
-                    Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-                        color = Color.Gray
-                    )
-
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .fillMaxWidth().padding(bottom = 3.dp)
-                    ) {
-                        Text(
-                            text = "Created at",
-                            style = TextStyle(
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                    Text(
-                        text = "cholesterolAnalysis.triglycerides.toString()" ?: "No info",
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    )
-                    Divider(
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-                        color = Color.Gray
-                    )
-
-                }
-            }
         }
-
     }
 }

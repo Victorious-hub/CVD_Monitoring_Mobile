@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OverviewViewModel @Inject constructor(
+class UserHomeViewModel @Inject constructor(
     private val authPreferences: AuthPreferences,
 ) : ViewModel(){
 
@@ -28,6 +28,9 @@ class OverviewViewModel @Inject constructor(
 
     private val _slugState = mutableStateOf(TextFieldState())
     val slugState: State<TextFieldState> = _slugState
+
+    private val _roleState = mutableStateOf(TextFieldState())
+    val roleState: State<TextFieldState> = _roleState
 
     var errorMessage: String by mutableStateOf("")
     private val  _eventFlow = MutableSharedFlow<UiEvents>()
@@ -39,12 +42,9 @@ class OverviewViewModel @Inject constructor(
 
     fun getPatientSlug() {
         viewModelScope.launch {
-            val patientSlug = authPreferences.getUserEmail().firstOrNull()?.substringBefore("@")
             try {
-                if (patientSlug != null) {
-                    slugState.value.text = patientSlug
-                }
-                Log.d("SignUpViewModel", "Sign up successful: $patientSlug")
+                slugState.value.text = authPreferences.getUserEmail().firstOrNull()?.substringBefore("@").toString()
+                roleState.value.text = authPreferences.getUserRole().firstOrNull().toString()
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
                 Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)

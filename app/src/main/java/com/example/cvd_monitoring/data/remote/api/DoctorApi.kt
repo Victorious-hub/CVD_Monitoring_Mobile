@@ -6,6 +6,8 @@ import com.example.cvd_monitoring.data.dto.CardBloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CardCholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.ConclusionDto
 import com.example.cvd_monitoring.data.dto.CreateCardRequestDto
+import com.example.cvd_monitoring.data.dto.DiagnosisDto
+import com.example.cvd_monitoring.data.dto.DoctorAppointmentDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.DoctorPatientsDto
 import com.example.cvd_monitoring.data.dto.MedicationDto
@@ -48,4 +50,8 @@ interface DoctorApi {
     suspend fun createPatientPrescription(@Path("slug") slug: String, @Body patientPrescription: PatientPrescriptionDto): PatientPrescriptionDto
     @POST("analysis/v1/patient/conclusion/{slug}/create")
     suspend fun createPatientConclusion(@Path("slug") slug: String, @Body patientConclusion: ConclusionDto): ConclusionDto
+    @GET("treatment/v1/appointments/{slug}")
+    suspend fun getDoctorAppointments(@Path("slug") slug: String): List<DoctorAppointmentDto>
+    @GET("analysis/v1/patient/diagnosis/{slug}")
+    suspend fun getPatientDiagnosis(@Path("slug") slug: String): DiagnosisDto
 }

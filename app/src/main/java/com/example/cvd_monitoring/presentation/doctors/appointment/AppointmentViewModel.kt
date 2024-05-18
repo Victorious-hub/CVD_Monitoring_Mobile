@@ -9,6 +9,8 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.treatment.appointment.AppointmentUseCase
+import com.example.cvd_monitoring.presentation.navigation.graphs.DoctorPatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -45,12 +47,13 @@ class AppointmentViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val createAppointment = authPreferences.getUserEmail().firstOrNull()
+                authPreferences.getUserEmail().firstOrNull()
                     ?.let { appointmentUseCase(it.substringBefore("@"), patientSlug, appointmentDate, appointmentTime) }
-                Log.d("SignUpViewModel", "Sign up successful")
+                DoctorPatientActions.PatientProfile.getRouteWithSlug(patientSlug)
+                    ?.let { UiEvents.NavigateEvent(it) }?.let { _eventFlow.emit(it) }
             } catch (e: Exception) {
                 var errorMessage = e.message.toString()
-                Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)
+                Log.e("Appointment error: $errorMessage", e.toString())
             }
         }
     }

@@ -14,10 +14,13 @@ import androidx.navigation.navigation
 import com.example.cvd_monitoring.presentation.doctors.appointment.AppointmentScreen
 import com.example.cvd_monitoring.presentation.doctors.card_create.CardCreateScreen
 import com.example.cvd_monitoring.presentation.doctors.conclusion.PatientConclusionScreen
+import com.example.cvd_monitoring.presentation.doctors.doctor_appointment.DoctorAppointmentScreen
 import com.example.cvd_monitoring.presentation.doctors.doctor_blood_create.BloodAnalysisCreateScreen
 import com.example.cvd_monitoring.presentation.doctors.doctor_cholesterol_create.CholesterolAnalysisCreateScreen
 import com.example.cvd_monitoring.presentation.treatment.medications.MedicationListScreen
 import com.example.cvd_monitoring.presentation.doctors.patient_card.PatientCardDetailScreen
+import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
+import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.presentation.treatment.prescription.PatientPrescriptionScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,6 +48,9 @@ fun NavGraphBuilder.doctorPatientActionsNavGraph(navController: NavHostControlle
                     if (route != null) {
                         navController.navigate(route)
                     }
+                },
+                onClickBackToMain = {
+                    navController.navigate(DoctorBottomBar.Home.route)
                 },
             )
         }
@@ -75,7 +81,6 @@ fun NavGraphBuilder.doctorPatientActionsNavGraph(navController: NavHostControlle
                     }
                 },
                 onClickMedicationList = { email ->
-                    val route = DoctorPatientActions.Medication
                     navController.navigate(DoctorPatientActions.Medication.route)
                 },
                 onClickConclusion = { email ->
@@ -166,6 +171,19 @@ fun NavGraphBuilder.doctorPatientActionsNavGraph(navController: NavHostControlle
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
             )
         }
+
+        composable(
+            route = DoctorPatientActions.DoctorAppointments.route,
+            arguments = listOf(navArgument("slug") { type = NavType.StringType })
+        ) { backstackEntry ->
+            DoctorAppointmentScreen(
+                navController,
+                slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(DoctorBottomBar.Home.route)
+                }
+            )
+        }
     }
 }
 
@@ -179,6 +197,7 @@ sealed class DoctorPatientActions(val route: String) {
     data object  Medication : DoctorPatientActions(route = "medicationList")
     data object PatientPrescription: DoctorPatientActions(route = "patientPrescription/{slug}")
     data object PatientConclusion: DoctorPatientActions(route = "patientConclusion/{slug}")
+    data object DoctorAppointments: DoctorPatientActions(route = "doctorAppointments/{slug}")
 
 }
 

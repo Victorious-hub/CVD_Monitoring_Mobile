@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.cvd_monitoring.presentation.doctors.schedule.ScheduleScreen
+import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
 import com.example.cvd_monitoring.presentation.patients.patient_appointment.PatientAppointmentScreen
 import com.example.cvd_monitoring.presentation.patients.patient_doctor_list.PatientDoctorListScreen
 
@@ -25,6 +26,9 @@ fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
             PatientDoctorListScreen(
                 navController,
                 slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
             )
         }
 
@@ -33,6 +37,9 @@ fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
         ) {
             ScheduleScreen(
                 navController,
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
             )
         }
 

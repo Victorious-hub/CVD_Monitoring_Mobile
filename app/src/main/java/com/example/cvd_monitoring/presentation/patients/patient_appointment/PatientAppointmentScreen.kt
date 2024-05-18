@@ -9,6 +9,7 @@ import androidx.compose.ui.text.style.TextOverflow
 
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,13 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import com.example.cvd_monitoring.common.UiEvents
+import com.example.cvd_monitoring.presentation.auth.register_screen.isValidEmail
+import kotlinx.coroutines.flow.collectLatest
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -66,6 +73,7 @@ fun PatientAppointmentScreen(
     val appointmentDate = viewModel.appointmentDateState.value
     val appointmentTime = viewModel.appointmentTimeState.value
     val isFocused by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     val dateList = mutableListOf<String>()
     var selectedTextDate by remember {
@@ -82,6 +90,28 @@ fun PatientAppointmentScreen(
     }
     var isExpandedTimeType by remember {
         mutableStateOf(false)
+    }
+    val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    Log.d("SignUpViewModel", event.route)
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Login Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
     }
 
 
@@ -314,7 +344,17 @@ fun PatientAppointmentScreen(
 
         Button(
             onClick = {
-                viewModel.createAppointment(slug)
+                if (appointmentDate.text.isEmpty())
+                {
+                    Toast.makeText(context, "Please, choose your appointment date", Toast.LENGTH_SHORT).show()
+                } else if (appointmentTime.text.isEmpty())
+                {
+                    Toast.makeText(context, "Please, choose your appointment time", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    viewModel.createAppointment(slug)
+                    Toast.makeText(context, "Appointment has been created successfully", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

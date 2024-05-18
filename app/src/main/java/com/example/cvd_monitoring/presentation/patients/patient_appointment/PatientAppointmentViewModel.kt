@@ -13,6 +13,8 @@ import com.example.cvd_monitoring.domain.use_case.doctor.schedule.ScheduleDetail
 import com.example.cvd_monitoring.domain.use_case.patient.appointment.PatientAppointmentUseCase
 import com.example.cvd_monitoring.domain.use_case.treatment.appointment.AppointmentUseCase
 import com.example.cvd_monitoring.presentation.doctors.schedule_detail.ScheduleDetailState
+import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
+import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -77,6 +79,7 @@ class PatientAppointmentViewModel @Inject constructor(
         _availableTimeState.value = availableTimeState.value.copy(text = value)
     }
 
+
     fun getScheduleDetail(slug: String) {
         scheduleDetailUseCase(slug).onEach { result ->
             when (result) {
@@ -108,6 +111,10 @@ class PatientAppointmentViewModel @Inject constructor(
             try {
                 val createAppointment = authPreferences.getUserEmail().firstOrNull()
                     ?.let { patientAppointmentUseCase(it.substringBefore("@"), doctorSlug, appointmentDate, appointmentTime) }
+
+                authPreferences.getUserEmail().firstOrNull()
+                    ?.let { PatientBottomBar.Profile.getRouteWithSlug(it.substringBefore("@")) }
+                    ?.let { UiEvents.NavigateEvent(it) }?.let { _eventFlow.emit(it) }
                 Log.d("SignUpViewModel", "Sign up successful")
             } catch (e: Exception) {
                 var errorMessage = e.message.toString()

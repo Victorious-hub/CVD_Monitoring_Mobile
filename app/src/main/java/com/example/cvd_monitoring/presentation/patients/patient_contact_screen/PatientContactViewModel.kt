@@ -6,11 +6,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
+import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.domain.use_case.patient.current_patient.CurrentPatientUseCase
 import com.example.cvd_monitoring.domain.use_case.patient.patient_contact.PatientContactUseCase
+import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
+import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.presentation.patients.patient_profile_screen.CurrentPatientState
 import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -54,6 +60,9 @@ class PatientContactViewModel @Inject constructor(
     private val _state = mutableStateOf(CurrentPatientState())
     val state: State<CurrentPatientState> = _state
 
+    private val  _eventFlow = MutableSharedFlow<UiEvents>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     fun getCurrentPatient(slug: String) {
         currentPatientUseCase(slug).onEach { result ->
             when (result) {
@@ -80,12 +89,12 @@ class PatientContactViewModel @Inject constructor(
         val firstName = firstNameState.value.text
         val lastName = lastNameState.value.text
         val mobile = mobileState.value.text
-        val adress = adressState.value.text
+        val address = adressState.value.text
 
         viewModelScope.launch {
             try {
-                val createdUser = patientContactUseCase(mobile, firstName, lastName, adress, slug)
-                Log.d("SignUpViewModel", "Sign up successful: $createdUser")
+                val createdUser = patientContactUseCase(mobile, firstName, lastName, address, slug)
+                _eventFlow.emit(UiEvents.NavigateEvent(PatientBottomBar.Profile.getRouteWithSlug(slug)))
             } catch (e: Exception) {
                 val errorMessage = e.message.toString()
                 Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)

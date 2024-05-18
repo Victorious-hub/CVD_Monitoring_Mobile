@@ -9,6 +9,8 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.treatment.prescription.CreatePatientPrescriptionUseCase
+import com.example.cvd_monitoring.presentation.navigation.graphs.DoctorPatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -53,16 +55,15 @@ class PatientPrescriptionViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val createdUser =
-                    createPatientPrescriptionUseCase(slug,
-                            authPreferences.getPatientSlug().firstOrNull()!!,
-                            authPreferences.getMedication().firstOrNull()!!.toInt(),
-                            dosageState,
-                            startDateState,
-                            endDateState
-                    )
-                //_eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
-                Log.d("SignUpViewModel", "Sign up successful")
+                createPatientPrescriptionUseCase(slug,
+                        authPreferences.getPatientSlug().firstOrNull()!!,
+                        authPreferences.getMedication().firstOrNull()!!.toInt(),
+                        dosageState,
+                        startDateState,
+                        endDateState
+                )
+                DoctorPatientActions.PatientProfile.getRouteWithSlug(authPreferences.getPatientSlug().firstOrNull()!!)
+                    ?.let { UiEvents.NavigateEvent(it) }?.let { _eventFlow.emit(it) }
             } catch (e: Exception) {
                 var errorMessage = e.message.toString()
                 Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)

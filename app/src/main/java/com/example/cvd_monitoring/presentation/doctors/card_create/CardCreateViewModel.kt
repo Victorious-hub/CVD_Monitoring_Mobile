@@ -9,6 +9,8 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.analysis.create_card.PatientCardCreateUseCase
+import com.example.cvd_monitoring.presentation.navigation.graphs.DoctorPatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -88,7 +90,7 @@ class CardCreateViewModel @Inject constructor(
     private val  _eventFlow = MutableSharedFlow<UiEvents>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    fun createPatientCard(slug : String) {
+    fun createPatientCard(patientSlug : String) {
         val bloodType = bloodTypeState.value.text
         val abnormalConditions = abnormalConditionsState.value.text
         val smoke = smokeState.value.text
@@ -102,25 +104,24 @@ class CardCreateViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val createdCard =
-                    authPreferences.getUserEmail().firstOrNull()?.substringBefore("@")
-                        ?.let { cardCreateUseCase(it,
-                            slug,
-                            bloodType,
-                            abnormalConditions,
-                            smoke.toBoolean(),
-                            alcohol.toBoolean(),
-                            active.toBoolean(),
-                            weight.toDouble(),
-                            height.toInt(),
-                            gender,
-                            birthday
-                        ) }
-                //_eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
-                Log.d("SignUpViewModel", "Sign up successful")
+                authPreferences.getUserEmail().firstOrNull()?.substringBefore("@")
+                    ?.let { cardCreateUseCase(it,
+                        patientSlug,
+                        bloodType,
+                        abnormalConditions,
+                        smoke.toBoolean(),
+                        alcohol.toBoolean(),
+                        active.toBoolean(),
+                        weight.toDouble(),
+                        height.toInt(),
+                        gender,
+                        birthday
+                    ) }
+                DoctorPatientActions.PatientProfile.getRouteWithSlug(patientSlug)
+                    ?.let { UiEvents.NavigateEvent(it) }?.let { _eventFlow.emit(it) }
             } catch (e: Exception) {
                 var errorMessage = e.message.toString()
-                Log.e("SignUpViewModel", "Sign up error: $errorMessage", e)
+                Log.e("Card Creation error: $errorMessage", e.toString())
             }
         }
     }

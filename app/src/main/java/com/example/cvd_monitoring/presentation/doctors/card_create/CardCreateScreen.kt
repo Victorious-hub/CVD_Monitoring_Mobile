@@ -19,6 +19,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,6 +34,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,9 +56,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
+import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.presentation.ui.theme.Purple40
 import com.example.cvd_monitoring.presentation.ui.theme.Purple80
 import com.example.cvd_monitoring.presentation.ui.theme.PurpleGrey80
+import kotlinx.coroutines.flow.collectLatest
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -67,40 +71,33 @@ fun CardCreateScreen(
     slug: String,
 ) {
 
-    val image = painterResource(R.drawable.heart)
-    val bloodTypeState = viewModel.bloodTypeState.value
     val abnormalConditionsState = viewModel.abnormalConditionsState.value
-    val smokeState = viewModel.smokeState.value
-    val alcoholState = viewModel.alcoholState.value
-    val activeState = viewModel.activeState.value
     val weightState = viewModel.weightState.value
     val heightState = viewModel.heightState.value
-    val genderState = viewModel.genderState.value
     val birthdayState = viewModel.birthdayState.value
 
     val isFocused by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.eventFlow.collectLatest { event ->
-//            when (event) {
-//                is UiEvents.SnackbarEvent -> {
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = event.message,
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//                is UiEvents.NavigateEvent -> {
-//                    Log.d("SignUpViewModel", event.route)
-//                    navController.navigate(event.route)
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = "Login Successful",
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Card Creation Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
 
     val bloodTypeList = listOf("Group I", "Group II", "Group III", "Group IV")
     var selectedTextBloodType by remember {
@@ -344,7 +341,6 @@ fun CardCreateScreen(
             ),
         )
 
-
         ExposedDropdownMenuBox(
             expanded = isExpandedGender,
             onExpandedChange = {isExpandedGender = !isExpandedGender}
@@ -395,7 +391,7 @@ fun CardCreateScreen(
         )
         Button(
             onClick = {
-                showDatePicker = true //changing the visibility state
+                showDatePicker = true
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -410,7 +406,36 @@ fun CardCreateScreen(
 
         Button(
             onClick = {
-                viewModel.createPatientCard(slug)
+                when {
+                    viewModel.abnormalConditionsState.value.text.isEmpty()-> {
+                        Toast.makeText(context, "Abnormal conditions can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.alcoholState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Alcohol field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.genderState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Gender field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.birthdayState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Birthday field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.smokeState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Smoke field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.activeState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Active field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.heightState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Height field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.weightState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Weight field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.bloodTypeState.value.text.isEmpty() -> {
+                        Toast.makeText(context, "Blood Type field can not be empty", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> viewModel.createPatientCard(slug)
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -469,7 +494,7 @@ fun CardCreateScreen(
                     todayContentColor = Purple40,
                     todayDateBorderColor = Purple80,
                     selectedDayContentColor = Purple80,
-                    dayContentColor = Color.Gray, // Change to a darker color
+                    dayContentColor = Color.Gray,
                     selectedDayContainerColor = Purple40,
                 )
             )

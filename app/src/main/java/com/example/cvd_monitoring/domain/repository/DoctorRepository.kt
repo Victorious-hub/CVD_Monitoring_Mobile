@@ -5,10 +5,13 @@ import com.example.cvd_monitoring.data.dto.CardBloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CardCholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.ConclusionDto
 import com.example.cvd_monitoring.data.dto.CreateCardRequestDto
+import com.example.cvd_monitoring.data.dto.DiagnosisDto
+import com.example.cvd_monitoring.data.dto.DoctorAppointmentDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.DoctorPatientsDto
 import com.example.cvd_monitoring.data.dto.MedicationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
+import com.example.cvd_monitoring.data.dto.PatientConclusionDto
 import com.example.cvd_monitoring.data.dto.PatientPrescriptionDto
 import com.example.cvd_monitoring.data.dto.ScheduleDto
 import com.example.cvd_monitoring.domain.model.analysis.CardBloodAnalysis
@@ -34,4 +37,6 @@ interface DoctorRepository {
     suspend fun getMedicationList(): List<MedicationDto>
     suspend fun createPatientPrescription(slug: String, patientPrescription: PatientPrescriptionDto): PatientPrescriptionDto
     suspend fun createPatientConclusion(slug: String, patientConclusion: ConclusionDto): ConclusionDto
+    suspend fun getDoctorAppointments(slug: String): List<DoctorAppointmentDto>
+    suspend fun getPatientDiagnosis(slug: String): DiagnosisDto
 }

@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -54,6 +56,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
+import com.example.cvd_monitoring.common.UiEvents
+import kotlinx.coroutines.flow.collectLatest
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,30 +73,31 @@ fun CholesterolAnalysisCreateScreen(
     val hdlCholesterolState = viewModel.hdlCholesterolState.value
     val ldlCholesterolState = viewModel.ldlCholesterolState.value
     val triglyceridesState = viewModel.triglyceridesState.value
+    val context = LocalContext.current
 
     val isFocused by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.eventFlow.collectLatest { event ->
-//            when (event) {
-//                is UiEvents.SnackbarEvent -> {
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = event.message,
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//                is UiEvents.NavigateEvent -> {
-//                    Log.d("SignUpViewModel", event.route)
-//                    navController.navigate(event.route)
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = "Login Successful",
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    Log.d("Cholesterol Analysis Created Successfully\"", event.route)
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Login Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -213,7 +218,20 @@ fun CholesterolAnalysisCreateScreen(
 
         Button(
             onClick = {
-                viewModel.createCholesterolAnalysis(slug)
+                if (!"[0-9]+".toRegex().matches(cholesterolState.text) || (cholesterolState.text.toInt() > 3 || cholesterolState.text.toInt() < 1))
+                {
+                    Toast.makeText(context, "Cholesterol must be numerical and in range of 1-3", Toast.LENGTH_SHORT).show()
+                } else if (!"[0-9]+".toRegex().matches(hdlCholesterolState.text) || (hdlCholesterolState.text.toInt() > 5 || hdlCholesterolState.text.toInt() < 1)) {
+                    Toast.makeText(context, "Hdl Cholesterol must be numerical and in range of 1-5", Toast.LENGTH_SHORT).show()
+                } else if (!"[0-9]+".toRegex().matches(ldlCholesterolState.text) || (ldlCholesterolState.text.toInt() > 5 || ldlCholesterolState.text.toInt() < 1)) {
+                    Toast.makeText(context, "Hdl Cholesterol must be numerical and in range of 1-5", Toast.LENGTH_SHORT).show()
+                }
+                else if (!"[0-9]+".toRegex().matches(triglyceridesState.text) || (triglyceridesState.text.toInt() > 5 || triglyceridesState.text.toInt() < 1)) {
+                    Toast.makeText(context, "Triglycerides must be numerical and in range of 1-5", Toast.LENGTH_SHORT).show()
+                } else{
+                    viewModel.createCholesterolAnalysis(slug)
+                    Toast.makeText(context, "Cholesterol analysis created successfully", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

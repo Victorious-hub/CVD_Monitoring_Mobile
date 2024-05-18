@@ -10,6 +10,8 @@ import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.analysis.create_cholesterol.CardCholesterolAnalysisUseCase
+import com.example.cvd_monitoring.presentation.navigation.graphs.DoctorPatientActions
+import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -65,7 +67,8 @@ class CholesterolAnalysisCreateViewModel @Inject constructor(
                 val createdUser =
                     authPreferences.getUserEmail().firstOrNull()?.substringBefore("@")
                         ?.let { cardCholesterolAnalysisUseCase(it, slug, cholesterol.toDouble(), hdlCholesterol.toDouble(), ldlCholesterol.toDouble(), triglycerides.toDouble()) }
-                //_eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
+                DoctorPatientActions.PatientProfile.getRouteWithSlug(slug)
+                    ?.let { UiEvents.NavigateEvent(it) }?.let { _eventFlow.emit(it) }
                 Log.d("SignUpViewModel", "Sign up successful")
             } catch (e: Exception) {
                 var errorMessage = e.message.toString()

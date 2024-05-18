@@ -58,6 +58,7 @@ import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.domain.model.patients.PatientCard
 import kotlinx.coroutines.flow.collectLatest
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,27 +75,28 @@ fun BloodAnalysisCreateScreen(
 
     val isFocused by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.eventFlow.collectLatest { event ->
-//            when (event) {
-//                is UiEvents.SnackbarEvent -> {
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = event.message,
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//                is UiEvents.NavigateEvent -> {
-//                    Log.d("SignUpViewModel", event.route)
-//                    navController.navigate(event.route)
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = "Login Successful",
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    Log.d("BloodAnalysis", event.route)
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Blood Analysis Created Successfully",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -196,7 +198,17 @@ fun BloodAnalysisCreateScreen(
 
         Button(
             onClick = {
-                viewModel.createBloodAnalysis(slug)
+                if (!"[0-9]+".toRegex().matches(apHiState.text) || (apHiState.text.toInt() > 300 || apHiState.text.toInt() < 100))
+                {
+                    Toast.makeText(context, "ApHi must be numerical and in range of 100-300", Toast.LENGTH_SHORT).show()
+                } else if (!"[0-9]+".toRegex().matches(apLoState.text) || (apLoState.text.toInt() > 200 || apLoState.text.toInt() < 80)) {
+                    Toast.makeText(context, "ApLo must be numerical and in range of 80-200", Toast.LENGTH_SHORT).show()
+                } else if (!"[0-9]+".toRegex().matches(glucoseState.text) || (glucoseState.text.toInt() > 3 || apLoState.text.toInt() < 1)) {
+                    Toast.makeText(context, "Glucose must be numerical and in range of 1-3", Toast.LENGTH_SHORT).show()
+                } else{
+                    viewModel.createBloodAnalysis(slug)
+                    Toast.makeText(context, "Blood analysis created successfully", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

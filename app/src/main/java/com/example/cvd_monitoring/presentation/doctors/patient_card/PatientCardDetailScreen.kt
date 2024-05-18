@@ -3,7 +3,9 @@ package com.example.cvd_monitoring.presentation.doctors.patient_card
 import com.example.cvd_monitoring.presentation.patients.patient_card.PatientCardViewModel
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,7 +61,6 @@ fun PatientCardDetailScreen(
     }
     val state = viewModel.state.value
     val image = painterResource(R.drawable.account)
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -104,6 +105,7 @@ fun PatientCardDetailScreen(
                             )
                         )
                     }
+
                     state.patientCard?.patient?.user?.let {
                         Text(
                             text = it.firstName ?: "No info",
@@ -280,16 +282,18 @@ fun PatientCardDetailScreen(
 
     Button(
         onClick = {
-            val email = viewModel.state.value.patientCard?.patient?.user?.email ?: return@Button
-            val emailBeforeAt = email.substringBefore("@")
-            onClickCreateBloodAnalysis(emailBeforeAt)
+            if (state.patientCard?.isBloodAnalysis == false) {
+                val email = viewModel.state.value.patientCard?.patient?.user?.email ?: return@Button
+                val emailBeforeAt = email.substringBefore("@")
+                onClickCreateBloodAnalysis(emailBeforeAt)
+            }
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 320.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
-            contentColor = Color.Black
+            contentColor = if (state.patientCard?.isBloodAnalysis == false) Color.Black else Color.Gray
         ),
         shape = RoundedCornerShape(20.dp)
     ) {
@@ -320,16 +324,19 @@ fun PatientCardDetailScreen(
 
     Button(
         onClick = {
-            val email = viewModel.state.value.patientCard?.patient?.user?.email ?: return@Button
-            val emailBeforeAt = email.substringBefore("@")
-            onClickCreateCholesterolAnalysis(emailBeforeAt)
+            if (state.patientCard?.isCholesterolAnalysis == false)
+            {
+                val email = viewModel.state.value.patientCard?.patient?.user?.email ?: return@Button
+                val emailBeforeAt = email.substringBefore("@")
+                onClickCreateCholesterolAnalysis(emailBeforeAt)
+            }
         },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 370.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
-            contentColor = Color.Black
+            contentColor = if (state.patientCard?.isCholesterolAnalysis == false) Color.Black else Color.Gray
         ),
         shape = RoundedCornerShape(20.dp)
     ) {
@@ -433,16 +440,19 @@ fun PatientCardDetailScreen(
 
     Button(
         onClick = {
-            val email = viewModel.state.value.patientCard?.patient?.user?.email ?: return@Button
-            val emailBeforeAt = email.substringBefore("@")
-            onClickConclusion(emailBeforeAt)
+            if (state.patientCard?.analysisStatus == "CT")
+            {
+                val email = viewModel.state.value.patientCard?.patient?.user?.email ?: return@Button
+                val emailBeforeAt = email.substringBefore("@")
+                onClickConclusion(emailBeforeAt)
+            }
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 470.dp),
+            .padding(top = 520.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
-            contentColor = Color.Black
+            contentColor = if (state.patientCard?.analysisStatus == "CT") Color.Black else Color.Gray
         ),
         shape = RoundedCornerShape(20.dp)
     ) {

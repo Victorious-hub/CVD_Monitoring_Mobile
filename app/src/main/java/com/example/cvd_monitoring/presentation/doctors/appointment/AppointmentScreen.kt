@@ -4,7 +4,6 @@ package com.example.cvd_monitoring.presentation.doctors.appointment
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -40,6 +39,7 @@ import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,12 +60,12 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cvd_monitoring.R
-import com.example.cvd_monitoring.presentation.doctors.doctor_blood_create.BloodAnalysisCreateViewModel
-import com.example.cvd_monitoring.presentation.ui.theme.Pink40
+import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.presentation.ui.theme.Pink80
 import com.example.cvd_monitoring.presentation.ui.theme.Purple40
 import com.example.cvd_monitoring.presentation.ui.theme.Purple80
 import com.example.cvd_monitoring.presentation.ui.theme.PurpleGrey80
+import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("SimpleDateFormat")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,33 +98,32 @@ fun AppointmentScreen(
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
 
     val image = painterResource(R.drawable.heart)
-    val apHiState = viewModel.appointmentDateState.value
-    val apLoState = viewModel.appointmentTimeState.value
+    val appointmentDateState = viewModel.appointmentDateState.value
+    val appointmentTimeState = viewModel.appointmentTimeState.value
 
     val isFocused by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
 
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.eventFlow.collectLatest { event ->
-//            when (event) {
-//                is UiEvents.SnackbarEvent -> {
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = event.message,
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//                is UiEvents.NavigateEvent -> {
-//                    Log.d("SignUpViewModel", event.route)
-//                    navController.navigate(event.route)
-//                    scaffoldState.snackbarHostState.showSnackbar(
-//                        message = "Login Successful",
-//                        duration = SnackbarDuration.Short
-//                    )
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Doctor Appointment Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
 
 
     Box(
@@ -170,7 +169,7 @@ fun AppointmentScreen(
             )
         )
         TextField(
-            value = apHiState.text,
+            value = appointmentDateState.text,
             onValueChange = { viewModel.setAppointmentDateValue(it) },
             readOnly = true,
             label = {
@@ -190,7 +189,7 @@ fun AppointmentScreen(
         )
         Button(
             onClick = {
-                showDatePicker = true //changing the visibility state
+                showDatePicker = true
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -203,7 +202,7 @@ fun AppointmentScreen(
         }
 
         TextField(
-            value = apLoState.text,
+            value = appointmentTimeState.text,
             onValueChange = { viewModel.setAppointmentTimeValue(it) },
             readOnly = true,
             label = {
@@ -223,7 +222,7 @@ fun AppointmentScreen(
         )
         Button(
             onClick = {
-                showTimePicker = true //changing the visibility state
+                showTimePicker = true
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -236,7 +235,17 @@ fun AppointmentScreen(
         }
         Button(
             onClick = {
-                viewModel.createAppointment(slug)
+                if (appointmentDateState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Date can not be empty", Toast.LENGTH_SHORT).show()
+                } else if (appointmentTimeState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Time can not empty", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    viewModel.createAppointment(slug)
+                    Toast.makeText(context, "Appointment created successfully", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -245,7 +254,7 @@ fun AppointmentScreen(
             ),
             shape = RoundedCornerShape(20.dp)
         ) {
-            Text("Create")
+            Text("Create Appointment")
         }
     }
 

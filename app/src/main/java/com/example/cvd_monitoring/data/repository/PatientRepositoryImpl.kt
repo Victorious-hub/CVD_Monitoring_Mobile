@@ -6,6 +6,7 @@ import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
+import com.example.cvd_monitoring.data.dto.PatientConclusionDto
 import com.example.cvd_monitoring.data.dto.PatientDto
 import com.example.cvd_monitoring.data.dto.PrescriptionDto
 import com.example.cvd_monitoring.data.dto.ScheduleDto
@@ -79,5 +80,9 @@ class PatientRepositoryImpl @Inject constructor(
 
     override suspend fun scheduleDetail(slug: String): ScheduleDto {
         return api.scheduleDetail(slug)
+    }
+
+    override suspend fun getPatientConclusionList(slug: String): List<PatientConclusionDto> {
+        return api.getPatientConclusionList(slug)
     }
 }

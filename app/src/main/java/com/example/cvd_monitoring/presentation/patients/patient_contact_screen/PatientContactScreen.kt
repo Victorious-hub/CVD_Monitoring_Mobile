@@ -1,6 +1,8 @@
 package com.example.cvd_monitoring.presentation.patients.patient_contact_screen
 
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,7 +34,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import com.example.cvd_monitoring.common.UiEvents
+import kotlinx.coroutines.flow.collectLatest
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -57,8 +64,30 @@ fun PatientContactScreen(
     val lastNameState = viewModel.lastNameState.value
     val mobileState  = viewModel.mobileState.value
     val addressState  = viewModel.adressState.value
+    val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     val isFocused by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    Log.d("PatientContactScreen", event.route)
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Update Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -148,10 +177,30 @@ fun PatientContactScreen(
                 cursorColor = Color.Red,
             ),
         )
-
         Button(
             onClick = {
-                viewModel.updatePatientContact(slug)
+                if (firstNameState.text.isEmpty())
+                {
+                    Toast.makeText(context, "First name can not be empty", Toast.LENGTH_SHORT).show()
+                } else if (lastNameState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Last name can not be empty", Toast.LENGTH_SHORT).show()
+                }
+                else if (addressState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Address name can not be empty", Toast.LENGTH_SHORT).show()
+                }
+                else if (mobileState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Mobile name can not be empty", Toast.LENGTH_SHORT).show()
+                }
+                else if (!mobileState.text.matches("^\\+\\d{10}$".toRegex())) {
+                    Toast.makeText(context, "Invalid mobile number format. Must be numbers and +XXXXXXXXXX", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    viewModel.updatePatientContact(slug)
+                    Toast.makeText(context, "Data updated successfully", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -160,7 +209,7 @@ fun PatientContactScreen(
             ),
             shape = RoundedCornerShape(20.dp)
         ) {
-            Text("Update")
+            Text("Update Data")
         }
     }
 

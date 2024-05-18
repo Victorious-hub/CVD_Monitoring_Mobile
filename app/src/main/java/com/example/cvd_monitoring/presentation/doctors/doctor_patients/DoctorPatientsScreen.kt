@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,6 +59,7 @@ fun DoctorPatientsScreen(
     viewModel: DoctorPatientsViewModel = hiltViewModel(),
     slug: String,
     onUpdateContact: (String) -> Unit,
+    onClickBackToMain : () -> Unit,
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getDoctorPatientList(slug)
@@ -64,167 +67,215 @@ fun DoctorPatientsScreen(
     val state = viewModel.state.value
     val image = painterResource(R.drawable.account)
 
-
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(30.dp),
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxHeight()
-    ) {
-        state.patients?.patients?.let { patients ->
-            items(patients) { patient ->
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxSize()
-                ) {
-                    Card(
+    if (state.patients?.patients?.isEmpty() == true)
+    {
+        Text(
+            text = "Your don't have any patients in list yet",
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            style = TextStyle(
+                fontSize = 16.sp,
+                color = Color.Black
+            ),
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentHeight()
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+        )
+        Button(
+            onClick = {
+                onClickBackToMain()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 425.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            shape = RoundedCornerShape(20.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Back to main",
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Arrow Right Icon",
+                    tint = Color.Black,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
+    } else{
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(30.dp),
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxHeight()
+        ) {
+            state.patients?.patients?.let { patients ->
+                items(patients) { patient ->
+                    Box(
                         modifier = Modifier
-                            .padding(8.dp, 4.dp)
-                            .fillMaxWidth()
-                            .height(190.dp),
-                        shape = MaterialTheme.shapes.medium
+                            .padding(4.dp)
+                            .fillMaxSize()
                     ) {
-                        Row(
-                            Modifier
-                                .padding(4.dp)
-                                .fillMaxSize()
+                        Card(
+                            modifier = Modifier
+                                .padding(8.dp, 4.dp)
+                                .fillMaxWidth()
+                                .height(190.dp),
+                            shape = MaterialTheme.shapes.medium
                         ) {
-                            Image(
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .weight(0.3f),
-                                painter = image,
-                                contentDescription = "Account Image"
-                            )
-                            Column(
-                                verticalArrangement = Arrangement.Top,
-                                modifier = Modifier
+                            Row(
+                                Modifier
                                     .padding(4.dp)
-                                    .fillMaxHeight()
-                                    .weight(0.6f)
+                                    .fillMaxSize()
                             ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                        .fillMaxWidth().padding(bottom = 3.dp)
-                                ) {
-                                    Text(
-                                        text = "First Name",
-                                        style = TextStyle(
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.Black
-                                        )
-                                    )
-                                }
-                                Text(
-                                    text = patient.user.firstName ?: "No info",
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    style = TextStyle(
-                                        fontSize = 13.sp,
-                                        color = Color.Black
-                                    )
+                                Image(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .weight(0.3f),
+                                    painter = image,
+                                    contentDescription = "Account Image"
                                 )
-                                Divider(
-                                    modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
-                                    color = Color.Gray
-                                )
-
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                        .fillMaxWidth().padding(bottom = 3.dp)
-                                ) {
-                                    Text(
-                                        text = "Last Name",
-                                        style = TextStyle(
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.Black
-                                        )
-                                    )
-                                }
-                                Text(
-                                    text = patient.user.lastName ?: "No info",
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    style = TextStyle(
-                                        fontSize = 13.sp,
-                                        color = Color.Black
-                                    )
-                                )
-                                Divider(
-                                    modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
-                                    color = Color.Gray
-                                )
-
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                        .fillMaxWidth().padding(bottom = 3.dp)
-                                ) {
-                                    Text(
-                                        text = "Email",
-                                        style = TextStyle(
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.Black
-                                        )
-                                    )
-                                }
-                                Text(
-                                    text = patient.user.email ?: "No info",
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    style = TextStyle(
-                                        fontSize = 13.sp,
-                                        color = Color.Black
-                                    )
-                                )
-                                Divider(
-                                    modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
-                                    color = Color.Gray
-                                )
-                                Button(
-                                    onClick = {
-                                        val email = patient.user.email ?: return@Button
-                                        val emailBeforeAt = email.substringBefore("@")
-                                        onUpdateContact(emailBeforeAt)
-                                    },
-                                    modifier = Modifier.width(125.dp).height(35.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.LightGray,
-                                        contentColor = Color.Black
-                                    ),
-                                    shape = RoundedCornerShape(20.dp),
+                                Column(
+                                    verticalArrangement = Arrangement.Top,
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .fillMaxHeight()
+                                        .weight(0.6f)
                                 ) {
                                     Row(
-                                        horizontalArrangement = Arrangement.Start
+                                        modifier = Modifier.fillMaxWidth()
+                                            .fillMaxWidth().padding(bottom = 3.dp)
                                     ) {
-                                        Spacer(modifier = Modifier.width(16.dp))
                                         Text(
-                                            text = "Details",
-                                            modifier = Modifier.weight(1f)
+                                            text = "First Name",
+                                            style = TextStyle(
+                                                fontSize = 11.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.Black
+                                            )
                                         )
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                            contentDescription = "Arrow Right Icon",
-                                            tint = Color.Black,
-                                            modifier = Modifier.align(Alignment.CenterVertically)
+                                    }
+                                    Text(
+                                        text = patient.user.firstName ?: "No info",
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = TextStyle(
+                                            fontSize = 13.sp,
+                                            color = Color.Black
                                         )
+                                    )
+                                    Divider(
+                                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                                        color = Color.Gray
+                                    )
+
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                            .fillMaxWidth().padding(bottom = 3.dp)
+                                    ) {
+                                        Text(
+                                            text = "Last Name",
+                                            style = TextStyle(
+                                                fontSize = 11.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.Black
+                                            )
+                                        )
+                                    }
+                                    Text(
+                                        text = patient.user.lastName ?: "No info",
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = TextStyle(
+                                            fontSize = 13.sp,
+                                            color = Color.Black
+                                        )
+                                    )
+                                    Divider(
+                                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                                        color = Color.Gray
+                                    )
+
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                            .fillMaxWidth().padding(bottom = 3.dp)
+                                    ) {
+                                        Text(
+                                            text = "Email",
+                                            style = TextStyle(
+                                                fontSize = 11.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.Black
+                                            )
+                                        )
+                                    }
+                                    Text(
+                                        text = patient.user.email ?: "No info",
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = TextStyle(
+                                            fontSize = 13.sp,
+                                            color = Color.Black
+                                        )
+                                    )
+                                    Divider(
+                                        modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
+                                        color = Color.Gray
+                                    )
+                                    Button(
+                                        onClick = {
+                                            val email = patient.user.email ?: return@Button
+                                            val emailBeforeAt = email.substringBefore("@")
+                                            onUpdateContact(emailBeforeAt)
+                                        },
+                                        modifier = Modifier.width(125.dp).height(35.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color.LightGray,
+                                            contentColor = Color.Black
+                                        ),
+                                        shape = RoundedCornerShape(20.dp),
+                                    ) {
+                                        Row(
+                                            horizontalArrangement = Arrangement.Start
+                                        ) {
+                                            Spacer(modifier = Modifier.width(16.dp))
+                                            Text(
+                                                text = "Details",
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                                contentDescription = "Arrow Right Icon",
+                                                tint = Color.Black,
+                                                modifier = Modifier.align(Alignment.CenterVertically)
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
+
                     }
 
                 }
-
             }
-        }
 
+        }
     }
+
 }
 

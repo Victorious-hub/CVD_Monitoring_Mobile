@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +55,7 @@ fun PatientCardScreen(
     onClickCholesterol : (String) -> Unit,
     onClickPrescription : (String) -> Unit,
     onClickConclusion : (String) -> Unit,
+    onClickBackToMain : () -> Unit,
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getPatientCard(slug)
@@ -425,12 +428,47 @@ fun PatientCardScreen(
     else{
         Text(
             text = "Your patient card isn't ready yet",
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             style = TextStyle(
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
                 color = Color.Black
-            )
+            ),
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentHeight()
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
         )
-
+        Button(
+            onClick = {
+                onClickBackToMain()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 425.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            shape = RoundedCornerShape(20.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Back to main",
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Arrow Right Icon",
+                    tint = Color.Black,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
     }
 }

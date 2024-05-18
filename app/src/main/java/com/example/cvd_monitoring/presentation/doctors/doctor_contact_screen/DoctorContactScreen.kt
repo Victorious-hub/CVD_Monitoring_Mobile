@@ -1,11 +1,15 @@
 package com.example.cvd_monitoring.presentation.doctors.doctor_contact_screen
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -28,7 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.presentation.patients.patient_contact_screen.PatientContactViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +46,29 @@ fun DoctorContactScreen(
 ) {
     LaunchedEffect(key1 = slug) {
         viewModel.getCurrentUser(slug)
+    }
+    val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvents.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                is UiEvents.NavigateEvent -> {
+                    Log.d("DoctorContactScreen", event.route)
+                    navController.navigate(event.route)
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = "Update Successful",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
     }
 
     val firstNameState = viewModel.firstNameState.value
@@ -101,7 +131,17 @@ fun DoctorContactScreen(
 
         Button(
             onClick = {
-                viewModel.updateDoctorContact(slug)
+                if (firstNameState.text.isEmpty())
+                {
+                    Toast.makeText(context, "First name can not be empty", Toast.LENGTH_SHORT).show()
+                } else if (lastNameState.text.isEmpty())
+                {
+                    Toast.makeText(context, "Last name can not be empty", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    viewModel.updateDoctorContact(slug)
+                    Toast.makeText(context, "Data updated successfully", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -110,7 +150,7 @@ fun DoctorContactScreen(
             ),
             shape = RoundedCornerShape(20.dp)
         ) {
-            Text("Update")
+            Text("Update Data")
         }
     }
 }
