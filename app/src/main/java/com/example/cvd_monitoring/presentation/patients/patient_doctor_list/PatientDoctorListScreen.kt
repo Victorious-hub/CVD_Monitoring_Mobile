@@ -106,7 +106,8 @@ fun PatientDoctorListScreen(
                             navController.navigate(
                                 Screen.CurrentDoctor.route + "/${doctor.user.email.substringBefore("@")}")
 
-                        }
+                        },
+                        onDismiss = {}
                     )
 
                 }

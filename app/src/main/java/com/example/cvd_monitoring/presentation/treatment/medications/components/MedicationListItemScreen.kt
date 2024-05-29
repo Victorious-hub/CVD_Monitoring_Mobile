@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -179,7 +180,7 @@ fun MedicationListItemScreen(
                         onClick = {
                             onPrescriptionCreate(medication)
                         },
-                        modifier = Modifier.width(125.dp).height(35.dp),
+                        modifier = Modifier.width(135.dp).height(35.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.LightGray,
                             contentColor = Color.Black
@@ -190,15 +191,14 @@ fun MedicationListItemScreen(
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Spacer(modifier = Modifier.width(16.dp))
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "Home Button Icon",
+                                tint = Color.Black
+                            )
                             Text(
                                 text = "Choose",
-                                modifier = Modifier.weight(1f)
-                            )
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = "Arrow Right Icon",
-                                tint = Color.Black,
-                                modifier = Modifier.align(Alignment.CenterVertically)
+                                color = Color.Black
                             )
                         }
                     }

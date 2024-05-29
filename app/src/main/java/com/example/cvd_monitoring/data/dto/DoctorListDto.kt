@@ -8,12 +8,16 @@ data class DoctorListDto(
     @SerializedName("profile_image")
     val profileImage: String,
     @SerializedName("user")
-    val user: DoctorUserDto
+    val user: DoctorUserDto,
+    val description: String?,
+    val experience: Int?,
 )
 
 fun DoctorListDto.toDoctorList(): DoctorList {
     return DoctorList(
         profileImage = profileImage,
         user = user.toDoctorUser(),
+        description = description,
+        experience = experience
     )
 }

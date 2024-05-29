@@ -40,7 +40,7 @@ fun CholesterolAnalysisListItem(
             modifier = Modifier
                 .padding(8.dp, 4.dp)
                 .fillMaxWidth()
-                .height(230.dp),
+                .height(260.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Row(
@@ -55,6 +55,35 @@ fun CholesterolAnalysisListItem(
                         .fillMaxHeight()
                         .weight(0.6f)
                 ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth().padding(bottom = 3.dp)
+                    ) {
+                        Text(
+                            text = "Created at",
+                            style = TextStyle(
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                        )
+                    }
+                    Text(
+                        text = cholesterolAnalysis.createdAt ?: "No info",
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            color = Color.Black
+                        )
+                    )
+                    Divider(
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
+
+
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .fillMaxWidth().padding(bottom = 3.dp)

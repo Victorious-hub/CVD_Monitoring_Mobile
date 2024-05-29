@@ -197,7 +197,6 @@ fun AuthenticationScreen(
                 else {
                     viewModel.authenticateUser()
                     navController.popBackStack()
-                    navController.navigate(Graph.PATIENT_HOME){emailState.text.substringBefore("@")}
                 }
 
             },

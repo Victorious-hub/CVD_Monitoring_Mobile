@@ -47,6 +47,9 @@ fun PatientPrescriptionListScreen(
     onClickBackToMain : () -> Unit,
     slug: String
 ) {
+    LaunchedEffect(key1 = slug) {
+        viewModel.getPrescriptionList(slug)
+    }
     val state = viewModel.state.value
     if (state.prescriptions.isEmpty())
     {
@@ -96,9 +99,6 @@ fun PatientPrescriptionListScreen(
         }
     }
     else{
-        LaunchedEffect(key1 = slug) {
-            viewModel.getPrescriptionList(slug)
-        }
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.prescriptions) { prescription ->

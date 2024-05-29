@@ -8,14 +8,7 @@ import javax.inject.Inject
 class CardCholesterolAnalysisUseCase @Inject constructor(
     private val doctorRepository: DoctorRepository
 ) {
-    suspend operator fun invoke(
-        slugDoctor: String,
-        slugPatient: String,
-        cholesterol: Double,
-        hdlCholesterol: Double,
-        ldlCholesterol: Double,
-        triglycerides: Double
-    ) : CardCholesterolAnalysisDto
+    suspend operator fun invoke(slugDoctor: String, slugPatient: String, cholesterol: Double, hdlCholesterol: Double, ldlCholesterol: Double, triglycerides: Double) : CardCholesterolAnalysisDto
     {
         val cholesterolAnalysis = CardCholesterolAnalysis(slugPatient, cholesterol, hdlCholesterol, ldlCholesterol, triglycerides)
         return doctorRepository.createPatientCholesterolAnalysis(slugDoctor, cholesterolAnalysis)

@@ -32,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun createPatient(patient: CreateUserRequest): UserDto {
         return api.createPatient(patient)
     }
-    override suspend fun logoutUser(refreshToken: String): LogoutResponse {
+    override suspend fun logoutUser(refreshToken: LogoutResponse): LogoutResponse {
         preferences.deleteToken()
         return api.logoutUser(refreshToken)
     }

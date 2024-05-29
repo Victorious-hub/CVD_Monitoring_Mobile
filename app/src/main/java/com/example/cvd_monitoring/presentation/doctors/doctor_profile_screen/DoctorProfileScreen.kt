@@ -46,6 +46,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.example.cvd_monitoring.R
 import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.utils.Constants.BASE_IP
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -60,160 +61,219 @@ fun DoctorProfileScreen(
     }
     val state = viewModel.state.value
     val image =
-        rememberImagePainter(data = "http://127.0.0.1:8000${state.doctor?.profileImage}")
+        rememberImagePainter(data = "http://${BASE_IP}:8000${state.doctor?.profileImage}")
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.25f)
             .background(
                 color = Color(0xFFa5051f),
+                shape = RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomStart = 80.dp,
+                    bottomEnd = 80.dp
+                )
             )
     ) {
         Image(
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(top = 25.dp)
-                .size(width = 100.dp, height = 100.dp),
+                .padding(top = 25.dp),
             painter = image,
             contentDescription = null
         )
     }
-
-    Column(
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .padding(15.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Account Info",
-            modifier = Modifier.padding(bottom = 320.dp),
-            style = TextStyle(
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Italic,
-                fontFamily = FontFamily.Monospace,
-                color = Color.Black
-            )
-        )
-
-    }
-
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start
-
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth().padding(top = 20.dp, bottom = 5.dp)
+    ){
+        Column(
         ) {
+            Spacer(modifier = Modifier.height(110.dp))
             Text(
-                text = "First Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                text = "Account Info",
+                style = TextStyle(
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic,
+                    fontFamily = FontFamily.Monospace,
+                    color = Color.Black
+                )
             )
-            Spacer(modifier = Modifier
-                .weight(0.5f))
+
         }
-        state.doctor?.user?.let {
-            Text(
-                text = it.firstName,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+
+        Column(
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, bottom = 5.dp)
+            ) {
+                Text(
+                    text = "First Name",
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                )
+                Spacer(modifier = Modifier
+                    .weight(0.5f))
+            }
+            state.doctor?.user?.let {
+                Text(
+                    text = it.firstName,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                )
+            }
+            Divider(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp),
+                color = Color.Gray
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, bottom = 5.dp)
+            ){
+                Text(
+                    text = "Last Name",
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                )
+                Spacer(modifier = Modifier.weight(2f))
+            }
+            state.doctor?.user?.let {
+                Text(
+                    text = it.lastName,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                )
+            }
+            Divider(
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                color = Color.Gray
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, bottom = 5.dp)
+            ){
+                Text(
+                    text = "Email",
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                )
+                Spacer(modifier = Modifier.weight(2f))
+            }
+            state.doctor?.user?.let {
+                Text(
+                    text = it.email,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                )
+            }
+            Divider(
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                color = Color.Gray
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, bottom = 5.dp)
+            ){
+                Text(
+                    text = "Experience",
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                )
+                Spacer(modifier = Modifier.weight(2f))
+            }
+            state.doctor?.let {
+                Text(
+                    text = "${it.experience.toString()} year(s)",
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                )
+            }
+            Divider(
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                color = Color.Gray
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, bottom = 5.dp)
+            ){
+                Text(
+                    text = "Description",
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
+                )
+                Spacer(modifier = Modifier.weight(2f))
+            }
+            state.doctor?.let {
+                it.description?.let { it1 ->
+                    Text(
+                        text = it1,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
+                    )
+                }
+            }
+            Divider(
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                color = Color.Gray
             )
         }
-        Divider(
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .fillMaxWidth().padding(top = 20.dp, bottom = 5.dp)
-        ){
-            Text(
-                text = "Last Name",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
-            )
-            Spacer(modifier = Modifier.weight(2f))
+
+        Column(
+        ) {
+            Button(
+                onClick = {
+                    onUpdateContact(slug)
+                    //navController.navigate("${Screen.UpdateDoctor.route}/$slug/contact")
+                },
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                ),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Face,
+                        contentDescription = "Home Button Icon",
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Update Contact",
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = "Arrow Right Icon",
+                        tint = Color.Black,
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
+            }
         }
-        state.doctor?.user?.let {
-            Text(
-                text = it.lastName,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
-            )
-        }
-        Divider(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .fillMaxWidth().padding(top = 20.dp, bottom = 5.dp)
-        ){
-            Text(
-                text = "Email",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black) // Set text color to black
-            )
-            Spacer(modifier = Modifier.weight(2f))
-        }
-        state.doctor?.user?.let {
-            Text(
-                text = it.email,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = TextStyle(fontSize = 16.sp, color = Color.Black) // Set text color to black
-            )
-        }
-        Divider(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-            color = Color.Gray
-        )
     }
 
-    Button(
-        onClick = {
-            onUpdateContact(slug)
-            //navController.navigate("${Screen.UpdateDoctor.route}/$slug/contact")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 530.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
-        ),
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Icon(
-                imageVector = Icons.Default.Face,
-                contentDescription = "Home Button Icon",
-                tint = Color.Black
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Update Contact",
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Arrow Right Icon",
-                tint = Color.Black,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-        }
-    }
 }

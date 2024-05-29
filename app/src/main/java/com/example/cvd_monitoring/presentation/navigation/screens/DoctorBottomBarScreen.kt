@@ -1,6 +1,8 @@
 package com.example.bottomnavbardemo.screens.home
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
 import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.presentation.navigation.graphs.doctor_graph.DoctorHomeNavGraph
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DoctorBottomBarScreen(

@@ -1,5 +1,6 @@
 package com.example.cvd_monitoring.presentation.doctors.card_create
 
+import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.widget.Toast
@@ -8,12 +9,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -63,6 +66,7 @@ import com.example.cvd_monitoring.presentation.ui.theme.PurpleGrey80
 import kotlinx.coroutines.flow.collectLatest
 
 
+@SuppressLint("SimpleDateFormat")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun CardCreateScreen(
@@ -88,6 +92,7 @@ fun CardCreateScreen(
                         duration = SnackbarDuration.Short
                     )
                 }
+
                 is UiEvents.NavigateEvent -> {
                     navController.navigate(event.route)
                     scaffoldState.snackbarHostState.showSnackbar(
@@ -99,9 +104,10 @@ fun CardCreateScreen(
         }
     }
 
+    val image = painterResource(R.drawable.heart)
     val bloodTypeList = listOf("Group I", "Group II", "Group III", "Group IV")
     var selectedTextBloodType by remember {
-        mutableStateOf("Select Blood Type")
+        mutableStateOf("Blood Type")
     }
 
     var isExpandedBloodType by remember {
@@ -110,7 +116,7 @@ fun CardCreateScreen(
 
     val alcoholList = listOf("Yes", "No")
     var selectedTextAlcoholType by remember {
-        mutableStateOf("Has alcohol problems")
+        mutableStateOf("Is Alcohol")
     }
 
     var isExpandedAlcohol by remember {
@@ -119,7 +125,7 @@ fun CardCreateScreen(
 
     val activeList = listOf("Yes", "No")
     var selectedTextActiveType by remember {
-        mutableStateOf("Has activity problems")
+        mutableStateOf("Is active")
     }
 
     var isExpandedActive by remember {
@@ -128,7 +134,7 @@ fun CardCreateScreen(
 
     val smokeList = listOf("Yes", "No")
     var selectedTextSmokeType by remember {
-        mutableStateOf("Has smoke obessey")
+        mutableStateOf("Is smoking")
     }
 
     var isExpandedSmoke by remember {
@@ -143,233 +149,361 @@ fun CardCreateScreen(
     var isExpandedGender by remember {
         mutableStateOf(false)
     }
-
+    val currentDate = remember {
+        Calendar.getInstance()
+    }
     val date = remember {
         Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2025)
-            set(Calendar.MONTH, 7)
-            set(Calendar.DAY_OF_MONTH, 23)
+            currentDate.get(Calendar.YEAR)
+            currentDate.get(Calendar.MONTH)
+            currentDate.get(Calendar.DAY_OF_MONTH)
         }.timeInMillis
     }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = date,
-        yearRange = 1990..2025
+        yearRange = 1990..2024
     )
     var showDatePicker by remember { mutableStateOf(false) }
 
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
     val context = LocalContext.current
 
+    val year = currentDate.get(Calendar.YEAR)
+    val month = currentDate.get(Calendar.MONTH) + 1
+    val day = currentDate.get(Calendar.DAY_OF_MONTH)
+    val todayDate = "$year-0$month-$day"
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.25f)
+            .background(
+                color = Color(0xFFa5051f),
+                shape = RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomStart = 80.dp,
+                    bottomEnd = 80.dp
+                )
+            )
+    ) {
+        Image(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(top = 25.dp),
+            painter = image,
+            contentDescription = null
+
+        )
+    }
+
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.height(250.dp))
+        Text(
+            text = "Create Patient Card",
+            style = TextStyle(
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic,
+                fontFamily = FontFamily.Monospace,
+            )
+        )
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+        ) {
+            ExposedDropdownMenuBox(
+                expanded = isExpandedAlcohol,
+                onExpandedChange = { isExpandedAlcohol = !isExpandedAlcohol }
+            ) {
+                TextField(
+                    value = selectedTextAlcoholType,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedAlcohol) },
+                    modifier = Modifier
+                        .width(160.dp)
+                        .height(56.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Red,
+                        unfocusedIndicatorColor = Color.Black,
+                        cursorColor = Color.Red,
+                    ),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = isExpandedAlcohol,
+                    onDismissRequest = { isExpandedAlcohol = false }) {
+                    alcoholList.forEachIndexed { index, text ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedTextAlcoholType = alcoholList[index]
+                                viewModel.alcoholState.value.text = selectedTextAlcoholType
+                                isExpandedAlcohol = false
+                            }
+                        ) {
+                            Text(text = text)
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.width(40.dp))
+
+            ExposedDropdownMenuBox(
+                expanded = isExpandedActive,
+                onExpandedChange = { isExpandedActive = !isExpandedActive }
+            ) {
+                TextField(
+                    value = selectedTextActiveType,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedActive) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Red,
+                        unfocusedIndicatorColor = Color.Black,
+                        cursorColor = Color.Red,
+                    ),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = isExpandedActive,
+                    onDismissRequest = { isExpandedActive = false }) {
+                    activeList.forEachIndexed { index, text ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedTextActiveType = activeList[index]
+                                viewModel.activeState.value.text = selectedTextActiveType
+                                isExpandedActive = false
+                            }
+                        ) {
+                            Text(text = text)
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
+    Column(
+    ) {
+        Spacer(modifier = Modifier.height(350.dp))
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+        ) {
+            TextField(
+                value = viewModel.abnormalConditionsState.value.text,
+                onValueChange = { viewModel.setAbnormalConditionsStateValue(it) },
+                label = {
+                    Text(
+                        text = "Other problems",
+                        color = Color.Gray
+                    )
+                },
+                modifier = Modifier
+                    .width(160.dp)
+                    .height(56.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Red,
+                    unfocusedIndicatorColor = Color.Black,
+                    cursorColor = Color.Red,
+                ),
+            )
+
+            Spacer(modifier = Modifier.width(40.dp))
+
+            TextField(
+                value = viewModel.weightState.value.text,
+                onValueChange = { viewModel.setWeightStateValue(it) },
+                label = {
+                    Text(
+                        text = "Weight(kg)",
+                        color = Color.Gray
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Red,
+                    unfocusedIndicatorColor = Color.Black,
+                    cursorColor = Color.Red,
+                ),
+            )
+        }
+    }
+
+    Column(
+    ) {
+        Spacer(modifier = Modifier.height(415.dp))
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+        ) {
+            ExposedDropdownMenuBox(
+                expanded = isExpandedGender,
+                onExpandedChange = { isExpandedGender = !isExpandedGender }
+            ) {
+                TextField(
+                    value = selectedGenderType,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedGender) },
+                    modifier = Modifier
+                        .width(160.dp)
+                        .height(56.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Red,
+                        unfocusedIndicatorColor = Color.Black,
+                        cursorColor = Color.Red,
+                    ),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = isExpandedGender,
+                    onDismissRequest = { isExpandedGender = false }) {
+                    genderList.forEachIndexed { index, text ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedGenderType = genderList[index]
+                                viewModel.genderState.value.text = selectedGenderType
+                                isExpandedGender = false
+                            }
+                        ) {
+                            Text(text = text)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(40.dp))
+
+            TextField(
+                value = viewModel.heightState.value.text,
+                onValueChange = { viewModel.setHeightStateValue(it) },
+                label = {
+                    Text(
+                        text = "Height(cm)",
+                        color = Color.Gray
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Red,
+                    unfocusedIndicatorColor = Color.Black,
+                    cursorColor = Color.Red,
+                ),
+            )
+        }
+    }
+
+    Column(
+    ) {
+        Spacer(modifier = Modifier.height(480.dp))
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+        ) {
+            ExposedDropdownMenuBox(
+                expanded = isExpandedSmoke,
+                onExpandedChange = { isExpandedSmoke = !isExpandedSmoke }
+            ) {
+                TextField(
+                    value = selectedTextSmokeType,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedSmoke) },
+                    modifier = Modifier
+                        .width(160.dp)
+                        .height(56.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Red,
+                        unfocusedIndicatorColor = Color.Black,
+                        cursorColor = Color.Red,
+                    ),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = isExpandedSmoke,
+                    onDismissRequest = { isExpandedSmoke = false }) {
+                    smokeList.forEachIndexed { index, text ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedTextSmokeType = smokeList[index]
+                                viewModel.smokeState.value.text = selectedTextSmokeType
+                                isExpandedSmoke = false
+                            }
+                        ) {
+                            Text(text = text)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(40.dp))
+
+            ExposedDropdownMenuBox(
+                expanded = isExpandedBloodType,
+                onExpandedChange = { isExpandedBloodType = !isExpandedBloodType }
+            ) {
+                TextField(
+                    value = selectedTextBloodType,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedBloodType) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Red,
+                        unfocusedIndicatorColor = Color.Black,
+                        cursorColor = Color.Red,
+                    ),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = isExpandedBloodType,
+                    onDismissRequest = { isExpandedBloodType = false }) {
+                    bloodTypeList.forEachIndexed { index, text ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedTextBloodType = bloodTypeList[index]
+                                viewModel.bloodTypeState.value.text = selectedTextBloodType
+                                isExpandedBloodType = false
+                            }
+                        ) {
+                            Text(text = text)
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(15.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ExposedDropdownMenuBox(
-            expanded = isExpandedBloodType,
-            onExpandedChange = {isExpandedBloodType = !isExpandedBloodType}
-        ) {
-            TextField(
-                value = selectedTextBloodType,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedBloodType)},
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            ExposedDropdownMenu(expanded = isExpandedBloodType, onDismissRequest = { isExpandedBloodType = false }) {
-                bloodTypeList.forEachIndexed { index, text ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedTextBloodType = bloodTypeList[index]
-                            viewModel.bloodTypeState.value.text = selectedTextBloodType
-                            isExpandedBloodType = false
-                        }
-                    ) {
-                        Text(text = text)
-                    }
-                }
-            }
-
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = abnormalConditionsState.text,
-            onValueChange = { viewModel.setAbnormalConditionsStateValue(it) },
-            label = {
-                Text(
-                    text = "Abnormal conditions",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-
-        ExposedDropdownMenuBox(
-            expanded = isExpandedSmoke,
-            onExpandedChange = {isExpandedSmoke = !isExpandedSmoke}
-        ) {
-            TextField(
-                value = selectedTextSmokeType,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedSmoke)},
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            ExposedDropdownMenu(expanded = isExpandedSmoke, onDismissRequest = { isExpandedSmoke = false }) {
-                smokeList.forEachIndexed { index, text ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedTextSmokeType = smokeList[index]
-                            viewModel.smokeState.value.text = selectedTextSmokeType
-                            isExpandedSmoke = false
-                        }
-                    ) {
-                        Text(text = text)
-                    }
-                }
-            }
-
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        ExposedDropdownMenuBox(
-            expanded = isExpandedAlcohol,
-            onExpandedChange = {isExpandedAlcohol = !isExpandedAlcohol}
-        ) {
-            TextField(
-                value = selectedTextAlcoholType,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedAlcohol)},
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            ExposedDropdownMenu(expanded = isExpandedAlcohol, onDismissRequest = { isExpandedAlcohol = false }) {
-                alcoholList.forEachIndexed { index, text ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedTextAlcoholType = alcoholList[index]
-                            viewModel.alcoholState.value.text = selectedTextAlcoholType
-                            isExpandedAlcohol = false
-                        }
-                    ) {
-                        Text(text = text)
-                    }
-                }
-            }
-
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        ExposedDropdownMenuBox(
-            expanded = isExpandedActive,
-            onExpandedChange = {isExpandedActive = !isExpandedActive}
-        ) {
-            TextField(
-                value = selectedTextActiveType,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedActive)},
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            ExposedDropdownMenu(expanded = isExpandedActive, onDismissRequest = { isExpandedActive = false }) {
-                activeList.forEachIndexed { index, text ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedTextActiveType = activeList[index]
-                            viewModel.activeState.value.text = selectedTextActiveType
-                            isExpandedActive = false
-                        }
-                    ) {
-                        Text(text = text)
-                    }
-                }
-            }
-
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = weightState.text,
-            onValueChange = { viewModel.setWeightStateValue(it) },
-            label = {
-                Text(
-                    text = "Weight",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-
-        TextField(
-            value = heightState.text,
-            onValueChange = { viewModel.setHeightStateValue(it) },
-            label = {
-                Text(
-                    text = "Height",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-
-        ExposedDropdownMenuBox(
-            expanded = isExpandedGender,
-            onExpandedChange = {isExpandedGender = !isExpandedGender}
-        ) {
-            TextField(
-                value = selectedGenderType,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedGender)},
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            ExposedDropdownMenu(expanded = isExpandedGender, onDismissRequest = { isExpandedGender = false }) {
-                genderList.forEachIndexed { index, text ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedGenderType = genderList[index]
-                            viewModel.genderState.value.text = selectedGenderType
-                            isExpandedGender = false
-                        }
-                    ) {
-                        Text(text = text)
-                    }
-                }
-            }
-
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
+        Spacer(modifier = Modifier.height(545.dp))
         TextField(
             value = birthdayState.text,
             onValueChange = { viewModel.setBirthdayStateStateValue(it) },
@@ -385,66 +519,118 @@ fun CardCreateScreen(
                 .padding(bottom = 8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
+                unfocusedIndicatorColor = Color.Black,
                 cursorColor = Color.Red,
             ),
         )
-        Button(
-            onClick = {
-                showDatePicker = true
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFa5051f),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Text(text = "Date Picker")
-        }
 
+        Row {
+            Button(
 
-        Button(
-            onClick = {
-                when {
-                    viewModel.abnormalConditionsState.value.text.isEmpty()-> {
-                        Toast.makeText(context, "Abnormal conditions can not be empty", Toast.LENGTH_SHORT).show()
+                onClick = {
+                    showDatePicker = true
+                },
+                modifier = Modifier.width(135.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFa5051f),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text(text = "Choose Date")
+            }
+
+            Spacer(modifier = Modifier.width(40.dp))
+
+            Button(
+                onClick = {
+                    when {
+                        viewModel.bloodTypeState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Blood Type field can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.abnormalConditionsState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Abnormal conditions can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.smokeState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Smoke field can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.alcoholState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Alcohol field can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.activeState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Active field can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.weightState.value.text.isEmpty() || !"^[-+]?\\d+(\\.\\d+)?\$".toRegex()
+                            .matches(weightState.text) -> {
+                            Toast.makeText(
+                                context,
+                                "Weight field can not be empty or not a number",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.heightState.value.text.isEmpty() || !"[0-9]+".toRegex()
+                            .matches(heightState.text) -> {
+                            Toast.makeText(
+                                context,
+                                "Height field can not be empty or not a number",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.genderState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Gender field can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        viewModel.birthdayState.value.text.isEmpty() -> {
+                            Toast.makeText(
+                                context,
+                                "Birthday field can not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        else -> viewModel.createPatientCard(slug)
                     }
-                    viewModel.alcoholState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Alcohol field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.genderState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Gender field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.birthdayState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Birthday field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.smokeState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Smoke field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.activeState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Active field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.heightState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Height field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.weightState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Weight field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    viewModel.bloodTypeState.value.text.isEmpty() -> {
-                        Toast.makeText(context, "Blood Type field can not be empty", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> viewModel.createPatientCard(slug)
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFa5051f),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Text("Create")
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFa5051f),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text("Create")
+            }
         }
     }
 
@@ -454,48 +640,58 @@ fun CardCreateScreen(
             onDismissRequest = {  },
             confirmButton = {
                 TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFa5051f),
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         val selectedDate = Calendar.getInstance().apply {
                             timeInMillis = datePickerState.selectedDateMillis!!
                         }
-                        if (selectedDate.after(Calendar.getInstance())) {
-                            Toast.makeText(
-                                context,
-                                "Selected date ${dateFormatter.format(selectedDate.time)} saved",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        val yearSelected = selectedDate.get(Calendar.YEAR)
+                        val monthSelected = selectedDate.get(Calendar.MONTH) + 1
+                        val daySelected = selectedDate.get(Calendar.DAY_OF_MONTH)
+                        val birthDate = SimpleDateFormat("yyyy-MM-dd").parse("$yearSelected-0$monthSelected-$daySelected")  // Parse into Date object
+                        val birthDateCalendar = Calendar.getInstance()
+                        birthDateCalendar.time = birthDate
+
+                        val eighteenYearsInMilliseconds = 18L * 365 * 24 * 60 * 60 * 1000
+                        val isEighteenPlus = currentDate.timeInMillis - birthDateCalendar.timeInMillis >= eighteenYearsInMilliseconds
+
+                        if (isEighteenPlus) {
+                            Toast.makeText(context, "Selected date ${dateFormatter.format(selectedDate.time)} saved", Toast.LENGTH_SHORT).show()
                             showDatePicker = false
                             viewModel.birthdayState.value.text = dateFormatter.format(selectedDate.time)
                         } else {
-                            Toast.makeText(
-                                context,
-                                "Selected date should be after today, please select again",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(context, "You must be 18+ years old to proceed", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) { Text("OK") }
             },
             dismissButton = {
                 TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFa5051f),
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         showDatePicker = false
                     }
                 ) { Text("Cancel") }
             },
             colors = DatePickerDefaults.colors(
-                containerColor = PurpleGrey80,
+                containerColor = Color.White,
             )
         )
         {
             DatePicker(
                 state = datePickerState,
                 colors = DatePickerDefaults.colors(
-                    todayContentColor = Purple40,
-                    todayDateBorderColor = Purple80,
-                    selectedDayContentColor = Purple80,
-                    dayContentColor = Color.Gray,
-                    selectedDayContainerColor = Purple40,
+                    todayContentColor = Color.Gray,
+                    todayDateBorderColor = Color(0xFFa5051f),
+                    selectedDayContentColor = Color.Gray,
+                    dayContentColor = Color.Gray, // Change to a darker color
+                    selectedDayContainerColor = Color(0xFFa5051f),
                 )
             )
         }

@@ -5,4 +5,5 @@ data class CholesterolAnalysis (
     val hdlCholesterol : Double,
     val ldlCholesterol : Double,
     val triglycerides : Double,
+    val createdAt: String?,
 )

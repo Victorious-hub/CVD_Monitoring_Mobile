@@ -128,4 +128,6 @@ dependencies {
     implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
     implementation("com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2")
 
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

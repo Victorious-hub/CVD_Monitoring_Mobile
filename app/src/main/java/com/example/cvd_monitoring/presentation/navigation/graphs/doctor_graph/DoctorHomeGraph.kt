@@ -82,37 +82,8 @@ fun DoctorHomeNavGraph(
             LogoutScreen(navHostController = navController, logout = logout)
         }
 
-        detailsNavGraph(
-            navController = navController
-        )
         doctorPatientActionsNavGraph(
             navController = navController
         )
     }
-}
-
-fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
-    navigation(
-        route = Graph.ROOT,
-        startDestination = DetailsScreen.Overview.route
-    ) {
-//        composable(route = AuthScreen.Login.route) {
-//            AuthenticationScreen(navController)
-//        }
-
-//        composable(
-//            route = DetailsScreen.Overview.route,
-//            arguments = listOf(navArgument("slug") { type = NavType.StringType })
-//        ) { backstackEntry ->
-//            PatientDetailScreen(
-//                navController,
-//                slug = backstackEntry.arguments?.getString("slug") ?: "",
-//            )
-//        }
-    }
-}
-
-sealed class DetailsScreen(val route: String) {
-    data object Information : DetailsScreen(route = "INFORMATION")
-    data object Overview : DetailsScreen(route = "currentPatient/{slug}/get")
 }

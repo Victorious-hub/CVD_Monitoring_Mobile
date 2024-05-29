@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.SplashScreenCVD" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/heart</item>
-        <item name="postSplashScreenTheme">@style/Theme.CVD_Monitoring</item>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="Base.Theme.SplashScreenCVD" parent="android:Theme.Material.Light.NoActionBar">
     </style>
 
-    <style name="Theme.CVD_Monitoring" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="App.Theme.SplashScreenCVD" parent="Base.Theme.SplashScreenCVD" />
+    <style name="Theme.SplashScreenCVD" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item
+            name="windowSplashScreenAnimatedIcon">@drawable/medical_splash
+        </item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.SplashScreenCVD</item>
+    </style>
 </resources>

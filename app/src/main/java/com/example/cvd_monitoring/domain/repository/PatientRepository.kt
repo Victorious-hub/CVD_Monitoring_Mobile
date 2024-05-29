@@ -6,6 +6,7 @@ import com.example.cvd_monitoring.data.dto.CardBloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
+import com.example.cvd_monitoring.data.dto.PatientAppointmentDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PatientConclusionDto
 import com.example.cvd_monitoring.data.dto.PatientDto
@@ -44,5 +45,7 @@ interface PatientRepository {
     suspend fun createAppointment(slug: String, appointment: AppointmentDto): AppointmentDto
     suspend fun scheduleDetail(slug: String): ScheduleDto
     suspend fun getPatientConclusionList(slug: String): List<PatientConclusionDto>
+
+    suspend fun getPatientAppointments(slug: String): List<PatientAppointmentDto>
 
 }

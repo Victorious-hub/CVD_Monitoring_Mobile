@@ -7,3 +7,4 @@ data class ScheduleState(
     val schedule: List<Schedule> = emptyList(),
     val error: String = ""
 )
+

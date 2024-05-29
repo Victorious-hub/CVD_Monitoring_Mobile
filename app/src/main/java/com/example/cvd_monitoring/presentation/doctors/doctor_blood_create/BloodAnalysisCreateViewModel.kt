@@ -48,9 +48,6 @@ class BloodAnalysisCreateViewModel @Inject constructor(
         _glucoseState.value = glucoseState.value.copy(text = value)
     }
 
-    private val _passwordState = mutableStateOf(TextFieldState())
-    val passwordState: State<TextFieldState> = _passwordState
-
     private val  _eventFlow = MutableSharedFlow<UiEvents>()
     val eventFlow = _eventFlow.asSharedFlow()
 

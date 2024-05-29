@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -115,7 +116,7 @@ fun DoctorPatientsScreen(
         }
     } else{
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(30.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .padding(4.dp)
                 .fillMaxHeight()
@@ -154,8 +155,10 @@ fun DoctorPatientsScreen(
                                         .weight(0.6f)
                                 ) {
                                     Row(
-                                        modifier = Modifier.fillMaxWidth()
-                                            .fillMaxWidth().padding(bottom = 3.dp)
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .fillMaxWidth()
+                                            .padding(bottom = 3.dp)
                                     ) {
                                         Text(
                                             text = "First Name",
@@ -236,35 +239,33 @@ fun DoctorPatientsScreen(
                                         modifier = Modifier.padding(top = 3.dp, bottom = 8.dp),
                                         color = Color.Gray
                                     )
+
                                     Button(
                                         onClick = {
                                             val email = patient.user.email ?: return@Button
                                             val emailBeforeAt = email.substringBefore("@")
                                             onUpdateContact(emailBeforeAt)
                                         },
-                                        modifier = Modifier.width(125.dp).height(35.dp),
+                                        modifier = Modifier,
                                         colors = ButtonDefaults.buttonColors(
-                                            containerColor = Color.LightGray,
-                                            contentColor = Color.Black
-                                        ),
-                                        shape = RoundedCornerShape(20.dp),
-                                    ) {
+                                            Color.LightGray
+                                        )
+                                    ){
                                         Row(
                                             horizontalArrangement = Arrangement.Start
                                         ) {
-                                            Spacer(modifier = Modifier.width(16.dp))
+                                            Icon(
+                                                imageVector = Icons.Default.Info,
+                                                contentDescription = "Home Button Icon",
+                                                tint = Color.Black
+                                            )
                                             Text(
                                                 text = "Details",
-                                                modifier = Modifier.weight(1f)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                                contentDescription = "Arrow Right Icon",
-                                                tint = Color.Black,
-                                                modifier = Modifier.align(Alignment.CenterVertically)
+                                                color = Color.Black
                                             )
                                         }
                                     }
+
                                 }
                             }
                         }

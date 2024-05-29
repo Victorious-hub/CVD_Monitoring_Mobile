@@ -239,7 +239,7 @@ fun PatientConclusionScreen(
                             .fillMaxWidth().padding(bottom = 3.dp)
                     ) {
                         Text(
-                            text = "Glucose",
+                            text = "Anomalies",
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,

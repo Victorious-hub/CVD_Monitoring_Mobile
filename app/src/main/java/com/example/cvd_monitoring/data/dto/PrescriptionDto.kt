@@ -16,6 +16,9 @@ data class PrescriptionDto(
     val startDate: String,
     @SerializedName("end_date")
     val endDate: String,
+    val id: Int,
+    @SerializedName("is_declined")
+    val isDeclined: Boolean,
 )
 
 fun PrescriptionDto.toPrescription(): Prescription {
@@ -24,5 +27,7 @@ fun PrescriptionDto.toPrescription(): Prescription {
         dosage = dosage,
         endDate = endDate,
         startDate = startDate,
+        id = id,
+        isDeclined = isDeclined
     )
 }

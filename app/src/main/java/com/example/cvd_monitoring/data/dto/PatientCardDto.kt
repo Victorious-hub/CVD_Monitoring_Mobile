@@ -20,12 +20,12 @@ data class PatientCardDto(
     val gender: String,
     val birthday: String,
     val age: Int,
-    @SerializedName("analysis_status")
-    val analysisStatus: String,
     @SerializedName("is_cholesterol_analysis")
     val isCholesterolAnalysis: Boolean,
     @SerializedName("is_blood_analysis")
     val isBloodAnalysis: Boolean,
+    @SerializedName("is_confirmed")
+    val isConfirmed: Boolean,
 )
 
 fun PatientCardDto.toPatientCard(): PatientCard {
@@ -41,8 +41,8 @@ fun PatientCardDto.toPatientCard(): PatientCard {
         gender = gender,
         birthday = birthday,
         age = age,
-        analysisStatus = analysisStatus,
         isCholesterolAnalysis = isCholesterolAnalysis,
-        isBloodAnalysis = isBloodAnalysis
+        isBloodAnalysis = isBloodAnalysis,
+        isConfirmed = isConfirmed
     )
 }

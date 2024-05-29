@@ -10,6 +10,7 @@ import androidx.navigation.navigation
 import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
 import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
 import com.example.cvd_monitoring.presentation.patients.patient_conclusion.PatientConclusionScreen
+import com.example.cvd_monitoring.presentation.treatment.appointments.PatientAppointmentScreen
 
 import com.example.cvd_monitoring.presentation.treatment.blood_analysis.BloodAnalysisScreen
 import com.example.cvd_monitoring.presentation.treatment.cholesterol_analysis.CholesterolAnalysisScreen
@@ -60,6 +61,19 @@ fun NavGraphBuilder.analysisNavGraph(navController: NavHostController) {
         }
 
         composable(
+            route = AnalysisScreen.Appointment.route,
+            arguments = listOf(navArgument("slug") { type = NavType.StringType })
+        ) { backstackEntry ->
+            PatientAppointmentScreen(
+                navController,
+                slug = backstackEntry.arguments?.getString("slug") ?: "",
+                onClickBackToMain = {
+                    navController.navigate(PatientBottomBar.Home.route)
+                }
+            )
+        }
+
+        composable(
             route = AnalysisScreen.Conclusion.route,
             arguments = listOf(navArgument("slug") { type = NavType.StringType })
         ) { backstackEntry ->
@@ -80,6 +94,7 @@ sealed class AnalysisScreen(val route: String) {
     data object Cholesterol : AnalysisScreen(route = "patientCholesterol/{slug}/get")
     data object Prescription : AnalysisScreen(route = "patientPrescription/{slug}/get")
     data object Conclusion : AnalysisScreen(route = "patientConclusion/{slug}/get")
+    data object  Appointment : AnalysisScreen(route = "patientAppointment/{slug}/get")
 }
 
 fun AnalysisScreen.getRouteWithSlug(slug: String?): String? {

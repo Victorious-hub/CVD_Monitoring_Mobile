@@ -256,7 +256,15 @@ fun PatientDetailScreen(
             }
         }
     }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
+    ){
 
+    }
     Button(
         onClick = {
             onClickBackToMain()

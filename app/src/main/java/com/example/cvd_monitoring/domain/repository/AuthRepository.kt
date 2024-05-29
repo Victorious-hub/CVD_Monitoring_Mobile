@@ -10,5 +10,5 @@ import retrofit2.http.Body
 interface AuthRepository {
     suspend fun authenticateUser(loginRequest: AuthRequest): Resource<Unit>
     suspend fun createPatient(@Body patient: CreateUserRequest): UserDto
-    suspend fun logoutUser(refreshToken: String) : LogoutResponse
+    suspend fun logoutUser(refreshToken: LogoutResponse) : LogoutResponse
 }

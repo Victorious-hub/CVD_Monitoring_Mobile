@@ -39,7 +39,7 @@ fun BloodAnalysisListItem(
             modifier = Modifier
                 .padding(8.dp, 4.dp)
                 .fillMaxWidth()
-                .height(180.dp),
+                .height(230.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Row(
@@ -54,6 +54,34 @@ fun BloodAnalysisListItem(
                         .fillMaxHeight()
                         .weight(0.6f)
                 ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth().padding(bottom = 3.dp)
+                    ) {
+                        Text(
+                            text = "Created at",
+                            style = TextStyle(
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                        )
+                    }
+                    Text(
+                        text = bloodAnalysis.createdAt ?: "No info",
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            color = Color.Black
+                        )
+                    )
+                    Divider(
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
+
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .fillMaxWidth().padding(bottom = 3.dp)

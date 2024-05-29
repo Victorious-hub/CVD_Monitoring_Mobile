@@ -11,6 +11,6 @@ class LogoutUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): LogoutResponse{
         val getRefreshToken = preferences.getRefreshToken().firstOrNull().toString()
-        return authRepository.logoutUser(getRefreshToken)
+        return authRepository.logoutUser(LogoutResponse(getRefreshToken))
     }
 }

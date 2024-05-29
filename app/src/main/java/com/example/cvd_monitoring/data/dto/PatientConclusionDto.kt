@@ -1,6 +1,7 @@
 package com.example.cvd_monitoring.data.dto
 
 
+import com.example.cvd_monitoring.domain.model.analysis.Diagnosis
 import com.example.cvd_monitoring.domain.model.analysis.PatientConclusion
 import com.example.cvd_monitoring.domain.model.patients.PatientCard
 import com.google.gson.annotations.SerializedName
@@ -12,7 +13,9 @@ data class PatientConclusionDto(
     val createdAt: String,
     val description: String,
     val doctor: DoctorScheduleDto,
-    val recommendations: String
+    val recommendations: String,
+    @SerializedName("analysis_result")
+    val analysisResult: DiagnosisDto
 )
 
 fun PatientConclusionDto.toPatientConclusion(): PatientConclusion {
@@ -21,5 +24,6 @@ fun PatientConclusionDto.toPatientConclusion(): PatientConclusion {
         description = description,
         doctor = doctor,
         recommendations = recommendations,
+        analysisResult = analysisResult,
     )
 }

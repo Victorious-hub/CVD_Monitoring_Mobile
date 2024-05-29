@@ -11,8 +11,6 @@ import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
 import com.example.cvd_monitoring.domain.use_case.doctor.schedule.ScheduleDetailUseCase
 import com.example.cvd_monitoring.domain.use_case.patient.appointment.PatientAppointmentUseCase
-import com.example.cvd_monitoring.domain.use_case.treatment.appointment.AppointmentUseCase
-import com.example.cvd_monitoring.presentation.doctors.schedule_detail.ScheduleDetailState
 import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
 import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.utils.Resource
@@ -31,8 +29,8 @@ class PatientAppointmentViewModel @Inject constructor(
     private val authPreferences: AuthPreferences,
     private val scheduleDetailUseCase: ScheduleDetailUseCase,
 ) : ViewModel(){
-    val _state = mutableStateOf(ScheduleDetailState())
-    val state: State<ScheduleDetailState> = _state
+//    val _state = mutableStateOf(ScheduleDetailState())
+//    val state: State<ScheduleDetailState> = _state
 
     private val _appointmentDateState = mutableStateOf(TextFieldState())
     val appointmentDateState: State<TextFieldState> = _appointmentDateState
@@ -80,28 +78,28 @@ class PatientAppointmentViewModel @Inject constructor(
     }
 
 
-    fun getScheduleDetail(slug: String) {
-        scheduleDetailUseCase(slug).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = ScheduleDetailState(schedule = result.data)
-                    state.value.schedule?.doctor?.user?.let { setFirstNameValue(it.firstName) }
-                    state.value.schedule?.doctor?.user?.let { setLastNameValue(it.lastName) }
-                    state.value.schedule?.doctor?.user?.let { setEmailValue(it.email) }
-                    state.value.schedule?.let { setAvailableTimeStateValue(it.availableTime) }
-
-                }
-                is Resource.Error -> {
-                    _state.value = ScheduleDetailState(
-                        error = result.message ?: "An unexpected error occured"
-                    )
-                }
-                is Resource.Loading -> {
-                    _state.value = ScheduleDetailState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
+//    fun getScheduleDetail(slug: String) {
+//        scheduleDetailUseCase(slug).onEach { result ->
+//            when (result) {
+//                is Resource.Success -> {
+//                    _state.value = ScheduleDetailState(schedule = result.data)
+//                    state.value.schedule?.doctor?.user?.let { setFirstNameValue(it.firstName) }
+//                    state.value.schedule?.doctor?.user?.let { setLastNameValue(it.lastName) }
+//                    state.value.schedule?.doctor?.user?.let { setEmailValue(it.email) }
+//                    state.value.schedule?.let { setAvailableTimeStateValue(it.availableTime) }
+//
+//                }
+//                is Resource.Error -> {
+//                    _state.value = ScheduleDetailState(
+//                        error = result.message ?: "An unexpected error occured"
+//                    )
+//                }
+//                is Resource.Loading -> {
+//                    _state.value = ScheduleDetailState(isLoading = true)
+//                }
+//            }
+//        }.launchIn(viewModelScope)
+//    }
 
     fun createAppointment(doctorSlug : String) {
         val appointmentDate = appointmentDateState.value.text

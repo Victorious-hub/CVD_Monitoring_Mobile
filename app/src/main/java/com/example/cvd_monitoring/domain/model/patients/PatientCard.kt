@@ -16,7 +16,7 @@ data class PatientCard(
     val gender: String?,
     val birthday: String?,
     val age: Int?,
-    val analysisStatus: String?,
     val isCholesterolAnalysis: Boolean?,
     val isBloodAnalysis: Boolean?,
+    val isConfirmed: Boolean?,
 )

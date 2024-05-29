@@ -212,24 +212,7 @@ fun PatientUpdateScreen(
                 cursorColor = Color.Red,
             ),
         )
-//        TextField(
-//            value = genderState.text,
-//            onValueChange = { viewModel.setGenderValue(it) },
-//            label = {
-//                Text(
-//                    text = "Gender",
-//                    color = Color.Gray
-//                )
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(bottom = 8.dp),
-//            colors = TextFieldDefaults.textFieldColors(
-//                focusedIndicatorColor = Color.Red,
-//                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-//                cursorColor = Color.Red,
-//            ),
-//        )
+
 
         ExposedDropdownMenuBox(
             expanded = isExpanded,

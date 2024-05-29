@@ -6,4 +6,5 @@ data class BloodAnalysis (
     val glucose: Double,
     val apHi: Int,
     val apLo: Int,
+    val createdAt: String?,
 )

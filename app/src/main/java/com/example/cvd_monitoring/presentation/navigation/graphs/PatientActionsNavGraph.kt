@@ -10,7 +10,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.cvd_monitoring.presentation.doctors.schedule.ScheduleScreen
 import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
-import com.example.cvd_monitoring.presentation.patients.patient_appointment.PatientAppointmentScreen
+
 import com.example.cvd_monitoring.presentation.patients.patient_doctor_list.PatientDoctorListScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -39,17 +39,7 @@ fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
                 navController,
                 onClickBackToMain = {
                     navController.navigate(PatientBottomBar.Home.route)
-                }
-            )
-        }
-
-        composable(
-            route = PatientActions.PatientAppointmentCreate.route,
-            arguments = listOf(navArgument("slug") { type = NavType.StringType })
-        ) {backstackEntry ->
-            PatientAppointmentScreen(
-                navController,
-                slug = backstackEntry.arguments?.getString("slug") ?: "",
+                },
             )
         }
 
@@ -59,7 +49,6 @@ fun NavGraphBuilder.patientActionsNavGraph(navController: NavHostController) {
 sealed class PatientActions(val route: String) {
     data object DoctorList: PatientActions(route = "doctorList/{slug}")
     data object PatientAppointment : PatientActions(route = "scheduleList")
-    data object PatientAppointmentCreate : PatientActions(route = "patientAppointment/{slug}")
 }
 
 fun PatientActions.getRouteWithSlug(slug: String?): String? {

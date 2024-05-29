@@ -77,7 +77,7 @@ class RegistrationViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val createdUser = createPatientUseCase(firstName, lastName, email, password)
+                createPatientUseCase(firstName, lastName, email, password)
                 _eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Login.route))
             } catch (e: Exception) {
                 errorMessage = e.message.toString()

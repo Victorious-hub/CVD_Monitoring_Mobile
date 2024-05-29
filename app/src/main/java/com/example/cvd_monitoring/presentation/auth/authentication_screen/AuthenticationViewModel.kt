@@ -8,9 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.cvd_monitoring.common.TextFieldState
 import com.example.cvd_monitoring.common.UiEvents
 import com.example.cvd_monitoring.data.remote.local.AuthPreferences
+import com.example.cvd_monitoring.domain.model.users.Patient
 import com.example.cvd_monitoring.domain.use_case.auth.authentication.UserAuthenticationUseCase
 import com.example.cvd_monitoring.utils.AuthState
 import com.example.cvd_monitoring.presentation.Screen
+import com.example.cvd_monitoring.presentation.navigation.DoctorBottomBar
+import com.example.cvd_monitoring.presentation.navigation.PatientBottomBar
+import com.example.cvd_monitoring.presentation.navigation.getRouteWithSlug
 import com.example.cvd_monitoring.presentation.navigation.graphs.AuthScreen
 import com.example.cvd_monitoring.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -73,8 +77,8 @@ class AuthenticationViewModel @Inject constructor(
                 is Resource.Success -> {
                     val role = authPreferences.getUserRole().firstOrNull()
                     when (role) {
-                        "D" -> _eventFlow.emit(UiEvents.NavigateEvent("${Screen.CurrentDoctor.route}/$slug/get"))
-                        "P" -> _eventFlow.emit(UiEvents.NavigateEvent("${Screen.CurrentPatient.route}/$slug/get"))
+                        "D" -> _eventFlow.emit(UiEvents.NavigateEvent(DoctorBottomBar.Profile.getRouteWithSlug(slug)))
+                        "P" -> _eventFlow.emit(UiEvents.NavigateEvent(PatientBottomBar.Profile.getRouteWithSlug(slug)))
                     }
                 }
                 is Resource.Error -> {

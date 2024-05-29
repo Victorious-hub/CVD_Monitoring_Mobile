@@ -16,5 +16,5 @@ interface AuthApi {
     @POST("auth/v1/authenticate")
     suspend fun authenticateUser(@Body loginRequest: AuthRequest): AuthResponse
     @POST("auth/v1/logout")
-    suspend fun logoutUser(refreshToken: String): LogoutResponse
+    suspend fun logoutUser(@Body refreshToken: LogoutResponse): LogoutResponse
 }

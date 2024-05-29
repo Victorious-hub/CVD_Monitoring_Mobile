@@ -5,6 +5,7 @@ import com.example.cvd_monitoring.data.dto.BloodAnalysisDto
 import com.example.cvd_monitoring.data.dto.CholesterolAnalysisDto
 import com.example.cvd_monitoring.data.dto.DoctorListDto
 import com.example.cvd_monitoring.data.dto.NotificationDto
+import com.example.cvd_monitoring.data.dto.PatientAppointmentDto
 import com.example.cvd_monitoring.data.dto.PatientCardDto
 import com.example.cvd_monitoring.data.dto.PatientConclusionDto
 import com.example.cvd_monitoring.data.dto.PatientDto
@@ -53,4 +54,6 @@ interface PatientApi {
     suspend fun createAppointment(@Path("slug") slug: String, @Body appointment: AppointmentDto): AppointmentDto
     @GET("analysis/v1/patient/conclusion/{slug}/get")
     suspend fun getPatientConclusionList(@Path("slug") slug: String): List<PatientConclusionDto>
+    @GET("treatment/v1/appointments/patient/{slug}/get")
+    suspend fun getPatientAppointments(@Path("slug") slug: String): List<PatientAppointmentDto>
 }

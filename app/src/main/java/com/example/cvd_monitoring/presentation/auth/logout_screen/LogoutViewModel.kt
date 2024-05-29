@@ -29,7 +29,7 @@ class LogoutViewModel @Inject constructor(
     fun logoutUser() {
         viewModelScope.launch {
             try {
-                authPreferences.deleteToken()
+                logoutUseCase()
                 _eventFlow.emit(UiEvents.NavigateEvent(AuthScreen.Home.route))
             } catch (e: Exception) {
                 errorMessage = e.message.toString()

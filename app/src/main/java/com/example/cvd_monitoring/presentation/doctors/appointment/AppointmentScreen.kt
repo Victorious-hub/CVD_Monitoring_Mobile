@@ -75,17 +75,19 @@ fun AppointmentScreen(
     viewModel: AppointmentViewModel = hiltViewModel(),
     slug: String,
 ) {
-
+    val currentDate = remember {
+        Calendar.getInstance()
+    }
     val date = remember {
         Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2025)
-            set(Calendar.MONTH, 7)
-            set(Calendar.DAY_OF_MONTH, 23)
+            currentDate.get(Calendar.YEAR)
+            currentDate.get(Calendar.MONTH)
+            currentDate.get(Calendar.DAY_OF_MONTH)
         }.timeInMillis
     }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = date,
-        yearRange = 1990..2025
+        yearRange = 2024..2024
     )
     var showDatePicker by remember { mutableStateOf(false) }
 
@@ -103,6 +105,10 @@ fun AppointmentScreen(
 
     val isFocused by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
+    val year = currentDate.get(Calendar.YEAR)
+    val month = currentDate.get(Calendar.MONTH) + 1
+    val day = currentDate.get(Calendar.DAY_OF_MONTH)
+    val todayDate = "$year-0$month-$day"
 
 
     LaunchedEffect(key1 = true) {
@@ -149,6 +155,7 @@ fun AppointmentScreen(
         )
     }
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -156,10 +163,9 @@ fun AppointmentScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Spacer(modifier = Modifier.height(125.dp))
+        Spacer(modifier = Modifier.height(250.dp))
         Text(
-            text = "Create appointment",
+            text = "Patient Appointment",
             modifier = Modifier.padding(bottom = 25.dp),
             style = TextStyle(
                 fontSize = 30.sp,
@@ -168,71 +174,116 @@ fun AppointmentScreen(
                 fontFamily = FontFamily.Monospace,
             )
         )
-        TextField(
-            value = appointmentDateState.text,
-            onValueChange = { viewModel.setAppointmentDateValue(it) },
-            readOnly = true,
-            label = {
-                Text(
-                    text = "Appointment date",
-                    color = Color.Gray
-                )
-            },
+        Row(
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-        Button(
-            onClick = {
-                showDatePicker = true
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFa5051f),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(20.dp)
+                .fillMaxSize()
+                .padding(15.dp),
         ) {
-            Text(text = "Date Picker")
-        }
+            TextField(
+                value = appointmentDateState.text,
+                onValueChange = { viewModel.setAppointmentDateValue(it) },
+                readOnly = true,
+                label = {
+                    Text(
+                        text = "Appointment Date",
+                        color = Color.Gray,
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(56.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Red,
+                    unfocusedIndicatorColor = Color.Black,
+                    cursorColor = Color.Red,
+                ),
+            )
 
-        TextField(
-            value = appointmentTimeState.text,
-            onValueChange = { viewModel.setAppointmentTimeValue(it) },
-            readOnly = true,
-            label = {
-                Text(
-                    text = "Appointment time",
-                    color = Color.Gray
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Red,
-                unfocusedIndicatorColor = if (isFocused) Color.Red else Color.Black,
-                cursorColor = Color.Red,
-            ),
-        )
-        Button(
-            onClick = {
-                showTimePicker = true
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFa5051f),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Text(text = "Time Picker")
+            Spacer(modifier = Modifier.width(35.dp))
+
+            TextField(
+                value = appointmentTimeState.text,
+                onValueChange = { viewModel.setAppointmentTimeValue(it) },
+                readOnly = true,
+                label = {
+                    Text(
+                        text = "Appointment Time",
+                        color = Color.Gray,
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Red,
+                    unfocusedIndicatorColor = Color.Black,
+                    cursorColor = Color.Red,
+                ),
+            )
         }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(380.dp))
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+        ) {
+            Button(
+                onClick = {
+                    showDatePicker = true
+                },
+                modifier = Modifier.width(165.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFa5051f),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text(text = "Date Picker")
+            }
+
+            Spacer(modifier = Modifier.width(30.dp))
+
+            Button(
+                onClick = {
+                    showTimePicker = true
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFa5051f),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text(text = "Time Picker")
+            }
+
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp),
+    ) {
+        Spacer(modifier = Modifier.height(450.dp))
+
         Button(
             onClick = {
                 if (appointmentDateState.text.isEmpty())
@@ -263,11 +314,19 @@ fun AppointmentScreen(
             onDismissRequest = {  },
             confirmButton = {
                 TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFa5051f),
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         val selectedDate = Calendar.getInstance().apply {
                             timeInMillis = datePickerState.selectedDateMillis!!
                         }
-                        if (selectedDate.after(Calendar.getInstance())) {
+                        val yearStart = selectedDate.get(Calendar.YEAR)
+                        val monthStart = selectedDate.get(Calendar.MONTH) + 1
+                        val dayStart = selectedDate.get(Calendar.DAY_OF_MONTH)
+                        val todayDateStart = "$yearStart-0$monthStart-$dayStart"
+                        if(todayDateStart == todayDate || selectedDate.after(Calendar.getInstance()))  {
                             Toast.makeText(
                                 context,
                                 "Selected date ${dateFormatter.format(selectedDate.time)} saved",
@@ -275,36 +334,43 @@ fun AppointmentScreen(
                             ).show()
                             showDatePicker = false
                             viewModel.appointmentDateState.value.text = dateFormatter.format(selectedDate.time)
-                        } else {
+                        }else{
                             Toast.makeText(
                                 context,
-                                "Selected date should be after today, please select again",
+                                "Selected date should from today, please select again",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+
                     }
                 ) { Text("OK") }
             },
             dismissButton = {
                 TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFa5051f),
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         showDatePicker = false
                     }
-                ) { Text("Cancel") }
+                ) { Text(
+                    text = "Cancel",
+                ) }
             },
             colors = DatePickerDefaults.colors(
-                containerColor = PurpleGrey80,
+                containerColor = Color.White,
             )
         )
         {
             DatePicker(
                 state = datePickerState,
                 colors = DatePickerDefaults.colors(
-                    todayContentColor = Purple40,
-                    todayDateBorderColor = Purple80,
-                    selectedDayContentColor = Purple80,
+                    todayContentColor = Color.Gray,
+                    todayDateBorderColor = Color(0xFFa5051f),
+                    selectedDayContentColor = Color.Gray,
                     dayContentColor = Color.Gray, // Change to a darker color
-                    selectedDayContainerColor = Purple40,
+                    selectedDayContainerColor = Color(0xFFa5051f),
                 )
             )
         }
@@ -314,7 +380,13 @@ fun AppointmentScreen(
         TimePickerDialog(
             onDismissRequest = {  },
             confirmButton = {
+
                 TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFa5051f),
+                        contentColor = Color.White
+                    ),
+
                     onClick = {
                         val selectedHour = timePickerState.hour
                         val selectedMinute = timePickerState.minute
@@ -330,22 +402,27 @@ fun AppointmentScreen(
                 ) { Text("OK") }
             },
             dismissButton = {
+                Spacer(modifier = Modifier.width(10.dp))
                 TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFa5051f),
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         showTimePicker = false
                     }
                 ) { Text("Cancel") }
             },
-            containerColor = PurpleGrey80
+            containerColor = Color.White
         )
         {
             TimePicker(
                 state = timePickerState,
                 colors = TimePickerDefaults.colors(
-                    clockDialColor = Purple40,
+                    clockDialColor = Color.White,
                     selectorColor = Pink80,
                     containerColor = PurpleGrey80,
-                    clockDialUnselectedContentColor = Purple80,
+                    clockDialUnselectedContentColor = Color.Gray,
                 )
             )
         }

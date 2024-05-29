@@ -13,6 +13,7 @@ import com.example.cvd_monitoring.presentation.navigation.graphs.Graph
 import com.example.cvd_monitoring.presentation.auth.logout_screen.LogoutScreen
 import com.example.cvd_monitoring.presentation.navigation.graphs.AnalysisScreen
 import com.example.cvd_monitoring.presentation.navigation.graphs.DataUpdateScreen
+import com.example.cvd_monitoring.presentation.navigation.graphs.PatientActions
 import com.example.cvd_monitoring.presentation.navigation.graphs.analysisNavGraph
 import com.example.cvd_monitoring.presentation.navigation.graphs.getRouteWithSlug
 import com.example.cvd_monitoring.presentation.navigation.graphs.patientActionsNavGraph
@@ -33,8 +34,6 @@ fun PatientHomeNavGraph(
         route = Graph.PATIENT_HOME,
         startDestination = PatientBottomBar.Home.route
     ) {
-
-
         composable(route = PatientBottomBar.Home.route) {
             UserHomeScreen(
                 navController,
@@ -84,6 +83,14 @@ fun PatientHomeNavGraph(
                 },
                 onClickBackToMain = {
                     navController.navigate(PatientBottomBar.Home.route)
+                },
+                onClickDoctors = {
+                    PatientActions.DoctorList.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
+                },
+                onClickAppointments = {
+                    AnalysisScreen.Appointment.getRouteWithSlug(backstackEntry.arguments?.getString("slug"))
+                        ?.let { it1 -> navController.navigate(it1) }
                 }
             )
         }
